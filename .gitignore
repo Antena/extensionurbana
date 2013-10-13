@@ -1,0 +1,7 @@
+# Mac Finder stuff
+.DS_Store
+
+# IntelliJ IDEA project files
+*.iml
+*.ipr
+*.iws
