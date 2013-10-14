@@ -9,10 +9,11 @@ var factories = angular.module('atlas.factories', []);
 
 factories.factory('TileLayer', [function() {
     return {
-        create: function(map, options, opacity) {
-            return new google.maps.ImageMapType({
+        create: function(scope, options) {
+
+            var layer = new google.maps.ImageMapType({
                 getTileUrl: function(coord, zoom) {
-                    var proj = map.getProjection();
+                    var proj = scope.map.getProjection();
                     var z2 = Math.pow(2, zoom);
                     var tileXSize = 256 / z2;
                     var tileYSize = 256 / z2;
@@ -22,7 +23,7 @@ factories.factory('TileLayer', [function() {
                     );
                     var ymax = 1 << zoom;
                     var y = ymax - coord.y -1;
-                    if (options.mapBounds.intersects(tileBounds) && (options.mapMinZoom <= zoom) && (zoom <= options.mapMaxZoom))
+                    if (scope.mapOptions.mapBounds.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
                         return "img/tiles/sample/urban_footprint/t0/" + zoom + "/" + coord.x + "/" + y + ".png";
                     else
                         return "http://www.maptiler.org/img/none.png";
@@ -30,8 +31,16 @@ factories.factory('TileLayer', [function() {
                 tileSize: new google.maps.Size(256, 256),
                 isPng: true,
 
-                opacity: opacity
+                opacity: options.opacity
             });
+
+            scope.$watch(options.name + '.opacity', function(oldValue, newValue) {
+                if (scope.map) {
+                    scope.map.overlayMapTypes.getAt(options.zIndex).setOpacity(newValue)
+                }
+            })
+
+            return layer;
         }
     }
 }])
@@ -39,17 +48,25 @@ factories.factory('TileLayer', [function() {
 // Controllers
 var controllers = angular.module('atlas.controllers', []);
 controllers.controller('AppController', ['$scope',  'TileLayer', function($scope,  TileLayer) {
-    $scope.layerOpacity = 0.5;
+    $scope.urbanFootprint = {
+        name: "urbanFootprint",
+        opacity: 0.5,
+        zIndex: 0
+    }
 
-    $scope.$watch('layerOpacity', function(oldValue, newValue) {
-        if ($scope.map) {
-            $scope.map.overlayMapTypes.getAt(0).setOpacity(newValue)
-        }
-    })
+    $scope.urbanArea = {
+        name: "urbanArea",
+        opacity: 0.5,
+        zIndex: 1
+    }
 
     $scope.initLayers = function() {
-        var layer = TileLayer.create($scope.map, $scope.mapOptions, $scope.layerOpacity);
-        $scope.map.overlayMapTypes.insertAt(0, layer);
-        $scope.layer = layer;
+        addLayer($scope.urbanFootprint);
+        addLayer($scope.urbanArea);
+    }
+
+    function addLayer(layer) {
+        layer.layer = TileLayer.create($scope, layer);
+        $scope.map.overlayMapTypes.insertAt(layer.zIndex, layer.layer);
     }
 }])
