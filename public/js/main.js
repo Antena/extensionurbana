@@ -31,7 +31,10 @@ function initialize() {
     var mapOptions = {
         zoom: 12,
         center: mapBounds.getCenter(),
-        mapTypeId: google.maps.MapTypeId.SATELLITE
+        mapTypeId: google.maps.MapTypeId.SATELLITE,
+        minZoom: mapMinZoom,
+        maxZoom: mapMaxZoom,
+        streetViewControl: false
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     map.overlayMapTypes.insertAt(0, maptiler);

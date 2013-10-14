@@ -1,5 +1,13 @@
-html, body, #map-canvas {
+html, body, #map-canvas, #content {
     height: 100%;
     margin: 0px;
     padding: 0px
+}
+
+#controls {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    z-index: 1000;
+    width: 250px;
 }
