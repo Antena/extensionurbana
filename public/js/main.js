@@ -31,10 +31,9 @@ function initialize() {
     var mapOptions = {
         zoom: 12,
         center: mapBounds.getCenter(),
-        mapTypeId: google.maps.MapTypeId.SATELLITE,
+        mapTypeId: google.maps.MapTypeId.SATELLITE
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-    map.setMapTypeId('satellite');
     map.overlayMapTypes.insertAt(0, maptiler);
 
 }
