@@ -1,3 +1,21 @@
+// Atlas app
+var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives', 'ui.slider']);
+
+// Controllers
+var controllers = angular.module('atlas.controllers', []);
+
+controllers.controller('MapController', ['$scope', function($scope) {
+
+}])
+
+controllers.controller('LayerController', ['$scope', function($scope) {
+    $scope.urbanFootprintOpacity = 0.5;
+
+}])
+
+// Directives
+var directives = angular.module('atlas.directives', []);
+
 var mapBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-33.3622363713, -66.4197717386), new google.maps.LatLng(-33.2251227271, -66.2673854768));
 var mapMinZoom = 5;
 var mapMaxZoom = 15;
