@@ -20,7 +20,7 @@
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3swa2pSSQ9WNV5M6bRHzss6IW9E-bOUQ&sensor=false"></script>
 </head>
-<body>
+<body ng-controller="AppController">
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->
@@ -33,7 +33,8 @@
             <div class="ui-slider" ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprintOpacity"></div>
         </div>
     </div>
-    <div id="map-canvas" ng-controller="MapController" ng-model="mapCanvas">
+    <div google-map zoom="12" ng-model="map" class="map-canvas"></div>
+    <!--<div id="map-canvas" ng-controller="MapController" ng-model="mapCanvas">-->
 </div>
 
 </div>
@@ -51,7 +52,8 @@
 <script>window.angular || document.write('<script src="js/vendor/angular.min.js"><\/script>')</script>
 
 <!-- The App -->
-<script src="js/slider.js"></script>
+<script src="js/ui-slider.js"></script>
+<script src="js/google-map.js"></script>
 <script src="js/main.js"></script>
 
 <!-- Google Analytics -->
