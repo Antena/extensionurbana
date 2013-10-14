@@ -1,14 +1,13 @@
 angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', ['mapOptions', '$timeout', function(mapOptions, $timeout) {
     mapOptions = mapOptions || {};
     return {
-        require: 'ngModel',
         compile: function(element, attributes) {
-            return function(scope, elem, attrs, ngModel) {
+            return function(scope, elem, attrs) {
 
                 scope.mapOptions = {
                     mapBounds : new google.maps.LatLngBounds(new google.maps.LatLng(-33.3622363713, -66.4197717386), new google.maps.LatLng(-33.2251227271, -66.2673854768)),
-                    mapMinZoom : 5,
-                    mapMaxZoom : 15
+                    mapMinZoom : parseInt(attrs.minZoom),
+                    mapMaxZoom : parseInt(attrs.maxZoom)
                 }
 
                 function initialize() {
