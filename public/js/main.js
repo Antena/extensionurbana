@@ -24,7 +24,7 @@ factories.factory('TileLayer', [function() {
                     var ymax = 1 << zoom;
                     var y = ymax - coord.y -1;
                     if (scope.mapOptions.mapBounds.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
-                        return "img/tiles/sample/urban_footprint/t0/" + zoom + "/" + coord.x + "/" + y + ".png";
+                        return "img/tiles/sample/" + options.type + "/t0/" + zoom + "/" + coord.x + "/" + y + ".png";
                     else
                         return "http://www.maptiler.org/img/none.png";
                 },
@@ -50,12 +50,14 @@ var controllers = angular.module('atlas.controllers', []);
 controllers.controller('AppController', ['$scope',  'TileLayer', function($scope,  TileLayer) {
     $scope.urbanFootprint = {
         name: "urbanFootprint",
+        type: "urban_footprint",
         opacity: 0.5,
         zIndex: 0
     }
 
     $scope.urbanArea = {
         name: "urbanArea",
+        type: "urban_area",
         opacity: 0.5,
         zIndex: 1
     }
