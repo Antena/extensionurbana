@@ -12,7 +12,31 @@ html, body, .map-canvas, #content {
     width: 250px;
 }
 
+/* *********************************************************************************************************************
+ * FLAT UI CUSTOMIZATION
+ * ********************************************************************************************************************/
+.alert {
+    padding: 18px 45px 18px 20px;
+}
+
 .ui-slider.ui-state-disabled .ui-slider-range,
 .ui-slider.ui-state-disabled .ui-slider-handle {
     background-color: #bdc3c7;
+}
+
+.alert > ul {
+    margin-bottom: 10px;
+}
+
+.nav-pills > li > a {
+    font-size: 12px;
+    font-weight: 400;
+    padding: 8px 15px 8px;
+}
+
+.nav-pills.disabled > li > a {
+    background-color: #bdc3c7;
+    pointer-events: none;
+    cursor: default;
+    border-color: #a7adb1;
 }

@@ -43,7 +43,7 @@ factories.factory('TileLayer', [function() {
                     var ymax = 1 << zoom;
                     var y = ymax - coord.y -1;
                     if (scope.mapOptions.mapBounds.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
-                        return "tiles/" + city + "/" + options.type + "/" + options.moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
+                        return "tiles/" + city + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                     else
                         return "http://www.maptiler.org/img/none.png";
                 },
@@ -70,37 +70,37 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     $scope.selection = {
         city: "sample",
         urbanFootprint: {
-            visible: true
-        },
-        urbanArea : {
-            visible: true
+            visible: true,
+            moment: "t0",
+            index: 0
         }
     }
 
     $scope.urbanFootprint = {
         name: "urbanFootprint",
         type: "urban_footprint",
-        moment: "t0",
         opacity: 0.5,
         zIndex: 0
-    }
-
-    $scope.urbanArea = {
-        name: "urbanArea",
-        type: "urban_area",
-        moment: "t0",
-        opacity: 0.5,
-        zIndex: 1
     }
 
     $scope.toggleLayerVisibility = function(layer) {
         var visible = $scope.selection[layer.name].visible;
         layer.layer.setOpacity(visible ? $scope[layer.name].opacity : 0);
+        $scope.$apply();
+    }
+
+    $scope.setLayerMoment = function(layer, moment) {
+        removeLayer(layer);
+        $scope.selection[layer.name].moment = moment;
+        addLayer($scope[layer.name]);
     }
 
     $scope.initLayers = function() {
         addLayer($scope.urbanFootprint);
-        addLayer($scope.urbanArea);
+    }
+
+    function removeLayer(layer) {
+        $scope.map.overlayMapTypes.removeAt(layer.zIndex, layer.layer);
     }
 
     function addLayer(layer) {

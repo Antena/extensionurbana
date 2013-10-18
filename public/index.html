@@ -36,18 +36,19 @@
                        ng-change="toggleLayerVisibility(urbanFootprint)">
                 <strong>Huella Urbana</strong>
             </label>
+            <ul class="nav nav-pills" ng-class="{disabled: !selection.urbanFootprint.visible}">
+                <li ng-class="{active: selection.urbanFootprint.moment == 't0'}">
+                    <a href="#" ng-click="setLayerMoment(urbanFootprint, 't0')">1990</a>
+                </li>
+                <li ng-class="{active: selection.urbanFootprint.moment == 't1'}">
+                    <a href="#" ng-click="setLayerMoment(urbanFootprint, 't1')">2000</a>
+                </li>
+                <li ng-class="{active: selection.urbanFootprint.moment == 't2'}">
+                    <a href="#" ng-click="setLayerMoment(urbanFootprint, 't2')">2010</a>
+                </li>
+            </ul>
             <div class="ui-slider" id="urbanFootprintSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprint.opacity">
-            </div>
-
-            <label class="checkbox" for="urbanAreaCheck">
-                <input type="checkbox" value="" id="urbanAreaCheck" data-toggle="checkbox" checked
-                       flatui-checkbox="urbanAreaSlider" ng-model="selection.urbanArea.visible"
-                       ng-change="toggleLayerVisibility(urbanArea)">
-                <strong>Área Urbana</strong>
-            </label>
-            <div class="ui-slider" id="urbanAreaSlider"
-                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity">
             </div>
         </div>
     </div>
