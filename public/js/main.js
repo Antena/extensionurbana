@@ -3,13 +3,32 @@ var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives',
 
 // Directives
 var directives = angular.module('atlas.directives', []);
+directives.directive('flatuiCheckbox', function($timeout) {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            var slider = $("#"+attrs.flatuiCheckbox);
+            element.on('toggle', function() {
+                if (!!ngModel.$viewValue) {
+                    slider.slider("disable");
+                    scope.$apply();
+                } else {
+                    slider.slider("enable");
+                    scope.$apply();
+                }
+
+                ngModel.$setViewValue(!ngModel.$viewValue);
+            })
+        }
+    }
+})
 
 // Factories
 var factories = angular.module('atlas.factories', []);
 
 factories.factory('TileLayer', [function() {
     return {
-        create: function(scope, options) {
+        create: function(scope, city, options) {
 
             var layer = new google.maps.ImageMapType({
                 getTileUrl: function(coord, zoom) {
@@ -24,7 +43,7 @@ factories.factory('TileLayer', [function() {
                     var ymax = 1 << zoom;
                     var y = ymax - coord.y -1;
                     if (scope.mapOptions.mapBounds.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
-                        return "img/tiles/sample/" + options.type + "/t0/" + zoom + "/" + coord.x + "/" + y + ".png";
+                        return "tiles/" + city + "/" + options.type + "/" + options.moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                     else
                         return "http://www.maptiler.org/img/none.png";
                 },
@@ -48,9 +67,20 @@ factories.factory('TileLayer', [function() {
 // Controllers
 var controllers = angular.module('atlas.controllers', []);
 controllers.controller('AppController', ['$scope',  'TileLayer', function($scope,  TileLayer) {
+    $scope.selection = {
+        city: "sample",
+        urbanFootprint: {
+            visible: true
+        },
+        urbanArea : {
+            visible: true
+        }
+    }
+
     $scope.urbanFootprint = {
         name: "urbanFootprint",
         type: "urban_footprint",
+        moment: "t0",
         opacity: 0.5,
         zIndex: 0
     }
@@ -58,8 +88,14 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     $scope.urbanArea = {
         name: "urbanArea",
         type: "urban_area",
+        moment: "t0",
         opacity: 0.5,
         zIndex: 1
+    }
+
+    $scope.toggleLayerVisibility = function(layer) {
+        var visible = $scope.selection[layer.name].visible;
+        layer.layer.setOpacity(visible ? $scope[layer.name].opacity : 0);
     }
 
     $scope.initLayers = function() {
@@ -68,7 +104,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     }
 
     function addLayer(layer) {
-        layer.layer = TileLayer.create($scope, layer);
+        layer.layer = TileLayer.create($scope, $scope.selection.city, layer);
         $scope.map.overlayMapTypes.insertAt(layer.zIndex, layer.layer);
     }
 }])

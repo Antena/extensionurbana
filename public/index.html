@@ -29,11 +29,26 @@
     <div id="controls">
         <div class="alert alert-info">
             <button type="button" class="close fui-cross" data-dismiss="alert"></button>
-            <p><strong>Urban Footprint</strong></p>
-            <div class="ui-slider" ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprint.opacity"></div>
 
-            <p><strong>Urban Area</strong></p>
-            <div class="ui-slider" ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity"></div>
+            <label class="checkbox" for="urbanFootprintCheck">
+                <input type="checkbox" value="" id="urbanFootprintCheck" data-toggle="checkbox" checked
+                       flatui-checkbox="urbanFootprintSlider" ng-model="selection.urbanFootprint.visible"
+                       ng-change="toggleLayerVisibility(urbanFootprint)">
+                <strong>Huella Urbana</strong>
+            </label>
+            <div class="ui-slider" id="urbanFootprintSlider"
+                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprint.opacity">
+            </div>
+
+            <label class="checkbox" for="urbanAreaCheck">
+                <input type="checkbox" value="" id="urbanAreaCheck" data-toggle="checkbox" checked
+                       flatui-checkbox="urbanAreaSlider" ng-model="selection.urbanArea.visible"
+                       ng-change="toggleLayerVisibility(urbanArea)">
+                <strong>Área Urbana</strong>
+            </label>
+            <div class="ui-slider" id="urbanAreaSlider"
+                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity">
+            </div>
         </div>
     </div>
     <div google-map zoom="13" min-zoom="5" max-zoom="15" class="map-canvas"></div>
@@ -48,6 +63,7 @@
 
 <!-- Flat UI -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/flatui-checkbox.js"></script>
 
 <!-- Angular -->
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
