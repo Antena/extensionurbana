@@ -30,6 +30,7 @@
         <div class="alert alert-info">
             <button type="button" class="close fui-cross" data-dismiss="alert"></button>
 
+            <!-- Urban Footprint controls -->
             <label class="checkbox" for="urbanFootprintCheck">
                 <input type="checkbox" value="" id="urbanFootprintCheck" data-toggle="checkbox" checked
                        flatui-checkbox="urbanFootprintSlider" ng-model="selection.urbanFootprint.visible"
@@ -50,6 +51,29 @@
             <div class="ui-slider" id="urbanFootprintSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprint.opacity">
             </div>
+
+            <!-- Urban Area controls -->
+            <label class="checkbox" for="urbanAreaCheck">
+                <input type="checkbox" value="" id="urbanAreaCheck" data-toggle="checkbox" checked
+                       flatui-checkbox="urbanAreaSlider" ng-model="selection.urbanArea.visible"
+                       ng-change="toggleLayerVisibility(urbanArea)">
+                <strong>Área Urbana</strong>
+            </label>
+            <ul class="nav nav-pills" ng-class="{disabled: !selection.urbanArea.visible}">
+                <li ng-class="{active: selection.urbanArea.moment == 't0'}">
+                    <a href="#" ng-click="setLayerMoment(urbanArea, 't0')">1990</a>
+                </li>
+                <li ng-class="{active: selection.urbanArea.moment == 't1'}">
+                    <a href="#" ng-click="setLayerMoment(urbanArea, 't1')">2000</a>
+                </li>
+                <li ng-class="{active: selection.urbanArea.moment == 't2'}">
+                    <a href="#" ng-click="setLayerMoment(urbanArea, 't2')">2010</a>
+                </li>
+            </ul>
+            <div class="ui-slider" id="urbanAreaSlider"
+                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity">
+            </div>
+            
         </div>
     </div>
     <div google-map zoom="13" min-zoom="5" max-zoom="15" class="map-canvas"></div>
