@@ -51,6 +51,35 @@
             <div class="ui-slider" id="urbanFootprintSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprint.opacity">
             </div>
+            <a href="#"  data-toggle="collapse" data-target="#urbanFootprintLegend">
+                <span class="glyphicon glyphicon-th"></span> Leyenda
+            </a>
+            <div id="urbanFootprintLegend" class="collapse">
+                <ul class="list-unstyled legend urban-footprint">
+                    <li>
+                        <div class="legend-box pull-left urban-built-up"></div> Urban built-up
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left suburban-built-up"></div> Suburban built-up
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left rural-built-up"></div> Rural built-up
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left fringe-open-land"></div> Fringe open land
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left captured-open-land"></div> Captured open land
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left rural-open-land"></div> Rural open land
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left water"></div> Water
+                    </li>
+                </ul>
+            </div>
+            <hr/>
 
             <!-- Urban Area controls -->
             <label class="checkbox" for="urbanAreaCheck">
@@ -69,9 +98,37 @@
                 <li ng-class="{active: selection.urbanArea.moment == 't2'}">
                     <a href="#" ng-click="setLayerMoment(urbanArea, 't2')">2010</a>
                 </li>
-            </ul>
+            </ul>            
             <div class="ui-slider" id="urbanAreaSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity">
+            </div>
+            <a href="#"  data-toggle="collapse" data-target="#urbanAreaLegend">
+                <span class="glyphicon glyphicon-th"></span> Leyenda
+            </a>
+            <div id="urbanAreaLegend" class="collapse">
+                <ul class="list-unstyled legend urban-area">
+                    <li>
+                        <div class="legend-box pull-left urban-built-up"></div> Urban built-up
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left suburban-built-up"></div> Suburban built-up
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left rural-built-up"></div> Rural built-up
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left urbanized-open-land"></div> Fringe open land
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left captured-open-land"></div> Captured open land
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left rural-open-land"></div> Rural open land
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left water"></div> Water
+                    </li>
+                </ul>
             </div>
             
         </div>
