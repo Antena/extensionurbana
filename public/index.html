@@ -105,6 +105,7 @@
             <a href="#"  data-toggle="collapse" data-target="#urbanAreaLegend">
                 <span class="glyphicon glyphicon-th"></span> Leyenda
             </a>
+
             <div id="urbanAreaLegend" class="collapse">
                 <ul class="list-unstyled legend urban-area">
                     <li>
@@ -130,7 +131,46 @@
                     </li>
                 </ul>
             </div>
-            
+            <hr/>
+
+            <!-- New Development controls -->
+            <label class="checkbox" for="newDevelopmentCheck">
+                <input type="checkbox" value="" id="newDevelopmentCheck" data-toggle="checkbox" checked
+                       flatui-checkbox="newDevelopmentSlider" ng-model="selection.newDevelopment.visible"
+                       ng-change="toggleLayerVisibility(newDevelopment)">
+                <strong>Desarrollo Urbano</strong>
+            </label>
+            <ul class="nav nav-pills" ng-class="{disabled: !selection.newDevelopment.visible}">
+                <li ng-class="{active: selection.newDevelopment.moment == 't0_t1'}">
+                    <a href="#" ng-click="setLayerMoment(newDevelopment, 't0_t1')">1990-2000</a>
+                </li>
+                <li ng-class="{active: selection.newDevelopment.moment == 't1_t2'}">
+                    <a href="#" ng-click="setLayerMoment(newDevelopment, 't1_t2')">2000-2010</a>
+                </li>
+            </ul>
+            <div class="ui-slider" id="newDevelopmentSlider"
+                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="newDevelopment.opacity">
+            </div>
+            <a href="#"  data-toggle="collapse" data-target="#newDevelopmentLegend">
+                <span class="glyphicon glyphicon-th"></span> Leyenda
+            </a>
+            <div id="newDevelopmentLegend" class="collapse">
+                <ul class="list-unstyled legend new-development">
+                    <li>
+                        <div class="legend-box pull-left infill"></div> Infill
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left extension"></div> Extension
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left leapfrog"></div> Leapfrog
+                    </li>
+                    <li>
+                        <div class="legend-box pull-left urbanized-area"></div> Urbanized Area
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
     <div google-map zoom="13" min-zoom="5" max-zoom="15" class="map-canvas"></div>

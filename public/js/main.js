@@ -76,6 +76,10 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
         urbanArea: {
             visible: true,
             moment: "t0"
+        },
+        newDevelopment: {
+            visible: true,
+            moment: "t0_t1"
         }
     }
 
@@ -93,6 +97,13 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
         zIndex: 1
     }
 
+    $scope.newDevelopment = {
+        name: "newDevelopment",
+        type: "new_development",
+        opacity: 0.5,
+        zIndex: 2
+    }
+
     $scope.toggleLayerVisibility = function(layer) {
         var visible = $scope.selection[layer.name].visible;
         layer.layer.setOpacity(visible ? $scope[layer.name].opacity : 0);
@@ -108,6 +119,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     $scope.initLayers = function() {
         addLayer($scope.urbanFootprint);
         addLayer($scope.urbanArea);
+        addLayer($scope.newDevelopment);
     }
 
     function removeLayer(layer) {

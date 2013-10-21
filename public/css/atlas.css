@@ -50,11 +50,16 @@ html, body, .map-canvas, #content {
 .legend.urban-area .legend-box.rural-open-land { background-color: rgb(0,177,88) }
 .legend.urban-area .legend-box.water { background-color: rgb(52,229,252) }
 
+.legend.new-development .legend-box.infill { background-color: rgb(255,250,0) }
+.legend.new-development .legend-box.extension { background-color: rgb(255,159,0) }
+.legend.new-development .legend-box.leapfrog { background-color: rgb(255,33,0) }
+.legend.new-development .legend-box.urbanized-area { background-color: rgb(135,134,135) }
+
 /* *********************************************************************************************************************
  * FLAT UI CUSTOMIZATION
  * ********************************************************************************************************************/
 .alert {
-    padding: 18px 45px 18px 20px;
+    padding: 18px 40px 18px 20px;
 }
 
 .ui-slider.ui-state-disabled .ui-slider-range,
