@@ -23,6 +23,20 @@ directives.directive('flatuiCheckbox', function($timeout) {
     }
 })
 
+directives.directive('onCollapse', function() {
+    return function(scope, element, attrs) {
+        $(element).on('hide.bs.collapse', function () {
+            scope[attrs.onCollapse] = false;
+            scope.$apply();
+        })
+
+        $(element).on('show.bs.collapse', function () {
+            scope[attrs.onCollapse] = true;
+            scope.$apply();
+        })
+    }
+})
+
 // Factories
 var factories = angular.module('atlas.factories', []);
 

@@ -1,7 +1,13 @@
+@import url(http://fonts.googleapis.com/css?family=Share+Tech);
+
 html, body, .map-canvas, #content {
     height: 100%;
     margin: 0px;
     padding: 0px;
+}
+
+body {
+    font-family: 'Share Tech', sans-serif;
 }
 
 /* *********************************************************************************************************************
@@ -18,10 +24,16 @@ html, body, .map-canvas, #content {
 .legend {
     font-size: 14px;
     line-height: 1;
+    margin-top: 5px;
 }
 
 .legend li {
     height: 20px;
+    line-height: 16px;
+}
+
+.legend li.double-height {
+    height: 33px;
 }
 
 .legend .legend-box {
@@ -29,6 +41,10 @@ html, body, .map-canvas, #content {
     height: 16px;
     border: solid 1px #bdc3c7;
     margin-right: 4px;
+}
+
+.legend li.double-height .legend-box {
+    margin-bottom: 16px;
 }
 
 /* *********************************************************************************************************************
@@ -60,6 +76,15 @@ html, body, .map-canvas, #content {
  * ********************************************************************************************************************/
 .alert {
     padding: 18px 40px 18px 20px;
+    font-size: 14px;
+}
+
+.alert a {
+    color: #333333;
+}
+
+.alert a:hover {
+    color: #333333;
 }
 
 .ui-slider.ui-state-disabled .ui-slider-range,

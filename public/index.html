@@ -47,36 +47,35 @@
                 <li ng-class="{active: selection.urbanArea.moment == 't2'}">
                     <a href="#" ng-click="setLayerMoment(urbanArea, 't2')">2010</a>
                 </li>
-            </ul>            
+            </ul>
             <div class="ui-slider" id="urbanAreaSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity">
             </div>
-            <a href="#"  data-toggle="collapse" data-target="#urbanAreaLegend">
-                <span class="glyphicon glyphicon-th"></span> Leyenda
-            </a>
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !urbanAreaLegendVisible, 'glyphicon-chevron-down': urbanAreaLegendVisible}"></span>
+            <a href="#"  data-toggle="collapse" data-target="#urbanAreaLegend">Leyenda</a>
 
-            <div id="urbanAreaLegend" class="collapse">
+            <div id="urbanAreaLegend" class="collapse" on-collapse="urbanAreaLegendVisible">
                 <ul class="list-unstyled legend urban-area">
                     <li>
-                        <div class="legend-box pull-left urban-built-up"></div> Urban built-up
+                        <div class="legend-box pull-left urban-built-up"></div> Área urbana construida
                     </li>
                     <li>
-                        <div class="legend-box pull-left suburban-built-up"></div> Suburban built-up
+                        <div class="legend-box pull-left suburban-built-up"></div> Área suburbana construida
                     </li>
                     <li>
-                        <div class="legend-box pull-left rural-built-up"></div> Rural built-up
+                        <div class="legend-box pull-left rural-built-up"></div> Área rural construida
+                    </li>
+                    <li class="double-height">
+                        <div class="legend-box pull-left urbanized-open-land"></div> Espacios abiertos en entornos urbanizados
                     </li>
                     <li>
-                        <div class="legend-box pull-left urbanized-open-land"></div> Fringe open land
+                        <div class="legend-box pull-left captured-open-land"></div> Espacios abiertos captados
                     </li>
                     <li>
-                        <div class="legend-box pull-left captured-open-land"></div> Captured open land
+                        <div class="legend-box pull-left rural-open-land"></div> Espacio rural abierto
                     </li>
                     <li>
-                        <div class="legend-box pull-left rural-open-land"></div> Rural open land
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left water"></div> Water
+                        <div class="legend-box pull-left water"></div> Agua
                     </li>
                 </ul>
             </div>
@@ -103,31 +102,31 @@
             <div class="ui-slider" id="urbanFootprintSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprint.opacity">
             </div>
-            <a href="#"  data-toggle="collapse" data-target="#urbanFootprintLegend">
-                <span class="glyphicon glyphicon-th"></span> Leyenda
-            </a>
-            <div id="urbanFootprintLegend" class="collapse">
+
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !urbanFootprintLegendVisible, 'glyphicon-chevron-down': urbanFootprintLegendVisible}"></span>
+            <a href="#"  data-toggle="collapse" data-target="#urbanFootprintLegend">Leyenda</a>
+            <div id="urbanFootprintLegend" class="collapse" on-collpase="urbanFootprintLegendVisible">
                 <ul class="list-unstyled legend urban-footprint">
                     <li>
-                        <div class="legend-box pull-left urban-built-up"></div> Urban built-up
+                        <div class="legend-box pull-left urban-built-up"></div> Área urbana construida
                     </li>
                     <li>
-                        <div class="legend-box pull-left suburban-built-up"></div> Suburban built-up
+                        <div class="legend-box pull-left suburban-built-up"></div> Área suburbana construida
                     </li>
                     <li>
-                        <div class="legend-box pull-left rural-built-up"></div> Rural built-up
+                        <div class="legend-box pull-left rural-built-up"></div> Área rural construida
+                    </li>
+                    <li class="double-height">
+                        <div class="legend-box pull-left fringe-open-land"></div> Espacios abiertos del borde urbano
                     </li>
                     <li>
-                        <div class="legend-box pull-left fringe-open-land"></div> Fringe open land
+                        <div class="legend-box pull-left captured-open-land"></div> Espacios abiertos captados
                     </li>
                     <li>
-                        <div class="legend-box pull-left captured-open-land"></div> Captured open land
+                        <div class="legend-box pull-left rural-open-land"></div> Espacio rural abierto
                     </li>
                     <li>
-                        <div class="legend-box pull-left rural-open-land"></div> Rural open land
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left water"></div> Water
+                        <div class="legend-box pull-left water"></div> Agua
                     </li>
                 </ul>
             </div>
@@ -138,7 +137,7 @@
                 <input type="checkbox" value="" id="newDevelopmentCheck" data-toggle="checkbox" checked
                        flatui-checkbox="newDevelopmentSlider" ng-model="selection.newDevelopment.visible"
                        ng-change="toggleLayerVisibility(newDevelopment)">
-                <strong>Desarrollo Urbano</strong>
+                <strong>Nuevo crecimiento</strong>
             </label>
             <ul class="nav nav-pills" ng-class="{disabled: !selection.newDevelopment.visible}">
                 <li ng-class="{active: selection.newDevelopment.moment == 't0_t1'}">
@@ -151,22 +150,18 @@
             <div class="ui-slider" id="newDevelopmentSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="newDevelopment.opacity">
             </div>
-            <a href="#"  data-toggle="collapse" data-target="#newDevelopmentLegend">
-                <span class="glyphicon glyphicon-th"></span> Leyenda
-            </a>
-            <div id="newDevelopmentLegend" class="collapse">
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !newDevelopmentLegendVisible, 'glyphicon-chevron-down': newDevelopmentLegendVisible}"></span>
+            <a href="#"  data-toggle="collapse" data-target="#newDevelopmentLegend">Leyenda</a>
+            <div id="newDevelopmentLegend" class="collapse" on-collapse="newDevelopmentLegendVisible">
                 <ul class="list-unstyled legend new-development">
                     <li>
-                        <div class="legend-box pull-left infill"></div> Infill
+                        <div class="legend-box pull-left infill"></div> Completamiento
                     </li>
                     <li>
-                        <div class="legend-box pull-left extension"></div> Extension
+                        <div class="legend-box pull-left extension"></div> Extensión
                     </li>
                     <li>
-                        <div class="legend-box pull-left leapfrog"></div> Leapfrog
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left urbanized-area"></div> Urbanized Area
+                        <div class="legend-box pull-left leapfrog"></div> Crecimiento discontínuo
                     </li>
                 </ul>
             </div>
