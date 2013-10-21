@@ -32,6 +32,16 @@ gdaldem color-relief gis/sample/urban_area/t2.img gis/urban_area_color_table gis
 gdal2tiles.py -z $1-$2 -w none gis/sample/urban_area/t2.tiff public/tiles/sample/urban_area/t2
 echo
 
+echo Generating color map and tiles for new development t0-t1 layer for zoom levels between $1 and $2...
+gdaldem color-relief gis/sample/new_development/t0_t1.img gis/new_development_color_table gis/sample/new_development/t0_t1.tiff
+gdal2tiles.py -z $1-$2 -w none gis/sample/new_development/t0_t1.tiff public/tiles/sample/new_development/t0_t1
+echo
+
+echo Generating color map and tiles for new development t1-t2 layer for zoom levels between $1 and $2...
+gdaldem color-relief gis/sample/new_development/t1_t2.img gis/new_development_color_table gis/sample/new_development/t1_t2.tiff
+gdal2tiles.py -z $1-$2 -w none gis/sample/new_development/t1_t2.tiff public/tiles/sample/new_development/t1_t2
+echo
+
 END=$(date +%s)
 DIFF=$(( $END - $START ))
 echo "Tiles generated in $DIFF seconds!"
