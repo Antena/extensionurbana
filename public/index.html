@@ -26,9 +26,13 @@
 <![endif]-->
 
 <div id="content">
-    <div id="controls">
+    <div id="controlsIcon" ng-show="!controlsVisible">
+        <span class="glyphicon glyphicon-info-sign" ng-click="toggleControlsVisibility()"></span>
+    </div>
+
+    <div id="controls" ng-show="controlsVisible">
         <div class="alert alert-info">
-            <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+            <button type="button" class="close fui-cross" ng-click="toggleControlsVisibility()"></button>
 
             <!-- Urban Area controls -->
             <label class="checkbox" for="urbanAreaCheck">

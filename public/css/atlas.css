@@ -21,6 +21,19 @@ body {
     width: 250px;
 }
 
+#controlsIcon {
+    position: absolute;
+    top: 47px;
+    right: 19px;
+    z-index: 1001;
+    font-size: 24px;
+    color: white;
+}
+
+#controlsIcon span {
+    cursor: pointer;
+}
+
 .legend {
     font-size: 14px;
     line-height: 1;

@@ -36,6 +36,20 @@ directives.directive('onCollapse', function() {
         })
     }
 })
+directives.directive('swallowClick', function() {
+    return function(scope, element, attrs) {
+        $(element).click(function(event) {
+            event.stopPropagation();
+        })
+    }
+})
+directives.directive('preventClick', function() {
+    return function(scope, element, attrs) {
+        $(element).click(function(event) {
+            event.preventDefault();
+        })
+    }
+})
 
 // Factories
 var factories = angular.module('atlas.factories', []);
@@ -97,6 +111,8 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
         }
     }
 
+    $scope.controlsVisible = true;
+
     $scope.urbanArea = {
         name: "urbanArea",
         type: "urban_area",
@@ -143,5 +159,9 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     function addLayer(layer) {
         layer.layer = TileLayer.create($scope, $scope.selection.city, layer);
         $scope.map.overlayMapTypes.insertAt(layer.zIndex, layer.layer);
+    }
+
+    $scope.toggleControlsVisibility = function() {
+        $scope.controlsVisible = !$scope.controlsVisible;
     }
 }])
