@@ -66,10 +66,9 @@ body {
 .legend.urban-area .legend-box.rural-open-land { background-color: rgb(33,135,4) }
 .legend.urban-area .legend-box.water { background-color: rgb(71,194,255) }
 
-.legend.new-development .legend-box.infill { background-color: rgb(255,250,0) }
-.legend.new-development .legend-box.extension { background-color: rgb(255,159,0) }
-.legend.new-development .legend-box.leapfrog { background-color: rgb(255,33,0) }
-.legend.new-development .legend-box.urbanized-area { background-color: rgb(135,134,135) }
+.legend.new-development .legend-box.infill { background-color: rgb(168,56,0) }
+.legend.new-development .legend-box.extension { background-color: rgb(255,85,0) }
+.legend.new-development .legend-box.leapfrog { background-color: rgb(245,245,0) }
 
 /* *********************************************************************************************************************
  * FLAT UI CUSTOMIZATION
