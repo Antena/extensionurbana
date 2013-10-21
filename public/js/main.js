@@ -22,7 +22,6 @@ directives.directive('flatuiCheckbox', function($timeout) {
         }
     }
 })
-
 directives.directive('onCollapse', function() {
     return function(scope, element, attrs) {
         $(element).on('hide.bs.collapse', function () {
@@ -47,6 +46,14 @@ directives.directive('preventClick', function() {
     return function(scope, element, attrs) {
         $(element).click(function(event) {
             event.preventDefault();
+        })
+    }
+})
+directives.directive('tooltip', function() {
+    return function(scope, element, attrs) {
+        $(element).tooltip({
+            title: attrs.tooltip,
+            placement: attrs.placement || "top"
         })
     }
 })
