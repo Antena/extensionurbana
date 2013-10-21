@@ -83,16 +83,16 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
         }
     }
 
-    $scope.urbanFootprint = {
-        name: "urbanFootprint",
-        type: "urban_footprint",
+    $scope.urbanArea = {
+        name: "urbanArea",
+        type: "urban_area",
         opacity: 0.5,
         zIndex: 0
     }
 
-    $scope.urbanArea = {
-        name: "urbanArea",
-        type: "urban_area",
+    $scope.urbanFootprint = {
+        name: "urbanFootprint",
+        type: "urban_footprint",
         opacity: 0.5,
         zIndex: 1
     }
