@@ -191,6 +191,21 @@
 
         </div>
     </div>
+
+    <div id="mapTypeControls">
+        <ul class="nav nav-pills">
+            <li ng-class="{active: mapTypeId == 'roadmap'}">
+                <a href="#" prevent-click ng-click="setMapType('roadmap')">Mapa</a>
+            </li>
+            <li ng-class="{active: mapTypeId == 'satellite'}">
+                <a href="#" prevent-click ng-click="setMapType('satellite')">Satelite</a>
+            </li>
+            <li ng-class="{active: mapTypeId == 'terrain'}">
+                <a href="#" prevent-click ng-click="setMapType('terrain')">Terreno</a>
+            </li>
+        </ul>
+    </div>
+
     <div google-map zoom="13" min-zoom="5" max-zoom="15" class="map-canvas"></div>
 </div>
 

@@ -229,6 +229,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     }
 
     $scope.controlsVisible = true;
+    $scope.mapTypeId = 'satellite';
 
     $scope.urbanArea = {
         name: "urbanArea",
@@ -288,5 +289,10 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
 
     $scope.zoomIn = function() {
         $scope.map.setZoom($scope.map.getZoom()+1)
+    }
+
+    $scope.setMapType = function(type) {
+        $scope.mapTypeId = type;
+        $scope.map.setMapTypeId(type);
     }
 }])
