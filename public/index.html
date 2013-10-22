@@ -26,6 +26,13 @@
 <![endif]-->
 
 <div id="content">
+    <div id="data">
+        <div class="alert alert-info">
+            <h5 class="text-center">San Luis</h5>
+            <div chart></div>
+        </div>
+    </div>
+
     <div id="controlsIcon" ng-show="!controlsVisible">
         <span class="glyphicon glyphicon-info-sign" ng-click="toggleControlsVisibility()"
               tooltip="Mostrar los controles" placement="auto right"></span>
@@ -190,6 +197,11 @@
 <!-- Angular -->
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
 <script>window.angular || document.write('<script src="js/vendor/angular.min.js"><\/script>')</script>
+
+<!-- D3.js -->
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>window.angular || document.write('<script src="js/vendor/d3.v3.min.js"><\/script>')</script>
+<script src="js/d3tooltip.js"></script>
 
 <!-- The App -->
 <script src="js/ui-slider.js"></script>
