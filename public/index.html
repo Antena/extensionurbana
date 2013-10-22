@@ -38,6 +38,17 @@
               tooltip="Mostrar los controles" placement="auto right"></span>
     </div>
 
+    <div id="zoomControls">
+        <ul class="nav nav-pills">
+            <li>
+                <a href="#" prevent-click ng-click="zoomOut()">-</a>
+            </li>
+            <li>
+                <a href="#" prevent-click ng-click="zoomIn()">+</a>
+            </li>
+        </ul>
+    </div>
+
     <div id="controls" ng-show="controlsVisible">
         <div class="alert alert-info">
             <button type="button" class="close fui-cross" ng-click="toggleControlsVisibility()"></button>
@@ -51,20 +62,20 @@
             </label>
             <ul class="nav nav-pills" ng-class="{disabled: !selection.urbanArea.visible}">
                 <li ng-class="{active: selection.urbanArea.moment == 't0'}">
-                    <a href="#" ng-click="setLayerMoment(urbanArea, 't0')">1990</a>
+                    <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't0')">1990</a>
                 </li>
                 <li ng-class="{active: selection.urbanArea.moment == 't1'}">
-                    <a href="#" ng-click="setLayerMoment(urbanArea, 't1')">2000</a>
+                    <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't1')">2000</a>
                 </li>
                 <li ng-class="{active: selection.urbanArea.moment == 't2'}">
-                    <a href="#" ng-click="setLayerMoment(urbanArea, 't2')">2010</a>
+                    <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't2')">2010</a>
                 </li>
             </ul>
             <div class="ui-slider" id="urbanAreaSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity">
             </div>
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !urbanAreaLegendVisible, 'glyphicon-chevron-down': urbanAreaLegendVisible}"></span>
-            <a href="#"  data-toggle="collapse" data-target="#urbanAreaLegend">Leyenda</a>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#urbanAreaLegend">Leyenda</a>
 
             <div id="urbanAreaLegend" class="collapse" on-collapse="urbanAreaLegendVisible">
                 <ul class="list-unstyled legend urban-area">
@@ -102,13 +113,13 @@
             </label>
             <ul class="nav nav-pills" ng-class="{disabled: !selection.urbanFootprint.visible}">
                 <li ng-class="{active: selection.urbanFootprint.moment == 't0'}">
-                    <a href="#" ng-click="setLayerMoment(urbanFootprint, 't0')">1990</a>
+                    <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't0')">1990</a>
                 </li>
                 <li ng-class="{active: selection.urbanFootprint.moment == 't1'}">
-                    <a href="#" ng-click="setLayerMoment(urbanFootprint, 't1')">2000</a>
+                    <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't1')">2000</a>
                 </li>
                 <li ng-class="{active: selection.urbanFootprint.moment == 't2'}">
-                    <a href="#" ng-click="setLayerMoment(urbanFootprint, 't2')">2010</a>
+                    <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't2')">2010</a>
                 </li>
             </ul>
             <div class="ui-slider" id="urbanFootprintSlider"
@@ -116,7 +127,7 @@
             </div>
 
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !urbanFootprintLegendVisible, 'glyphicon-chevron-down': urbanFootprintLegendVisible}"></span>
-            <a href="#"  data-toggle="collapse" data-target="#urbanFootprintLegend">Leyenda</a>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#urbanFootprintLegend">Leyenda</a>
             <div id="urbanFootprintLegend" class="collapse" on-collpase="urbanFootprintLegendVisible">
                 <ul class="list-unstyled legend urban-footprint">
                     <li>
@@ -153,17 +164,17 @@
             </label>
             <ul class="nav nav-pills" ng-class="{disabled: !selection.newDevelopment.visible}">
                 <li ng-class="{active: selection.newDevelopment.moment == 't0_t1'}">
-                    <a href="#" ng-click="setLayerMoment(newDevelopment, 't0_t1')">1990-2000</a>
+                    <a href="#" prevent-click ng-click="setLayerMoment(newDevelopment, 't0_t1')">1990-2000</a>
                 </li>
                 <li ng-class="{active: selection.newDevelopment.moment == 't1_t2'}">
-                    <a href="#" ng-click="setLayerMoment(newDevelopment, 't1_t2')">2000-2010</a>
+                    <a href="#" prevent-click ng-click="setLayerMoment(newDevelopment, 't1_t2')">2000-2010</a>
                 </li>
             </ul>
             <div class="ui-slider" id="newDevelopmentSlider"
                  ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="newDevelopment.opacity">
             </div>
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !newDevelopmentLegendVisible, 'glyphicon-chevron-down': newDevelopmentLegendVisible}"></span>
-            <a href="#"  data-toggle="collapse" data-target="#newDevelopmentLegend">Leyenda</a>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#newDevelopmentLegend">Leyenda</a>
             <div id="newDevelopmentLegend" class="collapse" on-collapse="newDevelopmentLegendVisible">
                 <ul class="list-unstyled legend new-development">
                     <li>

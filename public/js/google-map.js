@@ -17,7 +17,10 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                         mapTypeId: google.maps.MapTypeId.SATELLITE,
                         minZoom: scope.mapOptions.mapMinZoom,
                         maxZoom: scope.mapOptions.mapMaxZoom,
-                        streetViewControl: false
+                        streetViewControl: false,
+                        panControl: false,
+                        zoomControl: false,
+                        mapTypeControl: false
                     };
 
                     scope.map = new google.maps.Map($(elem)[0], mapOptions);

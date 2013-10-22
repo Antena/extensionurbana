@@ -100,12 +100,12 @@ directives.directive('chart', function() {
             {
                 values: [[1990,0.633046073853], [2000,0.429026387625], [2010,0.27738795614]],
                 name: "Fragmentación de Adjacencia",
-                desc: "El Indicador de Fragmentación de Adyacencia mide la frecuencia en qué áreas construidas están rodeadas por espacios verdes o fuentes de agua. Es decir, este indicador mide la frecuencia en que los pixeles construidos son adyacentes a pixeles no construidos. Los valores de este índice varían entre 0 y 1, representando los valores más altos la mayor frecuencia de pixeles construidos adyacentes a espacios abiertos. Los pixeles empleados en estas imágenes satelitales tienen una resolución de 30 por 30 metros, esta resolución permite una buena medición de la fragmentación de las áreas construidas a escala individual de los edificios, es decir permite medir la fragmentación a nivel micro de los espacios abiertos dentro y alrededor de la ciudad."
+                desc: 'El <strong>Indicador de Fragmentación de Adyacencia</strong> mide la frecuencia en qué áreas construidas están rodeadas por espacios verdes o fuentes de agua. Es decir, este indicador mide la frecuencia en que los pixeles construidos son adyacentes a pixeles no construidos. Los valores de este índice varían entre 0 y 1, representando los valores más altos la mayor frecuencia de pixeles construidos adyacentes a espacios abiertos. Los pixeles empleados en estas imágenes satelitales tienen una resolución de 30 por 30 metros, esta resolución permite una buena medición de la fragmentación de las áreas construidas a escala individual de los edificios, es decir permite medir la fragmentación a nivel micro de los espacios abiertos dentro y alrededor de la ciudad.'
             },
             {
                 values: [[1990,0.501846628495], [2000,0.407905606772], [2010,0.314881183383]],
                 name: "Fragmentación de Apertura",
-                desc: "El Indicador de Fragmentación de Apertura mide la proporción de espacio abierto en un círculo de 1km2 medido alrededor de cada pixel construido. El radio de este círculo (586 metros) corresponde con la distancia a cubrir en una caminata recreativa de 10 minutos. El Índice de Fragmentación de Apertura es un indicador de la cantidad de espacio abierto a una distancia caminable para las distintas partes de la ciudad, es decir mide la cantidad de espacio abierto en cada barrio. En síntesis, este indicador mide el promedio de los espacios abiertos (no construidos) en un área de 1 km2."
+                desc: 'El <strong>Indicador de Fragmentación de Apertura</strong> mide la proporción de espacio abierto en un círculo de 1km2 medido alrededor de cada pixel construido. El radio de este círculo (586 metros) corresponde con la distancia a cubrir en una caminata recreativa de 10 minutos. El Índice de Fragmentación de Apertura es un indicador de la cantidad de espacio abierto a una distancia caminable para las distintas partes de la ciudad, es decir mide la cantidad de espacio abierto en cada barrio. En síntesis, este indicador mide el promedio de los espacios abiertos (no construidos) en un área de 1 km2.'
             }
         ]
 
@@ -157,11 +157,11 @@ directives.directive('chart', function() {
 
             hoverarea.tooltip(function(d,i) {
                 return {
-                    cssClass: 'tooltip data fade right in',
+                    cssClass: 'tooltip data fade bottom in',
                     type: 'fixed',
-                    gravity: 'right',
+                    gravity: 'bottom',
                     content: data[j]['desc'],
-                    displacement: [10,0]
+                    displacement: [0,0]
                 }
             })
         }
@@ -280,5 +280,13 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
 
     $scope.toggleControlsVisibility = function() {
         $scope.controlsVisible = !$scope.controlsVisible;
+    }
+
+    $scope.zoomOut = function() {
+        $scope.map.setZoom($scope.map.getZoom()-1)
+    }
+
+    $scope.zoomIn = function() {
+        $scope.map.setZoom($scope.map.getZoom()+1)
     }
 }])
