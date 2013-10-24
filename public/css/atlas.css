@@ -12,6 +12,11 @@ html, body, #content {
     padding: 0px;
 }
 
+.collapse-toggle {
+    font-family: 'Share Tech', sans-serif;
+    font-size: 12px;
+}
+
 /* *********************************************************************************************************************
  * HEADER
  * ********************************************************************************************************************/
@@ -143,11 +148,18 @@ html, body, #content {
 #data text.label{ font-size:12px; font-weight:bold; }
 #data text.value{ font-size:12px;font-weight:bold; }
 
+#chart {
+    padding-top: 10px;
+}
+
 .data .tooltip-inner {
     text-align: left;
     width: 220px;
     max-width: 220px;
 }
+
+.index.edge { fill: #1f77b4; }
+.index.openness { fill: #ff7f0e; }
 /* *********************************************************************************************************************
  * LEGENDS
  * ********************************************************************************************************************/

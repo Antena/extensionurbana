@@ -25,203 +25,217 @@
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->
 
+<!--<div id="chart" class="collapse in" ng-click="toggleChartVisibility()">-->
+<!--<div axis></div>-->
+<!--<div chart="edge"></div>-->
+<!--<div chart="openness"></div>-->
+<!--</div>-->
+
 <div id="content">
-    <div id="data">
-        <div class="alert alert-info">
-            <div chart></div>
+<div id="data">
+    <div class="alert alert-info">
+        <div>
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !chartVisible, 'glyphicon-chevron-down': chartVisible}" style="font-size: 12px"></span>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#chart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Indicadores de Fragmentación</a>
+        </div>
+        <div id="chart" class="collapse in" on-collapse="chartVisible">
+            <div axis></div>
+            <div chart="edge"></div>
+            <div chart="openness"></div>
         </div>
     </div>
+</div>
 
-    <div id="controlsIcon" ng-show="!controlsVisible">
+<div id="controlsIcon" ng-show="!controlsVisible">
         <span class="glyphicon glyphicon-info-sign" ng-click="toggleControlsVisibility()"
               tooltip="Mostrar los controles" placement="auto right"></span>
-    </div>
+</div>
 
-    <div id="zoomControls">
-        <ul class="nav nav-pills">
-            <li>
-                <a href="#" prevent-click ng-click="zoomOut()">-</a>
+<div id="zoomControls">
+    <ul class="nav nav-pills">
+        <li>
+            <a href="#" prevent-click ng-click="zoomOut()">-</a>
+        </li>
+        <li>
+            <a href="#" prevent-click ng-click="zoomIn()">+</a>
+        </li>
+    </ul>
+</div>
+
+<div id="controls" ng-show="controlsVisible">
+    <div class="alert alert-info">
+        <button type="button" class="close fui-cross" ng-click="toggleControlsVisibility()"></button>
+
+        <!-- Urban Area controls -->
+        <label class="checkbox" for="urbanAreaCheck">
+            <input type="checkbox" value="" id="urbanAreaCheck" data-toggle="checkbox" checked
+                   flatui-checkbox="urbanAreaSlider" ng-model="selection.urbanArea.visible"
+                   ng-change="toggleLayerVisibility(urbanArea)">
+            <strong>Área Urbana</strong>
+        </label>
+        <ul class="nav nav-pills" ng-class="{disabled: !selection.urbanArea.visible}">
+            <li ng-class="{active: selection.urbanArea.moment == 't0'}">
+                <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't0')">1990</a>
             </li>
-            <li>
-                <a href="#" prevent-click ng-click="zoomIn()">+</a>
+            <li ng-class="{active: selection.urbanArea.moment == 't1'}">
+                <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't1')">2000</a>
+            </li>
+            <li ng-class="{active: selection.urbanArea.moment == 't2'}">
+                <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't2')">2010</a>
             </li>
         </ul>
-    </div>
-
-    <div id="controls" ng-show="controlsVisible">
-        <div class="alert alert-info">
-            <button type="button" class="close fui-cross" ng-click="toggleControlsVisibility()"></button>
-
-            <!-- Urban Area controls -->
-            <label class="checkbox" for="urbanAreaCheck">
-                <input type="checkbox" value="" id="urbanAreaCheck" data-toggle="checkbox" checked
-                       flatui-checkbox="urbanAreaSlider" ng-model="selection.urbanArea.visible"
-                       ng-change="toggleLayerVisibility(urbanArea)">
-                <strong>Área Urbana</strong>
-            </label>
-            <ul class="nav nav-pills" ng-class="{disabled: !selection.urbanArea.visible}">
-                <li ng-class="{active: selection.urbanArea.moment == 't0'}">
-                    <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't0')">1990</a>
-                </li>
-                <li ng-class="{active: selection.urbanArea.moment == 't1'}">
-                    <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't1')">2000</a>
-                </li>
-                <li ng-class="{active: selection.urbanArea.moment == 't2'}">
-                    <a href="#" prevent-click ng-click="setLayerMoment(urbanArea, 't2')">2010</a>
-                </li>
-            </ul>
-            <div class="ui-slider" id="urbanAreaSlider"
-                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity">
-            </div>
-            <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
-            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !urbanAreaLegendVisible, 'glyphicon-chevron-down': urbanAreaLegendVisible}" style="font-size: 12px"></span>
-            <a href="#" prevent-click data-toggle="collapse" data-target="#urbanAreaLegend" style="font-size: 12px">Leyenda</a>
-
-            <div id="urbanAreaLegend" class="collapse" on-collapse="urbanAreaLegendVisible">
-                <ul class="list-unstyled legend urban-area">
-                    <li>
-                        <div class="legend-box pull-left urban-built-up"></div> Área urbana construida
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left suburban-built-up"></div> Área suburbana construida
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left rural-built-up"></div> Área rural construida
-                    </li>
-                    <li class="double-height">
-                        <div class="legend-box pull-left urbanized-open-land"></div> Espacios abiertos en entornos urbanizados
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left captured-open-land"></div> Espacios abiertos captados
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left rural-open-land"></div> Espacio rural abierto
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left water"></div> Agua
-                    </li>
-                </ul>
-            </div>
-            <hr/>
-
-            <!-- Urban Footprint controls -->
-            <label class="checkbox" for="urbanFootprintCheck">
-                <input type="checkbox" value="" id="urbanFootprintCheck" data-toggle="checkbox" checked
-                       flatui-checkbox="urbanFootprintSlider" ng-model="selection.urbanFootprint.visible"
-                       ng-change="toggleLayerVisibility(urbanFootprint)">
-                <strong>Huella Urbana</strong>
-            </label>
-            <ul class="nav nav-pills" ng-class="{disabled: !selection.urbanFootprint.visible}">
-                <li ng-class="{active: selection.urbanFootprint.moment == 't0'}">
-                    <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't0')">1990</a>
-                </li>
-                <li ng-class="{active: selection.urbanFootprint.moment == 't1'}">
-                    <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't1')">2000</a>
-                </li>
-                <li ng-class="{active: selection.urbanFootprint.moment == 't2'}">
-                    <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't2')">2010</a>
-                </li>
-            </ul>
-            <div class="ui-slider" id="urbanFootprintSlider"
-                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprint.opacity">
-            </div>
-            <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
-            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !urbanFootprintLegendVisible, 'glyphicon-chevron-down': urbanFootprintLegendVisible}" style="font-size: 12px"></span>
-            <a href="#" prevent-click data-toggle="collapse" data-target="#urbanFootprintLegend" style="font-size: 12px">Leyenda</a>
-            <div id="urbanFootprintLegend" class="collapse" on-collpase="urbanFootprintLegendVisible">
-                <ul class="list-unstyled legend urban-footprint">
-                    <li>
-                        <div class="legend-box pull-left urban-built-up"></div> Área urbana construida
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left suburban-built-up"></div> Área suburbana construida
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left rural-built-up"></div> Área rural construida
-                    </li>
-                    <li class="double-height">
-                        <div class="legend-box pull-left fringe-open-land"></div> Espacios abiertos del borde urbano
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left captured-open-land"></div> Espacios abiertos captados
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left rural-open-land"></div> Espacio rural abierto
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left water"></div> Agua
-                    </li>
-                </ul>
-            </div>
-            <hr/>
-
-            <!-- New Development controls -->
-            <label class="checkbox" for="newDevelopmentCheck">
-                <input type="checkbox" value="" id="newDevelopmentCheck" data-toggle="checkbox" checked
-                       flatui-checkbox="newDevelopmentSlider" ng-model="selection.newDevelopment.visible"
-                       ng-change="toggleLayerVisibility(newDevelopment)">
-                <strong>Nuevo crecimiento</strong>
-            </label>
-            <ul class="nav nav-pills" ng-class="{disabled: !selection.newDevelopment.visible}">
-                <li ng-class="{active: selection.newDevelopment.moment == 't0_t1'}">
-                    <a href="#" prevent-click ng-click="setLayerMoment(newDevelopment, 't0_t1')">1990-2000</a>
-                </li>
-                <li ng-class="{active: selection.newDevelopment.moment == 't1_t2'}">
-                    <a href="#" prevent-click ng-click="setLayerMoment(newDevelopment, 't1_t2')">2000-2010</a>
-                </li>
-            </ul>
-            <div class="ui-slider" id="newDevelopmentSlider"
-                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="newDevelopment.opacity">
-            </div>
-            <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
-            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !newDevelopmentLegendVisible, 'glyphicon-chevron-down': newDevelopmentLegendVisible}" style="font-size: 12px"></span>
-            <a href="#" prevent-click data-toggle="collapse" data-target="#newDevelopmentLegend" style="font-size: 12px">Leyenda</a>
-            <div id="newDevelopmentLegend" class="collapse" on-collapse="newDevelopmentLegendVisible">
-                <ul class="list-unstyled legend new-development">
-                    <li>
-                        <div class="legend-box pull-left infill"></div> Completamiento
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left extension"></div> Extensión
-                    </li>
-                    <li>
-                        <div class="legend-box pull-left leapfrog"></div> Crecimiento discontínuo
-                    </li>
-                </ul>
-            </div>
-
+        <div class="ui-slider" id="urbanAreaSlider"
+             ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanArea.opacity">
         </div>
-    </div>
+        <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
+        <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !urbanAreaLegendVisible, 'glyphicon-chevron-down': urbanAreaLegendVisible}" style="font-size: 12px"></span>
+        <a href="#" prevent-click data-toggle="collapse" data-target="#urbanAreaLegend" style="font-size: 12px">Leyenda</a>
 
-    <div id="mapTypeControls">
-        <ul class="nav nav-pills">
-            <li ng-class="{active: mapTypeId == 'roadmap'}">
-                <a href="#" prevent-click ng-click="setMapType('roadmap')">Mapa</a>
-            </li>
-            <li ng-class="{active: mapTypeId == 'satellite'}">
-                <a href="#" prevent-click ng-click="setMapType('satellite')">Satelite</a>
-            </li>
-            <li ng-class="{active: mapTypeId == 'terrain'}">
-                <a href="#" prevent-click ng-click="setMapType('terrain')">Terreno</a>
-            </li>
-        </ul>
-    </div>
-
-    <div id="header">
-        <h5 class="pull-left">San Luis</h5>
-        <div class="logos pull-right">
-            <ul class="list-inline">
+        <div id="urbanAreaLegend" class="collapse" on-collapse="urbanAreaLegendVisible">
+            <ul class="list-unstyled legend urban-area">
                 <li>
-                    <img src="images/logo-cipuv.png">
+                    <div class="legend-box pull-left urban-built-up"></div> Área urbana construida
                 </li>
                 <li>
-                    <img src="images/logo-utdt.png">
+                    <div class="legend-box pull-left suburban-built-up"></div> Área suburbana construida
+                </li>
+                <li>
+                    <div class="legend-box pull-left rural-built-up"></div> Área rural construida
+                </li>
+                <li class="double-height">
+                    <div class="legend-box pull-left urbanized-open-land"></div> Espacios abiertos en entornos urbanizados
+                </li>
+                <li>
+                    <div class="legend-box pull-left captured-open-land"></div> Espacios abiertos captados
+                </li>
+                <li>
+                    <div class="legend-box pull-left rural-open-land"></div> Espacio rural abierto
+                </li>
+                <li>
+                    <div class="legend-box pull-left water"></div> Agua
                 </li>
             </ul>
         </div>
-    </div>
+        <hr/>
 
-    <div google-map zoom="13" min-zoom="5" max-zoom="15" class="map-canvas"></div>
+        <!-- Urban Footprint controls -->
+        <label class="checkbox" for="urbanFootprintCheck">
+            <input type="checkbox" value="" id="urbanFootprintCheck" data-toggle="checkbox" checked
+                   flatui-checkbox="urbanFootprintSlider" ng-model="selection.urbanFootprint.visible"
+                   ng-change="toggleLayerVisibility(urbanFootprint)">
+            <strong>Huella Urbana</strong>
+        </label>
+        <ul class="nav nav-pills" ng-class="{disabled: !selection.urbanFootprint.visible}">
+            <li ng-class="{active: selection.urbanFootprint.moment == 't0'}">
+                <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't0')">1990</a>
+            </li>
+            <li ng-class="{active: selection.urbanFootprint.moment == 't1'}">
+                <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't1')">2000</a>
+            </li>
+            <li ng-class="{active: selection.urbanFootprint.moment == 't2'}">
+                <a href="#" prevent-click ng-click="setLayerMoment(urbanFootprint, 't2')">2010</a>
+            </li>
+        </ul>
+        <div class="ui-slider" id="urbanFootprintSlider"
+             ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="urbanFootprint.opacity">
+        </div>
+        <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
+        <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !urbanFootprintLegendVisible, 'glyphicon-chevron-down': urbanFootprintLegendVisible}" style="font-size: 12px"></span>
+        <a href="#" prevent-click data-toggle="collapse" data-target="#urbanFootprintLegend" style="font-size: 12px">Leyenda</a>
+        <div id="urbanFootprintLegend" class="collapse" on-collpase="urbanFootprintLegendVisible">
+            <ul class="list-unstyled legend urban-footprint">
+                <li>
+                    <div class="legend-box pull-left urban-built-up"></div> Área urbana construida
+                </li>
+                <li>
+                    <div class="legend-box pull-left suburban-built-up"></div> Área suburbana construida
+                </li>
+                <li>
+                    <div class="legend-box pull-left rural-built-up"></div> Área rural construida
+                </li>
+                <li class="double-height">
+                    <div class="legend-box pull-left fringe-open-land"></div> Espacios abiertos del borde urbano
+                </li>
+                <li>
+                    <div class="legend-box pull-left captured-open-land"></div> Espacios abiertos captados
+                </li>
+                <li>
+                    <div class="legend-box pull-left rural-open-land"></div> Espacio rural abierto
+                </li>
+                <li>
+                    <div class="legend-box pull-left water"></div> Agua
+                </li>
+            </ul>
+        </div>
+        <hr/>
+
+        <!-- New Development controls -->
+        <label class="checkbox" for="newDevelopmentCheck">
+            <input type="checkbox" value="" id="newDevelopmentCheck" data-toggle="checkbox" checked
+                   flatui-checkbox="newDevelopmentSlider" ng-model="selection.newDevelopment.visible"
+                   ng-change="toggleLayerVisibility(newDevelopment)">
+            <strong>Nuevo crecimiento</strong>
+        </label>
+        <ul class="nav nav-pills" ng-class="{disabled: !selection.newDevelopment.visible}">
+            <li ng-class="{active: selection.newDevelopment.moment == 't0_t1'}">
+                <a href="#" prevent-click ng-click="setLayerMoment(newDevelopment, 't0_t1')">1990-2000</a>
+            </li>
+            <li ng-class="{active: selection.newDevelopment.moment == 't1_t2'}">
+                <a href="#" prevent-click ng-click="setLayerMoment(newDevelopment, 't1_t2')">2000-2010</a>
+            </li>
+        </ul>
+        <div class="ui-slider" id="newDevelopmentSlider"
+             ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" use-decimals ng-model="newDevelopment.opacity">
+        </div>
+        <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
+        <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !newDevelopmentLegendVisible, 'glyphicon-chevron-down': newDevelopmentLegendVisible}" style="font-size: 12px"></span>
+        <a href="#" prevent-click data-toggle="collapse" data-target="#newDevelopmentLegend" style="font-size: 12px">Leyenda</a>
+        <div id="newDevelopmentLegend" class="collapse" on-collapse="newDevelopmentLegendVisible">
+            <ul class="list-unstyled legend new-development">
+                <li>
+                    <div class="legend-box pull-left infill"></div> Completamiento
+                </li>
+                <li>
+                    <div class="legend-box pull-left extension"></div> Extensión
+                </li>
+                <li>
+                    <div class="legend-box pull-left leapfrog"></div> Crecimiento discontínuo
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<div id="mapTypeControls">
+    <ul class="nav nav-pills">
+        <li ng-class="{active: mapTypeId == 'roadmap'}">
+            <a href="#" prevent-click ng-click="setMapType('roadmap')">Mapa</a>
+        </li>
+        <li ng-class="{active: mapTypeId == 'satellite'}">
+            <a href="#" prevent-click ng-click="setMapType('satellite')">Satelite</a>
+        </li>
+        <li ng-class="{active: mapTypeId == 'terrain'}">
+            <a href="#" prevent-click ng-click="setMapType('terrain')">Terreno</a>
+        </li>
+    </ul>
+</div>
+
+<div id="header">
+    <h5 class="pull-left">San Luis</h5>
+    <div class="logos pull-right">
+        <ul class="list-inline">
+            <li>
+                <img src="images/logo-cipuv.png">
+            </li>
+            <li>
+                <img src="images/logo-utdt.png">
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div google-map zoom="13" min-zoom="5" max-zoom="15" class="map-canvas"></div>
 </div>
 
 </div>
