@@ -33,16 +33,36 @@
 
 <div id="content">
 <div id="data">
-    <div class="alert alert-info">
-        <div>
+    <div class="alert alert-info" style="padding-right: 18px">
+        <div style="margin-bottom: 10px">
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !chartVisible, 'glyphicon-chevron-down': chartVisible}" style="font-size: 12px"></span>
-            <a href="#" prevent-click data-toggle="collapse" data-target="#chart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Indicadores de Fragmentación</a>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#chart" class="collapse-toggle" style="margin-bottom: 10px">Indicadores de Fragmentación</a>
         </div>
-        <div id="chart" class="collapse in" on-collapse="chartVisible">
-            <div axis></div>
-            <div chart="edge"></div>
-            <div chart="openness"></div>
+        <div id="chart" class="collapse" on-collapse="chartVisible">
+            <p>Miden la magnitud del espacio abierto dentro de áreas construidas, es decir la discontinuidad del tejido urbano en diferentes escalas, desde la escala de edificación (micro escala) a la del barrio.</p>
         </div>
+
+        <div axis style="height: 25px"></div>
+        <div chart="edge"></div>
+        <div>
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !edgeChartVisible, 'glyphicon-chevron-down': edgeChartVisible}" style="font-size: 12px"></span>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#edgeChart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Índice de continuidad</a>
+        </div>
+        <div id="edgeChart" class="collapse" on-collapse="edgeChartVisible">
+            <p>Mide la fragmentacion de las areas construidas, es decir, la frecuencia en que los pixeles construidos son adyacentes a pixeles no construidos.*  Estos  valores varían entre 0 y 1, representando los valores más altos la mayor frecuencia de pixeles construidos adyacentes a espacios abiertos.</p>
+            <p><small>*Unidad de análisis pixeles de 30x30.</small></p>
+        </div>
+
+        <div chart="openness"></div>
+        <div>
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !opennessChartVisible, 'glyphicon-chevron-down': opennessChartVisible}" style="font-size: 12px"></span>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#opennessChart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Índice de continuidad</a>
+        </div>
+        <div id="opennessChart" class="collapse" on-collapse="opennessChartVisible">
+            <p>Mide la proporción de espacio abierto en un área de 1km2 medido alrededor de cada pixel construido.* Este indicador reporta a cantidad de espacio abierto a una distancia caminable para las distintas partes de la ciudad, es decir la cantidad de espacio abierto en cada barrio.</p>
+            <p><small>*Unidad de análisis pixeles de 30x30.</small></p>
+        </div>
+
     </div>
 </div>
 

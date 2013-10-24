@@ -126,7 +126,6 @@ html, body, #content {
     left: 10px;
     z-index: 1000;
     width: 250px;
-    font-family: Arial, sans-serif;
     font-size:10px;
 }
 
@@ -134,23 +133,19 @@ html, body, #content {
     fill: none;
     stroke:#b6b6b6;
     shape-rendering: crispEdges;
+    font-family: Arial, sans-serif;
 }
 
 #data .tick text{
     fill:#999;
     font-size: 10px;
+    font-family: Arial, sans-serif;
 }
 
-#data .hoverarea {
-    fill-opacity: 0;
-}
 
-#data text.label{ font-size:12px; font-weight:bold; }
-#data text.value{ font-size:12px;font-weight:bold; }
 
-#chart {
-    padding-top: 10px;
-}
+#data text.label{ font-family: Arial, sans-serif; font-size:12px; font-weight:bold; }
+#data text.value{ font-family: Arial, sans-serif; font-size:12px;font-weight:bold; }
 
 .data .tooltip-inner {
     text-align: left;

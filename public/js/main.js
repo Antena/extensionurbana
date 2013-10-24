@@ -224,7 +224,9 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     }
 
     $scope.controlsVisible = true;
-    $scope.chartVisible  = true;
+    $scope.chartVisible  = false;
+    $scope.edgeChartVisible = false;
+    $scope.opennessChartVisible = false;
     $scope.mapTypeId = 'satellite';
 
     $scope.urbanArea = {
