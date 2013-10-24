@@ -30,7 +30,8 @@ html, body, #content {
     margin-top: 0px;
     margin-bottom: 0px;
     line-height: 50px;
-    margin-left: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 #header .logos {
@@ -39,6 +40,12 @@ html, body, #content {
 
 #header ul {
     margin-bottom: 0px;
+}
+
+#header input {
+    width: 200px;
+    margin-top: 5px;
+    display: inline-block;
 }
 
 /* *********************************************************************************************************************

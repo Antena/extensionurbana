@@ -57,6 +57,16 @@ directives.directive('tooltip', function() {
         })
     }
 })
+directives.directive('typeahead', function() {
+    return function(scope, element, attrs) {
+        $(element).typeahead({
+            source: ['San Luis'],
+            updater: function() {
+                return null;
+            }
+        })
+    }
+})
 directives.directive('axis', function() {
     return function(scope, element, attrs) {
         var margin = {top: 20, right: 40, bottom: 0, left: 20},
