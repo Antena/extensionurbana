@@ -1,13 +1,39 @@
 @import url(http://fonts.googleapis.com/css?family=Share+Tech);
 
-html, body, .map-canvas, #content {
+html, body, #content {
+    font-family: 'Share Tech', sans-serif;
     height: 100%;
     margin: 0px;
     padding: 0px;
 }
 
-body, h5 {
+.map-canvas {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* *********************************************************************************************************************
+ * HEADER
+ * ********************************************************************************************************************/
+#header {
+    height: 50px;
+    width: 100%;
+}
+
+#header h5 {
     font-family: 'Share Tech', sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    line-height: 50px;
+    margin-left: 40px;
+}
+
+#header .logos {
+    margin-top: 5px;
+}
+
+#header ul {
+    margin-bottom: 0px;
 }
 
 /* *********************************************************************************************************************
@@ -15,16 +41,16 @@ body, h5 {
  * ********************************************************************************************************************/
 #zoomControls {
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 55px;
+    right: 5px;
     z-index: 1000;
     width: 75px;
 }
 
 #mapTypeControls {
     position: absolute;
-    top: 5px;
-    right: 80px;
+    top: 55px;
+    right: 75px;
     z-index: 1000;
     width: 210px;
 }
@@ -34,16 +60,16 @@ body, h5 {
  * ********************************************************************************************************************/
 #controls {
     position: absolute;
-    top: 40px;
-    right: 10px;
+    top: 90px;
+    right: 5px;
     z-index: 1000;
     width: 250px;
 }
 
 #controlsIcon {
     position: absolute;
-    top: 47px;
-    right: 18px;
+    top: 107px;
+    right: 13px;
     z-index: 1001;
     font-size: 24px;
     color: white;
@@ -91,7 +117,7 @@ body, h5 {
  * ********************************************************************************************************************/
 #data {
     position: absolute;
-    top: 10px;
+    top: 60px;
     left: 10px;
     z-index: 1000;
     width: 250px;

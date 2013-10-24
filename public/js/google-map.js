@@ -2,6 +2,8 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
     mapOptions = mapOptions || {};
     return {
         compile: function(element, attributes) {
+            var height = $(window).height() - $("#header").height();
+            $(element).height(height);
             return function(scope, elem, attrs) {
 
                 scope.mapOptions = {
