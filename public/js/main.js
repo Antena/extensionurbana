@@ -319,6 +319,12 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
                     feature.fillColor = colors(feature.geojsonProperties.ZONIF);
                     feature.strokeColor = colors(feature.geojsonProperties.ZONIF);
                     polygons.push(feature);
+                    google.maps.event.addListener(feature, "mousemove", function(event) {
+                        $("#currentZoning").text(this.geojsonProperties.ZONIF);
+                    });
+                    google.maps.event.addListener(feature, "mouseout", function(event) {
+                        $("#currentZoning").text("-");
+                    });
                     feature.setMap($scope.map);
                 }
                 $scope.features = polygons;
