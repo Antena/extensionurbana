@@ -25,12 +25,6 @@
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->
 
-<!--<div id="chart" class="collapse in" ng-click="toggleChartVisibility()">-->
-<!--<div axis></div>-->
-<!--<div chart="edge"></div>-->
-<!--<div chart="openness"></div>-->
-<!--</div>-->
-
 <div id="content">
 <div id="data">
     <div class="alert alert-info" style="padding-right: 18px">
@@ -86,6 +80,19 @@
     <div class="alert alert-info">
         <button type="button" class="close fui-cross" ng-click="toggleControlsVisibility()"></button>
 
+        <!-- Zoning controls -->
+        <label class="checkbox" for="zoningCheck">
+            <input type="checkbox" value="" id="zoningCheck" data-toggle="checkbox"
+                   flatui-checkbox="zoningSlider" ng-model="selection.zoning.visible"
+                   ng-change="toggleZoningLayerVisibility()">
+            <strong>Zonificación</strong>
+        </label>
+        <div class="ui-slider" id="zoningSlider"
+             ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" disabled="true" use-decimals ng-model="zoning.opacity">
+        </div>
+        <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
+        <hr style="margin-top: 36px"/>
+        
         <!-- Urban Area controls -->
         <label class="checkbox" for="urbanAreaCheck">
             <input type="checkbox" value="" id="urbanAreaCheck" data-toggle="checkbox" checked
@@ -260,6 +267,9 @@
 </div>
 
 </div>
+
+<!-- GeoXML3 -->
+<script src="js/vendor/GeoJSON.js"></script>
 
 <!-- jQuery -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>

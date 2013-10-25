@@ -16,7 +16,6 @@ directives.directive('flatuiCheckbox', function($timeout) {
                     slider.slider("enable");
                     scope.$apply();
                 }
-
                 ngModel.$setViewValue(!ngModel.$viewValue);
             })
         }
@@ -216,20 +215,23 @@ factories.factory('TileLayer', [function() {
 
 // Controllers
 var controllers = angular.module('atlas.controllers', []);
-controllers.controller('AppController', ['$scope',  'TileLayer', function($scope,  TileLayer) {
+controllers.controller('AppController', ['$scope',  'TileLayer', '$http', function($scope,  TileLayer, $http) {
     $scope.selection = {
         city: "sample",
-        urbanFootprint: {
+        urbanArea: {
             visible: true,
             moment: "t0"
         },
-        urbanArea: {
+        urbanFootprint: {
             visible: true,
             moment: "t0"
         },
         newDevelopment: {
             visible: true,
             moment: "t0_t1"
+        },
+        zoning: {
+            visible: false
         }
     }
 
@@ -238,6 +240,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     $scope.edgeChartVisible = false;
     $scope.opennessChartVisible = false;
     $scope.mapTypeId = 'satellite';
+    $scope.features = [];
 
     $scope.urbanArea = {
         name: "urbanArea",
@@ -260,6 +263,13 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
         zIndex: 2
     }
 
+    $scope.zoning = {
+        name: "zoning",
+        type: "zoning",
+        opacity: 0.5,
+        zIndex: 3
+    }
+
     $scope.toggleLayerVisibility = function(layer) {
         var visible = $scope.selection[layer.name].visible;
         layer.layer.setOpacity(visible ? $scope[layer.name].opacity : 0);
@@ -276,6 +286,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
         addLayer($scope.urbanFootprint);
         addLayer($scope.urbanArea);
         addLayer($scope.newDevelopment);
+        addGeoJsonLayer($scope.zoning);
     }
 
     function removeLayer(layer) {
@@ -285,6 +296,72 @@ controllers.controller('AppController', ['$scope',  'TileLayer', function($scope
     function addLayer(layer) {
         layer.layer = TileLayer.create($scope, $scope.selection.city, layer);
         $scope.map.overlayMapTypes.insertAt(layer.zIndex, layer.layer);
+    }
+
+    var colors = d3.scale.category20();
+
+    function addGeoJsonLayer(layer) {
+
+        $http.get('/zoning/' + $scope.selection.city + '.json').success(function(data) {
+            var geoJSON = new GeoJSON(data, {
+                "strokeOpacity": layer.opacity,
+                "strokeWeight": 1,
+                "fillColor": "#000000",
+                "strokeColor": "#000000",
+                "fillOpacity": layer.opacity,
+                "visible" : false
+            });
+
+            if (!geoJSON.error) {
+                var polygons = [];
+                for (var i=0; i<geoJSON.length; i++) {
+                    var feature = geoJSON[i];
+                    feature.fillColor = colors(feature.geojsonProperties.ZONIF);
+                    feature.strokeColor = colors(feature.geojsonProperties.ZONIF);
+                    polygons.push(feature);
+                    feature.setMap($scope.map);
+                }
+                $scope.features = polygons;
+                console.log("Loaded " + i + " polygons for " + $scope.selection.city);
+            }
+
+            $scope.$watch('zoning.opacity', function(oldValue, newValue) {
+                if ($scope.map) {
+                    for (var i=0; i<$scope.features.length; i++) {
+                        $scope.features[i].setOptions({
+                            fillOpacity: newValue,
+                            strokeOpacity: newValue
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    $scope.toggleZoningLayerVisibility = function() {
+        // Turn off/on all other layers
+        var visible = !$scope.selection.zoning.visible;
+        setLayerVisibility($scope.urbanArea, visible);
+        setLayerVisibility($scope.urbanFootprint, visible);
+        setLayerVisibility($scope.newDevelopment, visible);
+
+        for (var i=0; i<$scope.features.length; i++) {
+            $scope.features[i].setOptions({
+                visible: $scope.selection.zoning.visible
+            })
+        }
+        $scope.$apply();
+    }
+    
+    function setLayerVisibility(layer, visible) {
+        if (!visible) {
+            $scope.selection[layer.name]._visible = $scope.selection[layer.name].visible;
+        }
+        visible = visible && $scope.selection[layer.name]._visible;
+        layer.layer.setOpacity(visible ? layer.opacity : 0);
+        $scope.selection[layer.name].visible = visible;
+        visible ? $("#"+layer.name+"Check").checkbox('check') : $("#"+layer.name+"Check").checkbox('uncheck');
+        visible ? $("#"+layer.name+"Slider").slider('enable') : $("#"+layer.name+"Slider").slider('disable');
     }
 
     $scope.toggleControlsVisibility = function() {
