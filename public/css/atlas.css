@@ -67,11 +67,8 @@ html, body, #content {
     width: 210px;
 }
 
-#zoningTooltip {
-    z-index: 10001;
-    display: none;
-    left: 40px;
-    top: 320px;
+#currentZoning {
+    margin-right: -30px;
 }
 
 /* *********************************************************************************************************************
