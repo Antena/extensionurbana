@@ -26,8 +26,15 @@
 <![endif]-->
 
 <div id="content">
+
+<div id="chartIcon" ng-show="!chartWindowVisible">
+        <span class="glyphicon glyphicon-signal" ng-click="toggleChartVisibility()"
+              tooltip="Mostrar los indicadores" placement="auto left"></span>
+</div>
+
 <div id="data">
-    <div class="alert alert-info" style="padding-right: 18px">
+    <div class="alert alert-info" style="width: 300px" ng-show="chartWindowVisible">
+        <button type="button" class="close fui-cross" ng-click="toggleChartVisibility()"></button>
         <div style="margin-bottom: 10px">
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !chartVisible, 'glyphicon-chevron-down': chartVisible}" style="font-size: 12px"></span>
             <a href="#" prevent-click data-toggle="collapse" data-target="#chart" class="collapse-toggle" style="margin-bottom: 10px">Indicadores de Fragmentación</a>
@@ -38,7 +45,7 @@
 
         <div axis style="height: 25px"></div>
         <div chart="edge"></div>
-        <div>
+        <div style="margin-top: 10px">
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !edgeChartVisible, 'glyphicon-chevron-down': edgeChartVisible}" style="font-size: 12px"></span>
             <a href="#" prevent-click data-toggle="collapse" data-target="#edgeChart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Índice de continuidad</a>
         </div>
@@ -48,9 +55,9 @@
         </div>
 
         <div chart="openness"></div>
-        <div>
+        <div style="margin-top: 10px">
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !opennessChartVisible, 'glyphicon-chevron-down': opennessChartVisible}" style="font-size: 12px"></span>
-            <a href="#" prevent-click data-toggle="collapse" data-target="#opennessChart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Índice de continuidad</a>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#opennessChart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Índice de apertura</a>
         </div>
         <div id="opennessChart" class="collapse" on-collapse="opennessChartVisible">
             <p>Mide la proporción de espacio abierto en un área de 1km2 medido alrededor de cada pixel construido.* Este indicador reporta a cantidad de espacio abierto a una distancia caminable para las distintas partes de la ciudad, es decir la cantidad de espacio abierto en cada barrio.</p>

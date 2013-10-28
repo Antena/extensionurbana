@@ -14,7 +14,8 @@ html, body, #content {
 
 .collapse-toggle {
     font-family: 'Share Tech', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
+    margin-top: 10px;
 }
 
 /* *********************************************************************************************************************
@@ -48,6 +49,10 @@ html, body, #content {
     display: inline-block;
 }
 
+.logos ul li {
+    margin-left: 25px;
+}
+
 /* *********************************************************************************************************************
  * MAP CONTROLS
  * ********************************************************************************************************************/
@@ -69,6 +74,7 @@ html, body, #content {
 
 #currentZoning {
     margin-right: -30px;
+    font-size: 14px;
 }
 
 /* *********************************************************************************************************************
@@ -92,6 +98,19 @@ html, body, #content {
 }
 
 #controlsIcon span {
+    cursor: pointer;
+}
+
+#chartIcon {
+    position: absolute;
+    top: 70px;
+    left: 13px;
+    z-index: 1001;
+    font-size: 24px;
+    color: white;
+}
+
+#chartIcon span {
     cursor: pointer;
 }
 

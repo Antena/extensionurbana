@@ -69,7 +69,7 @@ directives.directive('typeahead', function() {
 directives.directive('axis', function() {
     return function(scope, element, attrs) {
         var margin = {top: 20, right: 40, bottom: 0, left: 20},
-            width = 160,
+            width = 200,
             height = 10;
 
         var start_year = 1990, end_year = 2010;
@@ -102,7 +102,7 @@ directives.directive('axis', function() {
 directives.directive('chart', function() {
     return function(scope, element, attrs) {
         var margin = {top: 0, right: 40, bottom: 0, left: 20},
-            width = 160,
+            width = 200,
             height = 45;
 
         var start_year = 1990, end_year = 2010;
@@ -237,6 +237,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
     $scope.controlsVisible = true;
     $scope.chartVisible  = false;
+    $scope.chartWindowVisible  = true;
     $scope.edgeChartVisible = false;
     $scope.opennessChartVisible = false;
     $scope.mapTypeId = 'satellite';
@@ -372,6 +373,10 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
     $scope.toggleControlsVisibility = function() {
         $scope.controlsVisible = !$scope.controlsVisible;
+    }
+
+    $scope.toggleChartVisibility = function() {
+        $scope.chartWindowVisible = !$scope.chartWindowVisible;
     }
 
     $scope.zoomOut = function() {
