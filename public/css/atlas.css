@@ -26,13 +26,17 @@ html, body, #content {
     width: 100%;
 }
 
-#header h5 {
+#header h5, h6 {
     font-family: 'Share Tech', sans-serif;
     margin-top: 0px;
     margin-bottom: 0px;
     line-height: 50px;
     margin-left: 20px;
     margin-right: 20px;
+}
+
+#header h5 {
+    margin-right: 40px;
 }
 
 #header .logos {
