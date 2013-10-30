@@ -22,26 +22,7 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                         streetViewControl: false,
                         panControl: false,
                         zoomControl: false,
-                        mapTypeControl: false,
-                        styles: [
-                            {
-                                "elementType": "labels",
-                                "stylers": [
-                                    { "visibility": "simplified" }
-                                ]
-                            },{
-                                "featureType": "road.arterial",
-                                "stylers": [
-                                    { "visibility": "off" }
-                                ]
-                            },{
-                                "featureType": "road.local",
-                                "stylers": [
-                                    { "visibility": "off" }
-                                ]
-                            },{
-                            }
-                        ]
+                        mapTypeControl: false
                     };
 
                     scope.map = new google.maps.Map($(elem)[0], mapOptions);

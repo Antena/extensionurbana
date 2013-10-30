@@ -390,5 +390,32 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     $scope.setMapType = function(type) {
         $scope.mapTypeId = type;
         $scope.map.setMapTypeId(type);
+        if (type == "terrain") {
+            $scope.map.setOptions({
+                styles: [
+                    {
+                        "elementType": "labels",
+                        "stylers": [
+                            { "visibility": "simplified" }
+                        ]
+                    },{
+                        "featureType": "road.arterial",
+                        "stylers": [
+                            { "visibility": "off" }
+                        ]
+                    },{
+                        "featureType": "road.local",
+                        "stylers": [
+                            { "visibility": "off" }
+                        ]
+                    },{
+                    }
+                ]
+            })
+        } else {
+            $scope.map.setOptions({
+                styles: []
+            })
+        }
     }
 }])
