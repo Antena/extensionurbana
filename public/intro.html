@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html xmlns:ng="http://angularjs.org"  ng-app="atlas">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Atlas de Crecimiento Urbano - Introducción</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/flat-ui.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/atlas.css">
+
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    <style>
+        .row.tile .col-lg-2 {
+            height: 230px;
+            text-align: right;
+            padding-top: 200px;
+            font-size: 16px;
+        }
+
+        .row.tile .col-lg-2.right, .row.title .col-lg-2.right {
+            background-color: #f9f8f3;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .row.title .col-lg-2 {
+            background-color: #1abc9c;
+            font-size: 20px;
+            color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+<div id="header">
+    <h5 class="pull-left">Atlas de Crecimiento Urbano</h5>
+    <div class="logos pull-right">
+        <ul class="list-inline">
+            <li>
+                <img src="images/logo-cipuv.png">
+            </li>
+            <li>
+                <img src="images/logo-utdt.png">
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row tile">
+    <div class="col-lg-2" style="background-image: url(images/intro/00.png)">Mapa</div>
+    <div class="col-lg-2" style="background-image: url(images/intro/01.png); color: #ffffff;">Imágen Satelital</div>
+    <div class="col-lg-2" style="background-image: url(images/intro/02.png)">Terreno</div>
+    <div class="col-lg-2" style="background-image: url(images/intro/03.png); color: #ffffff;">Uso de suelo</div>
+    <div class="col-lg-2 right" style="padding-top: 0px;">
+        <ul class="list-unstyled">
+            <li style="margin-bottom: 20px">Mapas de base:</li>
+            <li style="margin-bottom: 20px">Rutas y calles</li>
+            <li style="margin-bottom: 20px">Imágen stelital</li>
+            <li style="margin-bottom: 20px">Topografía</li>
+            <li tooltip="Usos de suelo reportados por organismos públicos" placement="auto left">Uso de suelo</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row title">
+    <div class="col-lg-2">1990</div>
+    <div class="col-lg-2">2000</div>
+    <div class="col-lg-2">2010</div>
+    <div class="col-lg-2" style="background-color: #3498db;">Nuevos Crecimientos</div>
+    <div class="col-lg-2 right" style="padding-top: 0px; color: #34495e; text-align: right">
+        <ul class="list-unstyled" style="margin-bottom: 0">
+            <li>Años</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row tile">
+    <div class="col-lg-2" style="background-image: url(images/intro/10.png); color: #ffffff;">Área Urbana</div>
+    <div class="col-lg-2" style="background-image: url(images/intro/11.png)"></div>
+    <div class="col-lg-2" style="background-image: url(images/intro/12.png)"></div>
+    <div class="col-lg-2" style="background-image: url(images/intro/13.png); color: #ffffff;">1990-2000</div>
+    <div class="col-lg-2 right" style="padding-top: 0px;">
+        <ul class="list-unstyled">
+            <li style="margin-bottom: 80px" tooltip="Área Urbana: Delimita la extensión urbana -pixeles construidos. Incluye áreas: urbanas, suburbanas, rural construida y espacios abiertos: captados, rural y cursos de agua." placement="auto left">Área Urbana</li>
+            <li tooltip="Huella Urbana: Espacios a ser  potencialmente transformado por los usos urbanos." placement="auto left">Huella Urbana</li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="row tile">
+    <div class="col-lg-2" style="background-image: url(images/intro/20.png); color: #ffffff;">Huella Urbana</div>
+    <div class="col-lg-2" style="background-image: url(images/intro/21.png)"></div>
+    <div class="col-lg-2" style="background-image: url(images/intro/22.png)"></div>
+    <div class="col-lg-2" style="background-image: url(images/intro/23.png); color: #ffffff;">2000-2010</div>
+    <div class="col-lg-2 right" style="padding-top: 0px;">
+        <ul class="list-unstyled">
+            <li style="margin-bottom: 80px" tooltip="Nuevos Crecimientos: Miden los  desarrollos urbanos ocurridos  entre periodos de tiempo (T1 y T2). Clasificación: completamiento en áreas urbanizadas, extensión y  desarrollos  no  continuos a la urbanización existente." placement="auto left">Nuevos Crecimientos</li>
+            <li tooltip="Índices de fragmentación: Miden la  reducción de la continuidad de las áreas construidas de la ciudad y  fragmentación del espacio abierto (tanto  dentro como fuera de la ciudad)." placement="auto left">Índices de fragmentación</li>
+        </ul>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+<script src="js/vendor/jquery-ui-1.10.3.custom.min.js"></script>
+
+<!-- Flat UI -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/flatui-checkbox.js"></script>
+
+<!-- Angular -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script>window.angular || document.write('<script src="js/vendor/angular.min.js"><\/script>')</script>
+
+<!-- The App -->
+<script src="js/google-map.js"></script>
+<script src="js/ui-slider.js"></script>
+<script src="js/main.js"></script>
+
+<!-- Google Analytics -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-45203242-1', 'atlasurbano.herokuapp.com');
+    ga('send', 'pageview');
+
+</script>
+</body>
+</html>
