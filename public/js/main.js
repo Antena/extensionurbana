@@ -238,6 +238,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     $scope.controlsVisible = true;
     $scope.chartVisible  = false;
     $scope.chartWindowVisible  = true;
+    $scope.introChart = true;
     $scope.edgeChartVisible = false;
     $scope.opennessChartVisible = false;
     $scope.mapTypeId = 'satellite';

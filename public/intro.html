@@ -37,6 +37,43 @@
             font-size: 20px;
             color: #f5f5f5;
         }
+
+        #data {
+            position: absolute;
+            top: 503px;
+            left: 645px;
+            z-index: 1000;
+            width: 250px;
+            font-size:10px;
+            display: none;
+        }
+
+        #data .axis path, .axis line {
+            fill: none;
+            stroke:#b6b6b6;
+            shape-rendering: crispEdges;
+            font-family: Arial, sans-serif;
+        }
+
+        #data .tick text{
+            fill:#999;
+            font-size: 10px;
+            font-family: Arial, sans-serif;
+        }
+
+
+
+        #data text.label{ font-family: Arial, sans-serif; font-size:12px; font-weight:bold; }
+        #data text.value{ font-family: Arial, sans-serif; font-size:12px;font-weight:bold; }
+
+        .data .tooltip-inner {
+            text-align: left;
+            width: 220px;
+            max-width: 220px;
+        }
+
+        .index.edge { fill: #1f77b4; }
+        .index.openness { fill: #ff7f0e; }
     </style>
 </head>
 <body>
@@ -55,6 +92,40 @@
                 <img src="images/logo-utdt.png">
             </li>
         </ul>
+    </div>
+</div>
+
+<div id="data">
+    <div class="alert alert-info" style="width: 300px">
+        <div style="margin-bottom: 10px">
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !chartVisible, 'glyphicon-chevron-down': chartVisible}" style="font-size: 12px"></span>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#chart" class="collapse-toggle" style="margin-bottom: 10px">Indicadores de Fragmentación</a>
+        </div>
+        <div id="chart" class="collapse" on-collapse="chartVisible">
+            <p>Miden la magnitud del espacio abierto dentro de áreas construidas, es decir la discontinuidad del tejido urbano en diferentes escalas, desde la escala de edificación (micro escala) a la del barrio.</p>
+        </div>
+
+        <div axis style="height: 25px"></div>
+        <div chart="edge"></div>
+        <div style="margin-top: 10px">
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !edgeChartVisible, 'glyphicon-chevron-down': edgeChartVisible}" style="font-size: 12px"></span>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#edgeChart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Índice de continuidad</a>
+        </div>
+        <div id="edgeChart" class="collapse" on-collapse="edgeChartVisible">
+            <p>Mide la fragmentacion de las areas construidas, es decir, la frecuencia en que los pixeles construidos son adyacentes a pixeles no construidos.*  Estos  valores varían entre 0 y 1, representando los valores más altos la mayor frecuencia de pixeles construidos adyacentes a espacios abiertos.</p>
+            <p><small>*Unidad de análisis pixeles de 30x30.</small></p>
+        </div>
+
+        <div chart="openness"></div>
+        <div style="margin-top: 10px">
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right': !opennessChartVisible, 'glyphicon-chevron-down': opennessChartVisible}" style="font-size: 12px"></span>
+            <a href="#" prevent-click data-toggle="collapse" data-target="#opennessChart" class="collapse-toggle" style="margin-right: -30px; margin-bottom: 10px">Índice de apertura</a>
+        </div>
+        <div id="opennessChart" class="collapse" on-collapse="opennessChartVisible">
+            <p>Mide la proporción de espacio abierto en un área de 1km2 medido alrededor de cada pixel construido.* Este indicador reporta a cantidad de espacio abierto a una distancia caminable para las distintas partes de la ciudad, es decir la cantidad de espacio abierto en cada barrio.</p>
+            <p><small>*Unidad de análisis pixeles de 30x30.</small></p>
+        </div>
+
     </div>
 </div>
 
@@ -109,7 +180,7 @@
     <div class="col-lg-2 right" style="padding-top: 0px;">
         <ul class="list-unstyled">
             <li style="margin-bottom: 80px" tooltip="Nuevos Crecimientos: Miden los  desarrollos urbanos ocurridos  entre periodos de tiempo (T1 y T2). Clasificación: completamiento en áreas urbanizadas, extensión y  desarrollos  no  continuos a la urbanización existente." placement="auto left">Nuevos Crecimientos</li>
-            <li tooltip="Índices de fragmentación: Miden la  reducción de la continuidad de las áreas construidas de la ciudad y  fragmentación del espacio abierto (tanto  dentro como fuera de la ciudad)." placement="auto left">Índices de fragmentación</li>
+            <li id="indexes" tooltip="Índices de fragmentación: Miden la  reducción de la continuidad de las áreas construidas de la ciudad y  fragmentación del espacio abierto (tanto  dentro como fuera de la ciudad)." placement="auto left">Índices de fragmentación</li>
         </ul>
     </div>
 </div>
@@ -127,10 +198,22 @@
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
 <script>window.angular || document.write('<script src="js/vendor/angular.min.js"><\/script>')</script>
 
+<!-- D3.js -->
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>window.d3 || document.write('<script src="js/vendor/d3.v3.min.js"><\/script>')</script>
+<script src="js/d3tooltip.js"></script>
+
 <!-- The App -->
 <script src="js/google-map.js"></script>
 <script src="js/ui-slider.js"></script>
 <script src="js/main.js"></script>
+
+<script>
+    $("#indexes").hover(
+            function() { $("#data").show(); },
+            function() { $("#data").hide(); }
+    )
+</script>
 
 <!-- Google Analytics -->
 <script>
