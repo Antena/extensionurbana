@@ -56,16 +56,44 @@ directives.directive('tooltip', function() {
         })
     }
 })
-directives.directive('typeahead', function() {
-    return function(scope, element, attrs) {
-        $(element).typeahead({
-            source: ['San Luis'],
-            updater: function() {
-                return null;
-            }
-        })
+directives.directive('typeahead', ['$http', function($http) {
+    function parseCity(cityStr) {
+        var parts = cityStr.split("#");
+        return {
+            id: parts[0],
+            name: parts[1],
+            province: parts[2]
+        }
     }
-})
+
+    return function(scope, element, attrs) {
+        $http.get("/data/cities.csv").success(function(data) {
+            // Build data source
+            var cities = [];
+            $.each($.csv.toObjects(data), function(idx, city){
+                cities.push(city.id+"#"+city.name+"#"+city.province);
+            })
+
+            $(element).typeahead({
+                source: cities,
+                updater: function(item) {
+                    var city = parseCity(item);
+                    scope.loadCity(city.id);
+                    return city.name;
+                },
+                matcher: function(item) {
+                    var city = parseCity(item);
+                    return city.name.toLowerCase().indexOf(this.query) >= 0 || city.province.toLowerCase().indexOf(this.query) >= 0;
+                },
+                highlighter: function(item) {
+                    var city = parseCity(item);
+                    return city.name + ", " + city.province;
+                }
+            })
+        })
+
+    }
+}])
 directives.directive('axis', function() {
     return function(scope, element, attrs) {
         var margin = {top: 20, right: 40, bottom: 0, left: 20},
@@ -192,7 +220,7 @@ factories.factory('TileLayer', [function() {
                     var ymax = 1 << zoom;
                     var y = ymax - coord.y -1;
                     if (scope.mapOptions.mapBounds.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
-                        return "tiles/" + city + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
+                        return "tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                     else
                         return "http://www.maptiler.org/img/none.png";
                 },
@@ -217,7 +245,6 @@ factories.factory('TileLayer', [function() {
 var controllers = angular.module('atlas.controllers', []);
 controllers.controller('AppController', ['$scope',  'TileLayer', '$http', function($scope,  TileLayer, $http) {
     $scope.selection = {
-        city: "sample",
         urbanArea: {
             visible: true,
             moment: "t0"
@@ -284,11 +311,27 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         addLayer($scope[layer.name]);
     }
 
-    $scope.initLayers = function() {
+    $scope.loadCityData = function() {
+        $http.get("/data/cities.csv").success(function(data) {
+            $scope.cities = $.csv.toObjects(data);
+        })
+    }
+
+    $scope.loadCity = function(cityId) {
+        var city = findCityById(cityId);
+        $scope.selection.city = city;
         addLayer($scope.urbanFootprint);
         addLayer($scope.urbanArea);
         addLayer($scope.newDevelopment);
         addGeoJsonLayer($scope.zoning);
+        var sw = city.boundsSW.split(","),
+            ne = city.boundsNE.split(",");
+        $scope.panTo(parseFloat(sw[0]),parseFloat(sw[1]),parseFloat(ne[0]),parseFloat(ne[1]));
+    }
+
+    function findCityById(cityId) {
+        var find = $scope.cities.filter(function (city) { return city.id == cityId });
+        return find.length > 0 ? find[0] : null;
     }
 
     function removeLayer(layer) {
@@ -304,7 +347,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
     function addGeoJsonLayer(layer) {
 
-        $http.get('/zoning/' + $scope.selection.city + '.json').success(function(data) {
+        $http.get('/zoning/' + $scope.selection.city.dirname + '.json').success(function(data) {
             var geoJSON = new GeoJSON(data, {
                 "strokeOpacity": layer.opacity,
                 "strokeWeight": 1,
@@ -360,7 +403,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         }
         $scope.$apply();
     }
-    
+
     function setLayerVisibility(layer, visible) {
         if (!visible) {
             $scope.selection[layer.name]._visible = $scope.selection[layer.name].visible;

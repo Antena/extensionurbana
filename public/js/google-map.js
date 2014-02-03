@@ -26,11 +26,17 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                     };
 
                     scope.map = new google.maps.Map($(elem)[0], mapOptions);
-                    scope.initLayers();
+                    scope.loadCityData();
                 }
 
                 // Late-bind to prevent compiler clobbering
                 $timeout(initialize, 0, true);
+
+                scope.panTo = function(s,w,n,e) {
+                    var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(s,w),new google.maps.LatLng(n,e));
+                    scope.map.panToBounds(bounds);
+                    scope.map.setZoom(13);
+                }
             }
         }
     }

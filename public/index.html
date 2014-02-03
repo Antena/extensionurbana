@@ -32,7 +32,7 @@
               tooltip="Mostrar los indicadores" placement="auto left"></span>
 </div>
 
-<div id="data">
+<div id="data" ng-show="selection.city" ng-cloak>
     <div class="alert alert-info" style="width: 300px" ng-show="chartWindowVisible">
         <button type="button" class="close fui-cross" ng-click="toggleChartVisibility()"></button>
         <div style="margin-bottom: 10px">
@@ -83,7 +83,7 @@
     </ul>
 </div>
 
-<div id="controls" ng-show="controlsVisible">
+<div id="controls" ng-show="controlsVisible && selection.city" ng-cloak>
     <div class="alert alert-info">
         <button type="button" class="close fui-cross" ng-click="toggleControlsVisibility()"></button>
 
@@ -258,7 +258,6 @@
 
 <div id="header">
     <h5 class="pull-left">Atlas de Crecimiento Urbano</h5>
-    <h6 class="pull-left">San Luis</h6>
     <input type="text" data-provide="typeahead" placeholder="Buscar municipio" class="form-control" typeahead>
     <div class="logos pull-right">
         <ul class="list-inline">
@@ -272,7 +271,7 @@
     </div>
 </div>
 
-<div google-map zoom="13" min-zoom="5" max-zoom="15" class="map-canvas"></div>
+<div google-map zoom="6" min-zoom="5" max-zoom="15" class="map-canvas"></div>
 </div>
 
 </div>
@@ -284,6 +283,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
 <script src="js/vendor/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="js/vendor/jquery.csv-0.71.min.js"></script>
 
 <!-- Flat UI -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
