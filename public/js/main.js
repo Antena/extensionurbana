@@ -213,13 +213,17 @@ factories.factory('TileLayer', [function() {
                     var z2 = Math.pow(2, zoom);
                     var tileXSize = 256 / z2;
                     var tileYSize = 256 / z2;
+
                     var tileBounds = new google.maps.LatLngBounds(
                         proj.fromPointToLatLng(new google.maps.Point(coord.x * tileXSize, (coord.y + 1) * tileYSize)),
                         proj.fromPointToLatLng(new google.maps.Point((coord.x + 1) * tileXSize, coord.y * tileYSize))
                     );
+
+                   
                     var ymax = 1 << zoom;
                     var y = ymax - coord.y -1;
-                    if (scope.mapOptions.mapBounds.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
+                    //aca deberían ir los bound  de la ciudad que estas
+                    if (scope.currentBound.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
                         return "tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                     else
                         return "http://www.maptiler.org/img/none.png";
@@ -326,6 +330,30 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         addGeoJsonLayer($scope.zoning);
         var sw = city.boundsSW.split(","),
             ne = city.boundsNE.split(",");
+
+        var myLatlng = new google.maps.LatLng(sw[0],sw[1]);
+        var myLatlngTwo = new google.maps.LatLng(ne[0],ne[1]);
+
+        
+
+        var tileBounds = new google.maps.LatLngBounds(
+            myLatlng,
+            myLatlngTwo
+        );
+
+        $scope.currentBound=tileBounds;
+
+        //draw reference bbox
+        /*var rectangle = new google.maps.Rectangle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: $scope.map,
+            bounds: tileBounds
+        });*/
+
         $scope.panTo(parseFloat(sw[0]),parseFloat(sw[1]),parseFloat(ne[0]),parseFloat(ne[1]));
     }
 
@@ -361,16 +389,19 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
                 var polygons = [];
                 for (var i=0; i<geoJSON.length; i++) {
                     var feature = geoJSON[i];
-                    feature.fillColor = colors(feature.geojsonProperties.ZONIF);
-                    feature.strokeColor = colors(feature.geojsonProperties.ZONIF);
-                    polygons.push(feature);
-                    google.maps.event.addListener(feature, "mousemove", function(event) {
-                        $("#currentZoning").text(this.geojsonProperties.ZONIF);
-                    });
-                    google.maps.event.addListener(feature, "mouseout", function(event) {
-                        $("#currentZoning").text("-");
-                    });
-                    feature.setMap($scope.map);
+                    if(feature.geojsonProperties){
+                        feature.fillColor = colors(feature.geojsonProperties.ZONIF);
+                        feature.strokeColor = colors(feature.geojsonProperties.ZONIF);
+                        polygons.push(feature);
+                        google.maps.event.addListener(feature, "mousemove", function(event) {
+                            $("#currentZoning").text(this.geojsonProperties.ZONIF);
+                        });
+                        google.maps.event.addListener(feature, "mouseout", function(event) {
+                            $("#currentZoning").text("-");
+                        });
+                        feature.setMap($scope.map);
+                    }
+                    
                 }
                 $scope.features = polygons;
                 console.log("Loaded " + i + " polygons for " + $scope.selection.city);
