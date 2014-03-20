@@ -83,7 +83,7 @@ directives.directive('typeahead', ['$http', function($http) {
                 },
                 matcher: function(item) {
                     var city = parseCity(item);
-                    return city.name.toLowerCase().indexOf(this.query) >= 0 || city.province.toLowerCase().indexOf(this.query) >= 0;
+                    return city.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0 || city.province.toLowerCase().indexOf(this.query.toLowerCase()) >= 0;
                 },
                 highlighter: function(item) {
                     var city = parseCity(item);
@@ -334,25 +334,12 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         var myLatlng = new google.maps.LatLng(sw[0],sw[1]);
         var myLatlngTwo = new google.maps.LatLng(ne[0],ne[1]);
 
-        
-
         var tileBounds = new google.maps.LatLngBounds(
             myLatlng,
             myLatlngTwo
         );
 
-        $scope.currentBound=tileBounds;
-
-        //draw reference bbox
-        /*var rectangle = new google.maps.Rectangle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: $scope.map,
-            bounds: tileBounds
-        });*/
+        $scope.currentBound = tileBounds;
 
         $scope.panTo(parseFloat(sw[0]),parseFloat(sw[1]),parseFloat(ne[0]),parseFloat(ne[1]));
     }
@@ -404,7 +391,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
                     
                 }
                 $scope.features = polygons;
-                console.log("Loaded " + i + " polygons for " + $scope.selection.city);
+                console.log("Loaded " + i + " polygons for " + $scope.selection.city.name + ", " + $scope.selection.city.province);
             }
 
             $scope.$watch('zoning.opacity', function(oldValue, newValue) {

@@ -7,7 +7,6 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
             return function(scope, elem, attrs) {
 
                 scope.mapOptions = {
-                    mapBounds : new google.maps.LatLngBounds(new google.maps.LatLng(-33.3622363713, -66.4197717386), new google.maps.LatLng(-33.2251227271, -66.2673854768)),
                     mapMinZoom : parseInt(attrs.minZoom),
                     mapMaxZoom : parseInt(attrs.maxZoom)
                 }
@@ -15,7 +14,7 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                 function initialize() {
                     var mapOptions = {
                         zoom: parseInt(attrs.zoom),
-                        center: scope.mapOptions.mapBounds.getCenter(),
+                        center: new google.maps.LatLng(-36.7427549,-62.4812459),
                         mapTypeId: google.maps.MapTypeId.SATELLITE,
                         minZoom: scope.mapOptions.mapMinZoom,
                         maxZoom: scope.mapOptions.mapMaxZoom,
@@ -34,8 +33,7 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
 
                 scope.panTo = function(s,w,n,e) {
                     var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(s,w),new google.maps.LatLng(n,e));
-                    scope.map.panToBounds(bounds);
-                    scope.map.setZoom(13);
+                    scope.map.fitBounds(bounds);
                 }
             }
         }
