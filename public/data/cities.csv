@@ -1,7 +1,6 @@
 id,name,province,dirname,boundsSW,boundsNE
 1,"San Luis","San Luis",san_luis/san_luis,"-33.3622363713,-66.4197717386","-33.2251227271,-66.2673854768"
 2,"Bahía Blanca","Buenos Aires",buenos_aires/bahia_blanca,"-38.79156796038559,-62.441825035438896","-38.62839799236555, -62.1480703639262"
-
 3,"El Bañado",Catamarca,catamarca/el_bannado,"-28.479741128694293,-65.7315584021412","-28.460444787179828,-65.70946674246201"
 4,"San Fernando del Valle de Catamarca",Catamarca,catamarca/san_fernando_del_valle_de_catamarca,"-28.50695159670338,-65.82761704166195","-28.420749891878216,-65.72610530142083"
 5,"San Isidro",Catamarca,catamarca/san_isidro,"-28.469336428360872,-65.73711472387625","-28.447050255015732,-65.69766796319347"

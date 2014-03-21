@@ -324,10 +324,16 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     $scope.loadCity = function(cityId) {
         var city = findCityById(cityId);
         $scope.selection.city = city;
-        addLayer($scope.urbanFootprint);
+
+        // Remove older layers and add new ones
+        if ($scope.urbanArea.layer) removeLayer($scope.urbanArea)
         addLayer($scope.urbanArea);
+        if ($scope.urbanFootprint.layer) removeLayer($scope.urbanFootprint)
+        addLayer($scope.urbanFootprint);
+        if ($scope.newDevelopment.layer) removeLayer($scope.newDevelopment)
         addLayer($scope.newDevelopment);
         addGeoJsonLayer($scope.zoning);
+
         var sw = city.boundsSW.split(","),
             ne = city.boundsNE.split(",");
 
