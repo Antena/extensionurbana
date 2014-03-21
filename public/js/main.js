@@ -206,7 +206,7 @@ var factories = angular.module('atlas.factories', []);
 factories.factory('TileLayer', [function() {
     return {
         create: function(scope, city, options) {
-
+            var layerOpacity = options.visible ? options.opacity : 0;
             var layer = new google.maps.ImageMapType({
                 getTileUrl: function(coord, zoom) {
                     var proj = scope.map.getProjection();
@@ -219,7 +219,7 @@ factories.factory('TileLayer', [function() {
                         proj.fromPointToLatLng(new google.maps.Point((coord.x + 1) * tileXSize, coord.y * tileYSize))
                     );
 
-                   
+
                     var ymax = 1 << zoom;
                     var y = ymax - coord.y -1;
                     //aca deberían ir los bound  de la ciudad que estas
@@ -230,13 +230,13 @@ factories.factory('TileLayer', [function() {
                 },
                 tileSize: new google.maps.Size(256, 256),
                 isPng: true,
-
-                opacity: options.opacity
+                opacity: layerOpacity
             });
 
             scope.$watch(options.name + '.opacity', function(oldValue, newValue) {
                 if (scope.map) {
-                    scope.map.overlayMapTypes.getAt(options.zIndex).setOpacity(newValue)
+                    var opacity = options.visible ? newValue : 0;
+                    scope.map.overlayMapTypes.getAt(options.zIndex).setOpacity(opacity)
                 }
             })
 
@@ -304,8 +304,8 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     }
 
     $scope.toggleLayerVisibility = function(layer) {
-        var visible = $scope.selection[layer.name].visible;
-        layer.layer.setOpacity(visible ? $scope[layer.name].opacity : 0);
+        layer.visible = $scope.selection[layer.name].visible !== false;
+        layer.layer.setOpacity(layer.visible ? $scope[layer.name].opacity : 0);
         $scope.$apply();
     }
 
@@ -360,6 +360,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     }
 
     function addLayer(layer) {
+        layer.visible = $scope.selection[layer.name].visible !== false;
         layer.layer = TileLayer.create($scope, $scope.selection.city, layer);
         $scope.map.overlayMapTypes.insertAt(layer.zIndex, layer.layer);
     }
@@ -368,49 +369,59 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
     function addGeoJsonLayer(layer) {
 
-        $http.get('/zoning/' + $scope.selection.city.dirname + '.json').success(function(data) {
-            var geoJSON = new GeoJSON(data, {
-                "strokeOpacity": layer.opacity,
-                "strokeWeight": 1,
-                "fillColor": "#000000",
-                "strokeColor": "#000000",
-                "fillOpacity": layer.opacity,
-                "visible" : false
-            });
+        if (!$scope.features[$scope.selection.city.dirname]) {
+            $http.get('/zoning/' + $scope.selection.city.dirname + '.json').success(function(data) {
+                var geoJSON = new GeoJSON(data, {
+                    "strokeOpacity": layer.opacity,
+                    "strokeWeight": 1,
+                    "fillColor": "#000000",
+                    "strokeColor": "#000000",
+                    "fillOpacity": layer.opacity,
+                    "visible" : $scope.selection.zoning.visible
+                });
 
-            if (!geoJSON.error) {
-                var polygons = [];
-                for (var i=0; i<geoJSON.length; i++) {
-                    var feature = geoJSON[i];
-                    if(feature.geojsonProperties){
-                        feature.fillColor = colors(feature.geojsonProperties.ZONIF);
-                        feature.strokeColor = colors(feature.geojsonProperties.ZONIF);
-                        polygons.push(feature);
-                        google.maps.event.addListener(feature, "mousemove", function(event) {
-                            $("#currentZoning").text(this.geojsonProperties.ZONIF);
-                        });
-                        google.maps.event.addListener(feature, "mouseout", function(event) {
-                            $("#currentZoning").text("-");
-                        });
-                        feature.setMap($scope.map);
-                    }
-                    
-                }
-                $scope.features = polygons;
-                console.log("Loaded " + i + " polygons for " + $scope.selection.city.name + ", " + $scope.selection.city.province);
-            }
+                if (!geoJSON.error) {
+                    var polygons = [];
+                    for (var i=0; i<geoJSON.length; i++) {
+                        var feature = geoJSON[i];
+                        if(feature.geojsonProperties){
+                            feature.fillColor = colors(feature.geojsonProperties.ZONIF);
+                            feature.strokeColor = colors(feature.geojsonProperties.ZONIF);
+                            polygons.push(feature);
+                            google.maps.event.addListener(feature, "mousemove", function(event) {
+                                $("#currentZoning").text(this.geojsonProperties.ZONIF);
+                            });
+                            google.maps.event.addListener(feature, "mouseout", function(event) {
+                                $("#currentZoning").text("-");
+                            });
+                            feature.setMap($scope.map);
+                        }
 
-            $scope.$watch('zoning.opacity', function(oldValue, newValue) {
-                if ($scope.map) {
-                    for (var i=0; i<$scope.features.length; i++) {
-                        $scope.features[i].setOptions({
-                            fillOpacity: newValue,
-                            strokeOpacity: newValue
-                        })
                     }
+                    $scope.features[$scope.selection.city.dirname] = polygons;
                 }
+
+                $scope.$watch('zoning.opacity', function(oldValue, newValue) {
+                    if ($scope.map) {
+                        for (var i=0; i<$scope.features[$scope.selection.city.dirname].length; i++) {
+                            $scope.features[$scope.selection.city.dirname][i].setOptions({
+                                fillOpacity: newValue,
+                                strokeOpacity: newValue
+                            })
+                        }
+                    }
+                })
             })
-        })
+        } else {
+
+            for (var i=0; i<$scope.features[$scope.selection.city.dirname].length; i++) {
+                $scope.features[$scope.selection.city.dirname][i].setOptions({
+                    visible: $scope.selection.zoning.visible,
+                    fillOpacity: layer.opacity,
+                    strokeOpacity: layer.opacity
+                })
+            }
+        }
     }
 
     $scope.toggleZoningLayerVisibility = function() {
@@ -420,8 +431,8 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         setLayerVisibility($scope.urbanFootprint, visible);
         setLayerVisibility($scope.newDevelopment, visible);
 
-        for (var i=0; i<$scope.features.length; i++) {
-            $scope.features[i].setOptions({
+        for (var i=0; i<$scope.features[$scope.selection.city.dirname].length; i++) {
+            $scope.features[$scope.selection.city.dirname][i].setOptions({
                 visible: $scope.selection.zoning.visible
             })
         }
