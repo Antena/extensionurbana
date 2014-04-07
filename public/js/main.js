@@ -66,6 +66,21 @@ directives.directive('typeahead', ['$http', function($http) {
         }
     }
 
+    function normalizeCityName(s){
+        
+          var translate_re = /[áéíóúñ]/g;
+          var translate = {
+            "á": "a", "í": "i", "ú": "u",
+            "ó": "o", "é": "e"   // probably more to come
+          };
+          
+            return ( s.replace(translate_re, function(match) { 
+              return translate[match]; 
+            }) );
+          }
+        
+    
+
     return function(scope, element, attrs) {
         $http.get("/data/cities.csv").success(function(data) {
             // Build data source
@@ -83,7 +98,11 @@ directives.directive('typeahead', ['$http', function($http) {
                 },
                 matcher: function(item) {
                     var city = parseCity(item);
-                    return city.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0 || city.province.toLowerCase().indexOf(this.query.toLowerCase()) >= 0;
+
+                    var normalizedQuery= normalizeCityName(this.query.toLowerCase());
+                    var normalizedCityName = normalizeCityName(city.name.toLowerCase());
+                    var normalizedProvince = normalizeCityName(city.province.toLowerCase());
+                    return normalizedCityName.indexOf(normalizedQuery) >= 0 || normalizedProvince.indexOf(normalizedQuery) >= 0;
                 },
                 highlighter: function(item) {
                     var city = parseCity(item);
@@ -224,7 +243,14 @@ factories.factory('TileLayer', [function() {
                     var y = ymax - coord.y -1;
                     //aca deberían ir los bound  de la ciudad que estas
                     if (scope.currentBound.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
-                        return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
+                        if(window.location.href.indexOf('localhost')>0){
+                            console.log('localhost');
+                            return "tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
+                        }else{
+                            return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";    
+                        }
+                        
+                        
                     else
                         return "http://www.maptiler.org/img/none.png";
                 },
