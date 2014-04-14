@@ -3,7 +3,8 @@ var GeoJSON = function( geojson, options ){
 	var _geometryToGoogleMaps = function( geojsonGeometry, opts, geojsonProperties ){
 		
 		var googleObj;
-		
+		if(!geojsonGeometry)
+			return
 		switch ( geojsonGeometry.type ){
 			case "Point":
 				opts.position = new google.maps.LatLng(geojsonGeometry.coordinates[1], geojsonGeometry.coordinates[0]);
@@ -139,6 +140,7 @@ var GeoJSON = function( geojson, options ){
 				if (!geojsonGeometry.geometries){
 					googleObj = _error("Invalid GeoJSON object: GeometryCollection object missing \"geometries\" member.");
 				}else{
+
 					for (var i = 0; i < geojsonGeometry.geometries.length; i++){
 						googleObj.push(_geometryToGoogleMaps(geojsonGeometry.geometries[i], opts, geojsonProperties || null));
 					}

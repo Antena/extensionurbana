@@ -244,7 +244,6 @@ factories.factory('TileLayer', [function() {
                     //aca deberían ir los bound  de la ciudad que estas
                     if (scope.currentBound.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
                         if(window.location.href.indexOf('localhost')>0){
-                            console.log('localhost');
                             return "tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                         }else{
                             return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";    
@@ -396,7 +395,8 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     function addGeoJsonLayer(layer) {
 
         if (!$scope.features[$scope.selection.city.dirname]) {
-            $http.get('/zoning/' + $scope.selection.city.dirname + '.json').success(function(data) {
+            
+            $http.get('/zoning/' + $scope.selection.city.dirname + '/' + $scope.selection.city.name + '.json').success(function(data) {
                 var geoJSON = new GeoJSON(data, {
                     "strokeOpacity": layer.opacity,
                     "strokeWeight": 1,
@@ -410,7 +410,9 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
                     var polygons = [];
                     for (var i=0; i<geoJSON.length; i++) {
                         var feature = geoJSON[i];
-                        if(feature.geojsonProperties){
+                        if(feature==null)
+                            console.log('null feature');
+                        if(feature!=null && feature.geojsonProperties){
                             feature.fillColor = colors(feature.geojsonProperties.ZONIF);
                             feature.strokeColor = colors(feature.geojsonProperties.ZONIF);
                             polygons.push(feature);
