@@ -88,6 +88,8 @@
         <button type="button" class="close fui-cross" ng-click="toggleControlsVisibility()"></button>
 
         <!-- Zoning controls -->
+        <strong ng-show='selection.city.zoning=="False"'>Zonificación no disponible para este municipio</strong>
+        <div ng-show='selection.city.zoning!="False"'>
         <label class="checkbox" for="zoningCheck">
             <input type="checkbox" value="" id="zoningCheck" data-toggle="checkbox"
                    flatui-checkbox="zoningSlider" ng-model="selection.zoning.visible"
@@ -99,6 +101,8 @@
         </div>
         <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
         <span id="currentZoning">-</span>
+        </div>
+        
         <hr/>
 
         <!-- Urban Area controls -->

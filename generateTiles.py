@@ -8,7 +8,14 @@ from os.path import *
 from osgeo import osr, gdal
 import io
 import csv
+import sys
 
+
+exec_do_tiff = False
+exec_do_tiles = False
+exec_get_corners = True
+exec_do_zoning = False
+exec_restrict_files= True
 
 locations={}
 
@@ -118,7 +125,7 @@ def getPeriodAndType(file,dir):
 				period="t1"
 			elif period=="t1":
 				period="t2"
-		print period
+		#print period
 	else:
 		type="new_development"
 		period=file.split('_')[1]
@@ -132,113 +139,157 @@ def getPeriodAndType(file,dir):
 	return type,period
 
 def listCities(dir):
+
+	
+	acceptedCitiesWithTiles=["cordoba/rio_ceballos","mendoza/godoycruz","salta/lacie","chubut_-_rawson/rawson_rawson","rio_negro_-_viedma/carmendepat","stgo_del_estero/santiago","cordoba/salsipuedes","buenos_aires/avellaneda","corrientes/corrientes_capital","jujuy/capital","chubut_-_rawson/accnorte","cordoba/mendiolaza","tucuman/bsjose","rio_negro_-_viedma/viedma","santa_fe/rosario/soldini","cordoba/rio_cuarto/riocuarto","santa_fe/rosario/granbaigorria","buenos_aires/ensenada","buenos_aires/bahia_blanca/bahia","santa_fe/santafe","tucuman/tafi_viejo","chaco_-_resistencia/fontana","entre_rios_-_parana/oro_verde","buenos_aires/la_matanza","santa_fe/rosario/rosario","santa_fe/rosario/fraybeltran","santa_fe/sjoserincon","buenos_aires/almirante_brown","buenos_aires/escobar","santa_fe/recreo","san_juan/rawson","san_juan/san_juan","chubut_-_rawson/rada_tilly","buenos_aires/merlo","santa_fe/rosario/alvear","buenos_aires/bahia_blanca/inge","misiones_-_posadas/nemes","buenos_aires/san_vicente","catamarca/sumalao","buenos_aires/moreno","tucuman/banda_del_rio_sali","la_rioja/capital","chubut_-_rawson/comodoro_rivadavia","buenos_aires/florencio_varela","neuquen/cent","san_juan/pocito","catamarca/san_fernando_del_valle_de_catamarca","misiones_-_posadas/garupa","salta/all","santa_fe/gdor_galves","buenos_aires/bahia_blanca/grun","chubut_-_rawson/rawsontrelew","buenos_aires/marcos_paz","buenos_aires/hurlingham","salta/lasc","stgo_del_estero/la_banda","cordoba/malvinas_arg","santa_fe/villaadelina","entre_rios_-_parana/parana_a","santa_fe/rosario/capbermudez","buenos_aires/pilar","tucuman/barrio_san_felipe","santa_fe/rosario/funes","cordoba/cordoba","mendoza/maipu","santa_fe/rosario/sanlorenzo","formosa/capital","buenos_aires/lomas_de_zamora","la_pampa_-_santa_rosa/toay","buenos_aires/malvinas_argentinas","buenos_aires/berazategui","buenos_aires/tigre","buenos_aires/bahia_blanca/bahia_all","santa_fe/santotome","buenos_aires/moron","neuquen/plot","chubut_-_rawson/gral_mosconi","buenos_aires/mar_del_plata","catamarca/santa_maria","buenos_aires/general_rodriguez","buenos_aires/san_fernando","santa_fe/rosario/aldao","buenos_aires/tres_de_febrero","la_pampa_-_santa_rosa/santarosa","san_juan/rivadavia","catamarca/el_bannado","stgo_del_estero/maco","cordoba/colonia_caroya","catamarca/san_isidro","buenos_aires/presidente_peron","tucuman/yerba","corrientes/laguna_brava","cordoba/unquillo","buenos_aires/san_isidro","tucuman/villalf","buenos_aires/bahia_blanca/villab","san_juan/chimbas","buenos_aires/bahia_blanca/vspor","tucuman/va_m_moreno_colmenar","chaco_-_resistencia/resistencia","salta/vaq","buenos_aires/bahia_blanca/gr","cordoba/juarezcelman","buenos_aires/ituzaingo","buenos_aires/campana","cordoba/lacalera","buenos_aires/quilmes","jujuy/palpala","cordoba/villa_allende","tucuman/san_miguel_de_tucuman","buenos_aires/ezeiza","cordoba/dumesnil","misiones_-_posadas/posad","buenos_aires/la_plata","salta/saltac","neuquen/neucapi","buenos_aires/beriso","san_juan/santa_lucia","buenos_aires/lanus","salta/vlos","santa_fe/sauceviejo","salta/atoc","santa_fe/rosario/perez","santa_fe/rosario/ptosanmartin","buenos_aires/general_san_martin","mendoza/mendoza_capital","buenos_aires/jose_c_paz","cordoba/jesus_maria","santa_fe/rosario/galvez","salta/cerr","buenos_aires/san_miguel","buenos_aires/vicente_lopez","buenos_aires/canuelas","chaco_-_resistencia/puerto_vilelas","chaco_-_resistencia/barranqueras","mendoza/guaymallen","stgo_del_estero/el_zanjon","formosa/villa_del_carmen","buenos_aires/esteban_echeverria","misiones_-_posadas/pgarupa","santa_fe/rosario/roldan"]
+
+	#acceptedCitiesWithZoning = ["mendoza/godoycruz","buenos_aires/avellaneda","corrientes/corrientes_capital","jujuy/capital","buenos_aires/ensenada","santa_fe/santafe","chaco_-_resistencia/fontana","entre_rios_-_parana/oro_verde","buenos_aires/la_matanza","santa_fe/rosario/rosario","santa_fe/rosario/fraybeltran","buenos_aires/almirante_brown","buenos_aires/escobar","santa_fe/recreo","san_juan/rawson","chubut_-_rawson/rada_tilly","buenos_aires/merlo","buenos_aires/moreno","la_rioja/capital","chubut_-_rawson/comodoro_rivadavia","buenos_aires/florencio_varela","catamarca/san_fernando_del_valle_de_catamarca","chubut_-_rawson/rawsontrelew","buenos_aires/marcos_paz","buenos_aires/hurlingham","entre_rios_-_parana/parana_a","buenos_aires/pilar","mendoza/maipu","buenos_aires/lomas_de_zamora","la_pampa_-_santa_rosa/toay","buenos_aires/malvinas_argentinas","buenos_aires/berazategui","santa_fe/santotome","buenos_aires/moron","neuquen/plot","buenos_aires/general_rodriguez","buenos_aires/san_fernando","buenos_aires/tres_de_febrero","la_pampa_-_santa_rosa/santarosa","tucuman/yerba","cordoba/unquillo","buenos_aires/san_isidro","santa_fe/rosario/granbaigorria","chaco_-_resistencia/resistencia","santa_fe/sjoserincon","buenos_aires/ituzaingo","buenos_aires/quilmes","tucuman/san_miguel_de_tucuman","buenos_aires/ezeiza","buenos_aires/la_plata","salta/saltac","neuquen/neucapi","buenos_aires/beriso","buenos_aires/lanus","santa_fe/rosario/perez","santa_fe/rosario/ptosanmartin","buenos_aires/general_san_martin","mendoza/mendoza_capital","buenos_aires/jose_c_paz","santa_fe/rosario/galvez","buenos_aires/san_miguel","buenos_aires/vicente_lopez","buenos_aires/canuelas","chaco_-_resistencia/barranqueras","mendoza/guaymallen","buenos_aires/esteban_echeverria"]
+	#acceptedCitiesWithZoning=["buenos_aires/moron","cordoba/unquillo","mendoza/guaymallen","buenos_aires/esteban_echeverria"]
+	
+	#acceptedCities = ["mendoza/godoycruz","buenos_aires/avellaneda","corrientes/corrientes_capital","santa_fe/santafe","santa_fe/rosario/rosario","buenos_aires/san_miguel","buenos_aires/vicente_lopez","buenos_aires/canuelas","mendoza/mendoza_capital","chubut_-_rawson/rawsontrelew","buenos_aires/ituzaingo","buenos_aires/quilmes"]
+
 	arg1=5
 	arg2=15
+
 	for root, dirs, files in os.walk(dir):
 		for file in files:
-			if file[-3:]=="img":
-				if isRelevantFile(file):
-					#build paths
-					fullPath=root+"/"+file;
-					relativePath = root[len(dir):]
+			try:
+				if file[-3:]=="img":
+					if isRelevantFile(file):
+						#build paths
+						fullPath=root+"/"+file;
+						relativePath = root[len(dir):]
 
-					#normalize filename ( substitute weird chars)
-					relativePath=normalizeFileName(relativePath)
-					
-					#obtain type (urban_area/footpring,newdeve..) and period(t0,t1 or t2)
-					path=file.split('/')
-					type,period=getPeriodAndType(file,dir)
+						#normalize filename ( substitute weird chars)
+						relativePath=normalizeFileName(relativePath)
 
-					#create dirs if necessary
-					relativePathDir="gis/" + relativePath + "/" + type + "/"
-					if not os.path.exists(relativePathDir):
-						print 'not exists'
-						os.makedirs(relativePathDir)
+						if exec_restrict_files and relativePath not in acceptedCitiesWithTiles:
+							continue
+						else:
+							print 'processing: ' + str(relativePath)
+						
+						
 
-					#choose color table
-					if(type=="urban_area"):
-						color_table="gis/urban_area_color_table"
-					elif type=="urban_footprint":
-						color_table="gis/urban_footprint_color_table"
-					elif type=="new_development":
-						color_table="gis/new_development_color_table"
+						#obtain type (urban_area/footpring,newdeve..) and period(t0,t1 or t2)
+						path=file.split('/')
+						type,period=getPeriodAndType(file,dir)
 
-					outputTiff = "gis/" + relativePath + "/" + type + "/" + period + ".tiff"
-					command = "gdaldem color-relief '" + fullPath + "' " + color_table + " " +  outputTiff +  " -alpha -b 1 -of GTiff"
+						#create dirs if necessary
+						relativePathDir="gis/" + relativePath + "/" + type + "/"
+						if not os.path.exists(relativePathDir):
+							print 'not exists'
+							os.makedirs(relativePathDir)
 
-					
-					#track found files
-					if relativePath not in foundFiles:
-						foundFiles[relativePath]=[]
+						#choose color table
+						if(type=="urban_area"):
+							color_table="gis/urban_area_color_table"
+						elif type=="urban_footprint":
+							color_table="gis/urban_footprint_color_table"
+						elif type=="new_development":
+							color_table="gis/new_development_color_table"
 
-					foundFiles[relativePath]+=[(type,period,fullPath)]
+						outputTiff = "gis/" + relativePath + "/" + type + "/" + period + ".tiff"
+						command = "gdaldem color-relief '" + fullPath + "' " + color_table + " " +  outputTiff +  " -alpha -b 1 -of GTiff"
 
+						
+						#track found files
+						if relativePath not in foundFiles:
+							foundFiles[relativePath]=[]
 
-
-
-					cmd2 = "gdal2tiles.py -z " + str(arg1) + "-" + str(arg2)+ " -w none " + outputTiff + " public/tiles/" + relativePath + "/" + type + "/" + period
-
-					# command = "gdaldem color-relief gis/sample/urban_footprint/t0.img gis/urban_footprint_color_table gis/sample/urban_footprint/t0.tiff -alpha -b 1 -of GTiff"
-					# cmd2 = "gdal2tiles.py -z " + str(arg1) + "-" + str(arg2)+ " -w none gis/sample/urban_footprint/t0.tiff public/tiles/sample/urban_footprint/t0"
-					commandwithparams=["gdaldem", "color-relief",fullPath,color_table,outputTiff,"-alpha","-b","1","-of","GTiff"]
-					
-					#commandwithparams=command.split(' ')
- 					commandDosWithParams = cmd2.split(' ')
- 					
- 					print "command1"
- 					print commandwithparams
-
-					output1=call(commandwithparams)
-					print "output:"
-					print output1
-
-					#get corners
-					bbox=getCorners(outputTiff)
-					if relativePath not in corners:
-						corners[relativePath]=[]
-					
-					corners[relativePath]=[bbox]
-
-					print commandDosWithParams
-					output2=call(commandDosWithParams)
-					print output2
-			elif file[-3:]=="shp":
-
-					fullPath=root+"/"+file;
-					relativePath=normalizeFileName(root[len(dir):])
-
-					province=relativePath.split('/')[0] 
-					city=relativePath.split('/')[1] 
-
-					
-					path=file.split('/')
-					type,period=getPeriodAndType(file,dir)
-
-					outputDir = "public/zoning/" + province;
-
-					if not os.path.exists(outputDir):
-						print 'dir ' + outputDir + " does not exist, creating.."
-						os.makedirs(outputDir)
+						foundFiles[relativePath]+=[(type,period,fullPath)]
 
 
 
-					if(relativePath not in foundFiles):
-						foundFiles[relativePath]=[]
 
-					foundFiles[relativePath]+=[(type,period,fullPath)]
+						cmd2 = "gdal2tiles.py --resume -z " + str(arg1) + "-" + str(arg2)+ " -w none " + outputTiff + " public/tiles/" + relativePath + "/" + type + "/" + period
+
+						# command = "gdaldem color-relief gis/sample/urban_footprint/t0.img gis/urban_footprint_color_table gis/sample/urban_footprint/t0.tiff -alpha -b 1 -of GTiff"
+						# cmd2 = "gdal2tiles.py -z " + str(arg1) + "-" + str(arg2)+ " -w none gis/sample/urban_footprint/t0.tiff public/tiles/sample/urban_footprint/t0"
+						commandwithparams=["gdaldem", "color-relief",fullPath,color_table,outputTiff,"-alpha","-b","1","-of","GTiff"]
+						
+						#commandwithparams=command.split(' ')
+	 					commandDosWithParams = cmd2.split(' ')
+	 					
+	 					#print "command1"
+	 					#print commandwithparams
+
+	 					if exec_do_tiff:
+							output1=call(commandwithparams)
+							print output1
+						#print "output:"
+							
+
+						#get corners
+						if exec_get_corners:
+							bbox=getCorners(outputTiff)
+							if relativePath not in corners:
+								corners[relativePath]=[]
+						
+							corners[relativePath]=[bbox]
+
+						if exec_do_tiles:
+							print commandDosWithParams
+							output2=call(commandDosWithParams)
+						
+				elif file[-3:]=="shp":
+
+						fullPath=root+"/"+file;
+						relativePath=normalizeFileName(root[len(dir):])
+						#print relativePath
+						#qprint fullPath
+
+						if exec_restrict_files and relativePath not in acceptedCitiesWithTiles:
+							continue
+						else:
+							print 'processing: ' + str(relativePath)
+						
+
+						province=relativePath.split('/')[0] 
+						city=relativePath.split('/')[1] 	
+
+						print province
+						print city
+
+						
+						path=file.split('/')
+						type,period=getPeriodAndType(file,dir)
+
+						
+						
+						outputDir = "public/zoning/" + relativePath;
 
 
-					outputFile = outputDir +  "/" + relativePath.split('/')[1] + ".json"
+						if not os.path.exists(outputDir):
+							print 'dir ' + outputDir + " does not exist, creating.."
+							os.makedirs(outputDir)
 
-					#overwrite file if exists
-					if os.path.exists(outputFile):
-						os.remove(outputFile)
 
-					zoning_cmd=["ogr2ogr","-f","GeoJSON",outputFile,fullPath]
 
-					output=call(zoning_cmd)
-					print output
 
+						if(relativePath not in foundFiles):
+							sd=''
+							#print relativePath
+							#foundFiles[relativePath]=[]
+						else:
+							foundFiles[relativePath]+=[(type,period,fullPath)]
+
+
+						outputFile = outputDir +  "/" + relativePath.split('/')[1] + ".json"
+
+
+						#overwrite file if exists
+						if os.path.exists(outputFile):
+							os.remove(outputFile)
+
+						zoning_cmd=["ogr2ogr","-f","GeoJSON",outputFile,fullPath]
+
+						if exec_do_zoning:
+							output=call(zoning_cmd)
+							print output
+			except:
+				print "Unexpected error:", sys.exc_info()[0]
+				print 'error processing file ' + str(file)
+			
 				
 
 	
@@ -247,33 +298,71 @@ def listCities(dir):
 
 #Obj: run script on .img files and leave them somewhere useful
 def main():
-	for dir in ['atlas/T0T1/', 'atlas/T1T2/', 'atlas/zoning/']:
+
+	for dir in ['atlas/T0T1/', 'atlas/T1T2/','atlas/Zonificacion/']:
 		listCities(dir)
 
+		missingCities={}
 		completeCities = []
-		compulsoryFiles=[("zoning",""),("urban_area","t0"),("urban_area","t1"),("urban_area","t2"),("urban_footprint","t0"),("urban_footprint","t1"),("urban_footprint","t2"),("new_development","t0_t1"),("new_development","t1_t2")]
+		compulsoryFiles=[("urban_area","t0"),("urban_area","t1"),("urban_area","t2"),("urban_footprint","t0"),("urban_footprint","t1"),("urban_footprint","t2"),("new_development","t0_t1"),("new_development","t1_t2")]
 	for city in foundFiles:
+		hasZoning=True
 		complete=True
 		foundTuples=[x[0:2] for x in foundFiles[city]]
 		#check has all the tuples
 		for file in compulsoryFiles:
 			if file not in foundTuples:
+				if ("zoning","") == file:
+					print 'missing zoning info for city:' + str(city)
+					#missingCities[city]=1
 				complete=False
-				print "missing" + str(file) + " for city:" + str(city)
+				#print "missing" + str(file) + " for city:" + str(city)
+				if city not in missingCities:
+					missingCities[city]=[]
+				
+				
+				missingCities[city]+=[file]
+		
+		if ("zoning","") not in foundTuples:
+			hasZoning=False
+
 		if complete:
 			
-			boundNE=str(corners[city][0][0][:-1][::-1]).replace('(','').replace(')','')
-			boundSW=str(corners[city][0][1][:-1][::-1]).replace('(','').replace(')','')
-			completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'boundSW':boundSW,'boundNE':boundNE}]
+			
+			try:
+				displayName=",".join(city.split('/')[::-1])
+				if exec_get_corners:
+					boundNE=str(corners[city][0][0][:-1][::-1]).replace('(','').replace(')','')
+					boundSW=str(corners[city][0][1][:-1][::-1]).replace('(','').replace(')','')
+					print 'city ' + str(city) + ' : ' + str(len(city.split('/')))
+					completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'boundSW':boundSW,'boundNE':boundNE,'displayName':displayName,'zoning':hasZoning}]
+				else:
+					completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'displayName':displayName,'zoning':hasZoning}]
+			except:
+				print "Unexpected error:", sys.exc_info()[0]
+				print 'error adding comlete city ' + city
 
-	print "complete cities"
+	
+	
+
+	print "complete cities " + str(len(completeCities))
+	
+	for city in completeCities:
+		print city['dirname']	
+
+	print "missing cities " + str(len(missingCities))
+	for city in missingCities:
+		print city + " " + str(missingCities[city])
 	
 	outputcsv = io.open('cities.csv','wb')
 	writer = csv.writer(outputcsv, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-	writer.writerow(['id','name','province','dirname','boundsSW','boundsNE'])
+	writer.writerow(['id','name','province','dirname','boundsSW','boundsNE','displayName','zoning'])
 	newId=1
 	for city in completeCities:
-		cityRow = [ newId,city['name'],city['province'],city['dirname'],city['boundNE'],city['boundSW']]
+		if exec_get_corners:
+			cityRow = [ newId,city['name'],city['province'],city['dirname'],city['boundNE'],city['boundSW'],city['displayName'],city['zoning']]
+		else:
+			cityRow = [ newId,city['name'],city['province'],city['dirname'],city['displayName'],city['zoning']]
 		writer.writerow(cityRow)
 		newId+=1
 

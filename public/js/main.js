@@ -62,7 +62,8 @@ directives.directive('typeahead', ['$http', function($http) {
         return {
             id: parts[0],
             name: parts[1],
-            province: parts[2]
+            province: parts[2],
+            displayName:parts[3]
         }
     }
 
@@ -86,7 +87,7 @@ directives.directive('typeahead', ['$http', function($http) {
             // Build data source
             var cities = [];
             $.each($.csv.toObjects(data), function(idx, city){
-                cities.push(city.id+"#"+city.name+"#"+city.province);
+                cities.push(city.id+"#"+city.name+"#"+city.province+"#"+city.displayName);
             })
 
             $(element).typeahead({
@@ -94,19 +95,19 @@ directives.directive('typeahead', ['$http', function($http) {
                 updater: function(item) {
                     var city = parseCity(item);
                     scope.loadCity(city.id);
-                    return city.name;
+                    return city.displayName;
                 },
                 matcher: function(item) {
                     var city = parseCity(item);
 
                     var normalizedQuery= normalizeCityName(this.query.toLowerCase());
-                    var normalizedCityName = normalizeCityName(city.name.toLowerCase());
+                    var normalizedCityName = normalizeCityName(city.displayName.toLowerCase());
                     var normalizedProvince = normalizeCityName(city.province.toLowerCase());
                     return normalizedCityName.indexOf(normalizedQuery) >= 0 || normalizedProvince.indexOf(normalizedQuery) >= 0;
                 },
                 highlighter: function(item) {
                     var city = parseCity(item);
-                    return city.name + ", " + city.province;
+                    return city.displayName;
                 }
             })
         })
@@ -373,6 +374,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         $scope.currentBound = tileBounds;
 
         $scope.panTo(parseFloat(sw[0]),parseFloat(sw[1]),parseFloat(ne[0]),parseFloat(ne[1]));
+        $scope.$apply();
     }
 
     function findCityById(cityId) {
@@ -453,6 +455,9 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     }
 
     $scope.toggleZoningLayerVisibility = function() {
+        if($scope.selection.city.zoning=="False"){
+            return
+        }
         // Turn off/on all other layers
         var visible = !$scope.selection.zoning.visible;
         setLayerVisibility($scope.urbanArea, visible);
