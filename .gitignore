@@ -7,4 +7,6 @@
 *.iws
 material/
 atlas
-public/tiles/
+gis/
+public/tiles
+public/zoning

@@ -1,7 +1,12 @@
 // Atlas app
 var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives', 'atlas.factories', 'ui.slider', 'google.map']);
 
-// Directives
+atlasApp.config(['$httpProvider', function($httpProvider) {
+        //stuff to allow s3 json loading (CORS)
+        $httpProvider.defaults.useXDomain = true;
+        //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    }
+]);// Directives
 var directives = angular.module('atlas.directives', []);
 directives.directive('flatuiCheckbox', function($timeout) {
     return {
@@ -244,7 +249,7 @@ factories.factory('TileLayer', [function() {
                     var y = ymax - coord.y -1;
                     //aca deberían ir los bound  de la ciudad que estas
                     if (scope.currentBound.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
-                        if(window.location.href.indexOf('localhost')>0){
+                        if(false && window.location.href.indexOf('localhost')>0){
                             return "tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                         }else{
                             return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";    
@@ -397,8 +402,13 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     function addGeoJsonLayer(layer) {
 
         if (!$scope.features[$scope.selection.city.dirname]) {
+
+            var zoningUrl='/zoning/' + $scope.selection.city.dirname + '/' + $scope.selection.city.name + '.json';
+            if(true || window.location.href.indexOf('localhost')<0){
+                zoningUrl="https://s3-sa-east-1.amazonaws.com/cipuv" + zoningUrl;
+            }
             
-            $http.get('/zoning/' + $scope.selection.city.dirname + '/' + $scope.selection.city.name + '.json').success(function(data) {
+            $http.get(zoningUrl).success(function(data) {
                 var geoJSON = new GeoJSON(data, {
                     "strokeOpacity": layer.opacity,
                     "strokeWeight": 1,
