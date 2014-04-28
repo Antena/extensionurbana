@@ -90,17 +90,19 @@
         <!-- Zoning controls -->
         <strong ng-show='selection.city.zoning=="False"'>Zonificación no disponible para este municipio</strong>
         <div ng-show='selection.city.zoning!="False"'>
-        <label class="checkbox" for="zoningCheck">
-            <input type="checkbox" value="" id="zoningCheck" data-toggle="checkbox"
-                   flatui-checkbox="zoningSlider" ng-model="selection.zoning.visible"
-                   ng-change="toggleZoningLayerVisibility()">
-            <strong>Zonificación</strong>
-        </label>
-        <div class="ui-slider" id="zoningSlider"
-             ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" disabled="true" use-decimals ng-model="zoning.opacity">
+            <label ng-show='selection.city.zoning!="False"' class="checkbox" for="zoningCheck">
+                <input type="checkbox" value="" id="zoningCheck" data-toggle="checkbox"
+                       flatui-checkbox="zoningSlider" ng-model="selection.zoning.visible"
+                       ng-change="toggleZoningLayerVisibility()">
+                <strong>Zonificación</strong>
+            </label>
+            <div ng-show='selection.city.zoning!="False"' class="ui-slider" id="zoningSlider"
+                 ui-slider="{range: 'min'}" min="0.0" max="1.0" step="0.01" disabled="true" use-decimals ng-model="zoning.opacity">
+            </div>
+            <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
         </div>
-        <div class="slider-labels"><span class="pull-left">0</span><span class="pull-right">100</span></div>
-        <span id="currentZoning">-</span>
+        <div>
+            <span id="currentZoning">-</span>
         </div>
         
         <hr/>

@@ -249,7 +249,7 @@ factories.factory('TileLayer', [function() {
                     var y = ymax - coord.y -1;
                     //aca deberían ir los bound  de la ciudad que estas
                     if (scope.currentBound.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
-                        if(false && window.location.href.indexOf('localhost')>0){
+                        if(window.location.href.indexOf('localhost')>0){
                             return "tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                         }else{
                             return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";    
@@ -404,7 +404,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         if (!$scope.features[$scope.selection.city.dirname]) {
 
             var zoningUrl='/zoning/' + $scope.selection.city.dirname + '/' + $scope.selection.city.name + '.json';
-            if(true || window.location.href.indexOf('localhost')<0){
+            if(window.location.href.indexOf('localhost')<0){
                 zoningUrl="https://s3-sa-east-1.amazonaws.com/cipuv" + zoningUrl;
             }
             
