@@ -1,10 +1,27 @@
 angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', ['mapOptions', '$timeout', function(mapOptions, $timeout) {
     mapOptions = mapOptions || {};
+
     return {
         compile: function(element, attributes) {
             var height = $(window).height() - $("#header").height();
             $(element).height(height);
             return function(scope, elem, attrs) {
+
+                function addCityLabels() {
+                    var markers = [];
+                    for (var i=0; i<scope.cities.length; i++) {
+                        var city = scope.cities[i];
+                        var marker = new MarkerWithLabel({
+                            position: city.bounds.getCenter(),
+                            labelContent: city.displayName,
+                            labelClass: "cityLabel",
+                            cityId: city.id
+                        });
+                        markers.push(marker)
+                        google.maps.event.addListener(marker, "click", function (e) { scope.loadCity(this.cityId); });
+                    }
+                    new MarkerClusterer(scope.map, markers);
+                }
 
                 scope.mapOptions = {
                     mapMinZoom : parseInt(attrs.minZoom),
@@ -25,7 +42,7 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                     };
 
                     scope.map = new google.maps.Map($(elem)[0], mapOptions);
-                    scope.loadCityData();
+                    scope.loadCityData(addCityLabels);
                 }
 
                 // Late-bind to prevent compiler clobbering
@@ -33,6 +50,10 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
 
                 scope.panTo = function(s,w,n,e) {
                     var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(s,w),new google.maps.LatLng(n,e));
+                    scope.panToBounds(bounds);
+                }
+
+                scope.panToBounds = function(bounds) {
                     scope.map.fitBounds(bounds);
                 }
             }

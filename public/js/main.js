@@ -2,10 +2,10 @@
 var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives', 'atlas.factories', 'ui.slider', 'google.map']);
 
 atlasApp.config(['$httpProvider', function($httpProvider) {
-        //stuff to allow s3 json loading (CORS)
-        $httpProvider.defaults.useXDomain = true;
-        //delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    }
+    //stuff to allow s3 json loading (CORS)
+    $httpProvider.defaults.useXDomain = true;
+    //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+}
 ]);// Directives
 var directives = angular.module('atlas.directives', []);
 directives.directive('flatuiCheckbox', function($timeout) {
@@ -73,19 +73,19 @@ directives.directive('typeahead', ['$http', function($http) {
     }
 
     function normalizeCityName(s){
-        
-          var translate_re = /[áéíóúñ]/g;
-          var translate = {
+
+        var translate_re = /[áéíóúñ]/g;
+        var translate = {
             "á": "a", "í": "i", "ú": "u",
             "ó": "o", "é": "e"   // probably more to come
-          };
-          
-            return ( s.replace(translate_re, function(match) { 
-              return translate[match]; 
-            }) );
-          }
-        
-    
+        };
+
+        return ( s.replace(translate_re, function(match) {
+            return translate[match];
+        }) );
+    }
+
+
 
     return function(scope, element, attrs) {
         $http.get("/data/cities.csv").success(function(data) {
@@ -252,10 +252,10 @@ factories.factory('TileLayer', [function() {
                         if(window.location.href.indexOf('localhost')>0){
                             return "tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                         }else{
-                            return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";    
+                            return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                         }
-                        
-                        
+
+
                     else
                         return "http://www.maptiler.org/img/none.png";
                 },
@@ -346,9 +346,20 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         addLayer($scope[layer.name]);
     }
 
-    $scope.loadCityData = function() {
+    $scope.loadCityData = function(callback) {
         $http.get("/data/cities.csv").success(function(data) {
             $scope.cities = $.csv.toObjects(data);
+
+            // Process city data
+            $scope.cities.map(function(city) {
+                var sw = city.boundsSW.split(","),
+                    ne = city.boundsNE.split(","),
+                    swCorner = new google.maps.LatLng(sw[0],sw[1]),
+                    neCorner = new google.maps.LatLng(ne[0],ne[1]);
+                city.bounds = new google.maps.LatLngBounds(swCorner,neCorner);
+            })
+
+            if (callback) callback.call();
         })
     }
 
@@ -407,7 +418,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
             if(window.location.href.indexOf('localhost')<0){
                 zoningUrl="https://s3-sa-east-1.amazonaws.com/cipuv" + zoningUrl;
             }
-            
+
             $http.get(zoningUrl).success(function(data) {
                 var geoJSON = new GeoJSON(data, {
                     "strokeOpacity": layer.opacity,
