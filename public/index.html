@@ -19,6 +19,8 @@
 
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3swa2pSSQ9WNV5M6bRHzss6IW9E-bOUQ&sensor=false"></script>
+    <script src="js/vendor/markerclusterer.js"></script>
+    <script src="js/vendor/markerwithlabel.js"></script>
 </head>
 <body ng-controller="AppController">
 <!--[if lt IE 7]>
@@ -75,10 +77,10 @@
 <div id="zoomControls">
     <ul class="nav nav-pills">
         <li>
-            <a href="#" prevent-click ng-click="zoomOut()">-</a>
+            <a href="#" prevent-click ng-click="zoomOut()"><span class="fui-search"></span> -</a>
         </li>
         <li>
-            <a href="#" prevent-click ng-click="zoomIn()">+</a>
+            <a href="#" prevent-click ng-click="zoomIn()"><span class="fui-search"></span> +</a>
         </li>
     </ul>
 </div>
