@@ -414,10 +414,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
         if (!$scope.features[$scope.selection.city.dirname]) {
 
-            var zoningUrl='/zoning/' + $scope.selection.city.dirname + '/' + $scope.selection.city.name + '.json';
-            if(window.location.href.indexOf('localhost')<0){
-                zoningUrl="https://s3-sa-east-1.amazonaws.com/cipuv" + zoningUrl;
-            }
+            var zoningUrl = '"https://s3-sa-east-1.amazonaws.com/cipuv/zoning/' + $scope.selection.city.dirname + '/' + $scope.selection.city.name + '.json';
 
             $http.get(zoningUrl).success(function(data) {
                 var geoJSON = new GeoJSON(data, {

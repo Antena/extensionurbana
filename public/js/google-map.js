@@ -14,8 +14,10 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                         var marker = new MarkerWithLabel({
                             position: city.bounds.getCenter(),
                             labelContent: city.displayName,
+                            labelAnchor: google.maps.Point(50, 0),
                             labelClass: "cityLabel",
-                            cityId: city.id
+                            cityId: city.id,
+                            icon: {}
                         });
                         markers.push(marker)
                         google.maps.event.addListener(marker, "click", function (e) { scope.loadCity(this.cityId); });
