@@ -76,13 +76,13 @@ html, body, #content {
     top: 55px;
     right: 5px;
     z-index: 1000;
-    width: 75px;
+    width: 110px;
 }
 
 #mapTypeControls {
     position: absolute;
     top: 55px;
-    right: 75px;
+    right: 105px;
     z-index: 1000;
     width: 210px;
 }
