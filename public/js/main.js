@@ -1,5 +1,5 @@
 // Atlas app
-var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives', 'atlas.factories', 'ui.slider', 'google.map']);
+var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives', 'atlas.factories', 'ui.slider', 'google.map', 'angular-intro']);
 
 atlasApp.config(['$httpProvider', function($httpProvider) {
     //stuff to allow s3 json loading (CORS)
@@ -546,6 +546,71 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
             $scope.map.setOptions({
                 styles: []
             })
+        }
+    }
+
+    // Intro.js
+    $scope.introStep = 0;
+    $scope.IntroOptions = {
+        steps:[
+            {
+                element: document.querySelector('#step1'),
+                intro: "Puede buscar municipios por nombre o provincia"
+            },
+            {
+                intro: "" +
+                    "<img src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m1.png' />" +
+                    "<img src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m2.png' /><br/>" +
+                    "Los municipios se agrupan en clústeres. Puede hacer click para inspeccionar un clúster.",
+                position: 'right'
+            },
+            {
+                element: document.querySelector(".cityLabel"),
+                intro: "Puede hacer click en la etiqueta de un municipio para ver las imágenes."
+            },
+            {
+                element: document.querySelector("#controls"),
+                intro: "Use los controles para modificar la visibilidad de las distintas capas.",
+                position: "left"
+            },
+            {
+                element: document.querySelector("#data .alert"),
+                intro: "Índices de fragmentación",
+                position: "right"
+            },
+            {
+                element: document.querySelector("#mapTypeControls"),
+                intro: "Cambie el tipo de mapa",
+                position: "left"
+            },
+            {
+                element: document.querySelector("#zoomControls"),
+                intro: "Acerque o aleje el mapa",
+                position: "left"
+            }
+        ],
+        showStepNumbers: false,
+        exitOnOverlayClick: true,
+        exitOnEsc:true,
+        nextLabel: '<strong>NEXT!</strong>',
+        prevLabel: '<span style="color:green">Previous</span>',
+        skipLabel: 'Saltear',
+        doneLabel: 'Comenzar'
+    };
+
+    $scope.BeforeChangeEvent = function() {
+        ++$scope.introStep;
+        if ($scope.introStep == 4) {
+            $scope.loadCity("1");
+        }
+    };
+
+    $scope.CompletedEvent = function() {
+        if ($scope.introStep == $scope.IntroOptions.steps.length) {
+            $scope.selection.city = null;
+            $scope.map.setZoom(5);
+            $scope.map.setCenter(new google.maps.LatLng(-36.7427549,-62.4812459));
+            $scope.$apply();
         }
     }
 }])

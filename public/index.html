@@ -16,13 +16,17 @@
     <link rel="stylesheet" href="css/flat-ui.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/atlas.css">
+    <link rel="stylesheet" href="css/introjs.css">
 
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3swa2pSSQ9WNV5M6bRHzss6IW9E-bOUQ&sensor=false"></script>
     <script src="js/vendor/markerclusterer.js"></script>
     <script src="js/vendor/markerwithlabel.js"></script>
 </head>
-<body ng-controller="AppController">
+<body ng-controller="AppController"
+      ng-intro-options="IntroOptions" ng-intro-method="startIntro"
+      ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-oncomplete="CompletedEvent"
+      ng-intro-autostart="false">
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->
@@ -266,7 +270,7 @@
 
 <div id="header">
     <h5 class="pull-left">Atlas de Crecimiento Urbano</h5>
-    <input type="text" data-provide="typeahead" placeholder="Buscar municipio" class="form-control" typeahead>
+    <input type="text" data-provide="typeahead" placeholder="Buscar municipio" class="form-control" id="step1" typeahead>
     <div class="logos pull-right">
         <ul class="list-inline">
             <li>
@@ -310,6 +314,10 @@
 <script src="js/bootstrap-typeahead.js"></script>
 <script src="js/google-map.js"></script>
 <script src="js/main.js"></script>
+
+<!-- Intro.js -->
+<script src="js/vendor/intro.min.js"></script>
+<script src="js/vendor/angular-intro.js"></script>
 
 <!-- Google Analytics -->
 <script>

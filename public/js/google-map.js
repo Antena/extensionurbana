@@ -45,6 +45,9 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
 
                     scope.map = new google.maps.Map($(elem)[0], mapOptions);
                     scope.loadCityData(addCityLabels);
+                    google.maps.event.addListenerOnce(scope.map, 'idle', function(){
+                        scope.startIntro();
+                    });
                 }
 
                 // Late-bind to prevent compiler clobbering
