@@ -559,8 +559,10 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
             },
             {
                 intro: "" +
+                    "<div class='text-center'>" +
                     "<img src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m1.png' />" +
-                    "<img src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m2.png' /><br/>" +
+                    "<img src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m2.png' />" +
+                    "</div>" +
                     "Los municipios se agrupan en clústeres. Puede hacer click para inspeccionar un clúster.",
                 position: 'right'
             },
@@ -592,13 +594,15 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         showStepNumbers: false,
         exitOnOverlayClick: true,
         exitOnEsc:true,
-        nextLabel: '<strong>NEXT!</strong>',
-        prevLabel: '<span style="color:green">Previous</span>',
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
         skipLabel: 'Saltear',
         doneLabel: 'Comenzar'
     };
 
-    $scope.BeforeChangeEvent = function() {
+    $scope.BeforeChangeEvent = function(e, f) {
+        console.log(e);        //TODO(gb): Remove trace!!!
+        console.log(f);        //TODO(gb): Remove trace!!!
         ++$scope.introStep;
         if ($scope.introStep == 4) {
             $scope.loadCity("1");

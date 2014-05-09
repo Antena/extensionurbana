@@ -48,6 +48,10 @@
           transition: all 0.3s ease-out;
 }
 
+.introjs-helperLayer .introjs-tooltiptext {
+    font-size: 14px;
+}
+
 .introjs-helperNumberLayer {
   position: absolute;
   top: -16px;
