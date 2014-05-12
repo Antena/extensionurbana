@@ -11,6 +11,7 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                     var markers = [];
                     for (var i=0; i<scope.cities.length; i++) {
                         var city = scope.cities[i];
+
                         var marker = new MarkerWithLabel({
                             position: city.bounds.getCenter(),
                             labelContent: city.displayName,
@@ -22,7 +23,7 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                         markers.push(marker)
                         google.maps.event.addListener(marker, "click", function (e) { scope.loadCity(this.cityId); });
                     }
-                    new MarkerClusterer(scope.map, markers);
+                    scope.clusterer = new MarkerClusterer(scope.map, markers);
                 }
 
                 scope.mapOptions = {

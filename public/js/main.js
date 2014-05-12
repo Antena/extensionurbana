@@ -244,18 +244,11 @@ factories.factory('TileLayer', [function() {
                         proj.fromPointToLatLng(new google.maps.Point((coord.x + 1) * tileXSize, coord.y * tileYSize))
                     );
 
-
                     var ymax = 1 << zoom;
                     var y = ymax - coord.y -1;
                     //aca deberían ir los bound  de la ciudad que estas
                     if (scope.currentBound.intersects(tileBounds) && (scope.mapOptions.mapMinZoom <= zoom) && (zoom <= scope.mapOptions.mapMaxZoom))
-                        if(window.location.href.indexOf('localhost')>0){
-                            return "tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
-                        }else{
-                            return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
-                        }
-
-
+                        return "https://s3-sa-east-1.amazonaws.com/cipuv/tiles/" + city.dirname + "/" + options.type + "/" + scope.selection[options.name].moment + "/" + zoom + "/" + coord.x + "/" + y + ".png";
                     else
                         return "http://www.maptiler.org/img/none.png";
                 },
@@ -390,6 +383,20 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         $scope.currentBound = tileBounds;
 
         $scope.panTo(parseFloat(sw[0]),parseFloat(sw[1]),parseFloat(ne[0]),parseFloat(ne[1]));
+        $scope.$apply();
+    }
+
+    $scope.resetSelection = function() {
+        $scope.selection.city = null;
+        if ($scope.newDevelopment.layer) removeLayer($scope.newDevelopment)
+        $scope.newDevelopment.layer = null;
+        $scope.newDevelopment.visible = false;
+        if ($scope.urbanFootprint.layer) removeLayer($scope.urbanFootprint)
+        $scope.urbanFootprint.layer = null;
+        $scope.urbanFootprint.visible = false;
+        if ($scope.urbanArea.layer) removeLayer($scope.urbanArea)
+        $scope.urbanArea.layer = null;
+        $scope.urbanArea.visible = false;
         $scope.$apply();
     }
 
@@ -549,13 +556,18 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         }
     }
 
+    $scope.resetMap = function() {
+        $scope.map.setZoom(5);
+        $scope.map.setCenter(new google.maps.LatLng(-36.7427549,-62.4812459));
+    }
+
     // Intro.js
     $scope.introStep = 0;
     $scope.IntroOptions = {
         steps:[
             {
                 element: document.querySelector('#step1'),
-                intro: "Puede buscar municipios por nombre o provincia"
+                intro: "Busque municipios por nombre o provincia."
             },
             {
                 intro: "" +
@@ -563,32 +575,38 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
                     "<img src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m1.png' />" +
                     "<img src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m2.png' />" +
                     "</div>" +
-                    "Los municipios se agrupan en clústeres. Puede hacer click para inspeccionar un clúster.",
+                    "Los municipios se agrupan en clústeres. Haga click para acercar el mapa al clúster deseado.",
                 position: 'right'
             },
             {
                 element: document.querySelector(".cityLabel"),
-                intro: "Puede hacer click en la etiqueta de un municipio para ver las imágenes."
+                intro: "" +
+                    "<div class='text-center'>" +
+                    "<img src='/images/city-label.png' />" +
+                    "</div>" +
+                    "Haga click en la etiqueta de un municipio para ver las imágenes satelitales e información de zonificación."
             },
             {
-                element: document.querySelector("#controls"),
-                intro: "Use los controles para modificar la visibilidad de las distintas capas.",
+                element: document.querySelector('#controls'),
+                intro: "" +
+                    "<div class='text-center'>" +
+                    "<img src='/images/controls-check.png' />" +
+                    "</div>" +
+                    "Active o desactive las capas individualmente" +
+                    "<div class='text-center'>" +
+                    "<img src='/images/controls-years.png' />" +
+                    "</div>" +
+                    "Seleccione el año de las imágenes satelitales." +
+                    "<div class='text-center'>" +
+                    "<img src='/images/controls-slider.png' />" +
+                    "</div>" +
+                    "Controle la opacidad de cada capa.",
                 position: "left"
             },
             {
                 element: document.querySelector("#data .alert"),
-                intro: "Índices de fragmentación",
+                intro: "Analice los índices de fragmentación",
                 position: "right"
-            },
-            {
-                element: document.querySelector("#mapTypeControls"),
-                intro: "Cambie el tipo de mapa",
-                position: "left"
-            },
-            {
-                element: document.querySelector("#zoomControls"),
-                intro: "Acerque o aleje el mapa",
-                position: "left"
             }
         ],
         showStepNumbers: false,
@@ -597,12 +615,10 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         nextLabel: 'Siguiente',
         prevLabel: 'Anterior',
         skipLabel: 'Saltear',
-        doneLabel: 'Comenzar'
+        doneLabel: '<strong>Comenzar</strong>'
     };
 
     $scope.BeforeChangeEvent = function(e, f) {
-        console.log(e);        //TODO(gb): Remove trace!!!
-        console.log(f);        //TODO(gb): Remove trace!!!
         ++$scope.introStep;
         if ($scope.introStep == 4) {
             $scope.loadCity("1");
@@ -611,10 +627,8 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
     $scope.CompletedEvent = function() {
         if ($scope.introStep == $scope.IntroOptions.steps.length) {
-            $scope.selection.city = null;
-            $scope.map.setZoom(5);
-            $scope.map.setCenter(new google.maps.LatLng(-36.7427549,-62.4812459));
-            $scope.$apply();
+            $scope.resetSelection();
+            $scope.resetMap();
         }
     }
 }])
