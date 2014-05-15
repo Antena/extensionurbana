@@ -23,7 +23,12 @@ angular.module('google.map', []).value('mapOptions',{}).directive('googleMap', [
                         markers.push(marker)
                         google.maps.event.addListener(marker, "click", function (e) { scope.loadCity(this.cityId); });
                     }
-                    scope.clusterer = new MarkerClusterer(scope.map, markers);
+
+                    scope.clusterer = new MarkerClusterer(scope.map, markers, {
+                        minimumClusterSize: 1,
+                        maxZoom:10
+                    });
+
                 }
 
                 scope.mapOptions = {
