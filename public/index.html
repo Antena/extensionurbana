@@ -110,7 +110,7 @@
         <div>
             <span id="currentZoning">-</span>
         </div>
-        
+
         <hr/>
 
         <!-- Urban Area controls -->
@@ -270,7 +270,10 @@
 
 <div id="header">
     <h5 class="pull-left">Atlas de Crecimiento Urbano</h5>
-    <input type="text" data-provide="typeahead" placeholder="Buscar municipio" class="form-control" id="step1" typeahead>
+    <input type="text" data-provide="typeahead" placeholder="Buscar municipio" class="form-control pull-left" id="step1" typeahead>
+    <p class="pull-left" style="margin-bottom: 0px; margin-left:5px; line-height: 50px">
+        <a href="#" ng-click="resetAll()" prevent-click>Reset</a>
+    </p>
     <div class="logos pull-right">
         <ul class="list-inline">
             <li>

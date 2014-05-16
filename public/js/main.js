@@ -627,8 +627,12 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
     $scope.CompletedEvent = function() {
         if ($scope.introStep == $scope.IntroOptions.steps.length) {
-            $scope.resetSelection();
-            $scope.resetMap();
+            $scope.resetAll();
         }
+    }
+
+    $scope.resetAll = function() {
+        $scope.resetSelection();
+        $scope.resetMap();
     }
 }])
