@@ -272,3 +272,7 @@ html, body, #content {
     cursor: default;
     border-color: #a7adb1;
 }
+
+.introjs-prevbutton, .introjs-disabled {
+    display: none !important;
+}
