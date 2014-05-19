@@ -13,40 +13,40 @@ ngIntroDirective.directive('ngIntroOptions', ['$timeout', '$parse', function ($t
 
             scope[attrs.ngIntroMethod] = function(step) {
 
-                var intro;
+                scope.introJs;
 
                 if(typeof(step) === 'string') {
-                    intro = introJs(step);
+                    scope.introJs = introJs(step);
                 } else {
-                    intro = introJs();
+                    scope.introJs = introJs();
                 }
 
-                intro.setOptions(scope.$eval(attrs.ngIntroOptions));
+                scope.introJs.setOptions(scope.$eval(attrs.ngIntroOptions));
 
                 if(attrs.ngIntroOncomplete) {
-                    intro.oncomplete($parse(attrs.ngIntroOncomplete)(scope));
+                    scope.introJs.oncomplete($parse(attrs.ngIntroOncomplete)(scope));
                 }
 
                 if(attrs.ngIntroOnexit) {
-                    intro.onexit($parse(attrs.ngIntroOnexit)(scope));
+                    scope.introJs.onexit($parse(attrs.ngIntroOnexit)(scope));
                 }
 
                 if(attrs.ngIntroOnchange) {
-                    intro.onchange($parse(attrs.ngIntroOnchange)(scope));
+                    scope.introJs.onchange($parse(attrs.ngIntroOnchange)(scope));
                 }
 
                 if(attrs.ngIntroOnbeforechange) {
-                    intro.onbeforechange($parse(attrs.ngIntroOnbeforechange)(scope));
+                    scope.introJs.onbeforechange($parse(attrs.ngIntroOnbeforechange)(scope));
                 }
 
                 if(attrs.ngIntroOnafterchange) {
-                    intro.onafterchange($parse(attrs.ngIntroOnafterchange)(scope));
+                    scope.introJs.onafterchange($parse(attrs.ngIntroOnafterchange)(scope));
                 }
 
                 if(typeof(step) === 'number') {
-                    intro.goToStep(step).start();
+                    scope.introJs.goToStep(step).start();
                 } else {
-                    intro.start();
+                    scope.introJs.start();
                 }
             };
 

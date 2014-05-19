@@ -25,7 +25,7 @@
 </head>
 <body ng-controller="AppController"
       ng-intro-options="IntroOptions" ng-intro-method="startIntro"
-      ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-oncomplete="CompletedEvent"
+      ng-intro-onexit="ExitEvent" ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-oncomplete="CompletedEvent"
       ng-intro-autostart="false">
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
@@ -252,6 +252,10 @@
         </div>
 
     </div>
+</div>
+
+<div id="introControl">
+    <span class="fui-info" ng-click="startIntro(1)" tooltip="Volver a mostrar la intro" placement="left"></span>
 </div>
 
 <div id="mapTypeControls">

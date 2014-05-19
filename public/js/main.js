@@ -563,6 +563,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
     // Intro.js
     $scope.introStep = 0;
+    $scope.shouldResetSelection = false;
     $scope.IntroOptions = {
         steps:[
             {
@@ -620,19 +621,30 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
 
     $scope.BeforeChangeEvent = function(e, f) {
         ++$scope.introStep;
-        if ($scope.introStep == 4) {
+        if ($scope.introStep == 4 && !$scope.selection.city) {
+            $scope.shouldResetSelection = true;
             $scope.loadCity("1");
         }
     };
 
     $scope.CompletedEvent = function() {
         if ($scope.introStep == $scope.IntroOptions.steps.length) {
-            $scope.resetAll();
+            $scope.introStep = 0;
+            $scope.introJs.exit();
+            if ($scope.shouldResetSelection) {
+                $scope.shouldResetSelection = false;
+                $scope.resetAll();
+            }
         }
     }
 
     $scope.resetAll = function() {
         $scope.resetSelection();
         $scope.resetMap();
+    }
+
+    $scope.ExitEvent = function() {
+        $scope.introStep = 0;
+        $scope.shouldResetSelection = false;
     }
 }])
