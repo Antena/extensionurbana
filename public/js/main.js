@@ -154,6 +154,7 @@ directives.directive('axis', function() {
 })
 directives.directive('chart', function() {
     return function(scope, element, attrs) {
+
         var margin = {top: 0, right: 40, bottom: 0, left: 20},
             width = 200,
             height = 45;
@@ -203,25 +204,39 @@ directives.directive('chart', function() {
         var circles = g.selectAll("circle")
             .data(index.values)
             .enter()
-            .append("circle");
+            .append("circle")
+            .attr("class", attrs.chart)
 
         var text = g.selectAll("text")
             .data(index['values'])
             .enter()
-            .append("text");
+            .append("text")
 
         circles
             .attr("cx", function(d, i) { return xScale(d[0]); })
             .attr("cy", 20)
             .attr("r", function(d) { return rScale(d[1]); });
 
-
         text
             .attr("y", 45)
             .attr("x",function(d, i) { return xScale(d[0]); })
-            .attr("class","value")
+            .attr("class","value " + attrs.chart)
             .attr("text-anchor", "middle")
             .text(function(d){ return d[1].toFixed(2); });
+
+        scope.updateChartInfo = function(chart, t0, t1, t2) {
+            d3.selectAll("circle." + chart)
+                .data([t0,t1,t2])
+                .attr("r", function(d) {
+                    return rScale(d || 0);
+                });
+
+            d3.selectAll("text." + chart)
+                .data([t0,t1,t2])
+                .text(function(d){
+                    return parseFloat(d) ? parseFloat(d).toFixed(2) : "-";
+                });
+        }
     }
 })
 
@@ -368,6 +383,8 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
         if ($scope.newDevelopment.layer) removeLayer($scope.newDevelopment)
         addLayer($scope.newDevelopment);
         addGeoJsonLayer($scope.zoning);
+        $scope.updateChartInfo("edge", city.t0_edge, city.t1_edge, city.t2_edge);
+        $scope.updateChartInfo("openness", city.t0_open, city.t1_open, city.t2_open);
 
         var sw = city.boundsSW.split(","),
             ne = city.boundsNE.split(",");
