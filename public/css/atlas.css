@@ -111,7 +111,7 @@ html, body, #content {
     position: absolute;
     top: 90px;
     right: 5px;
-    z-index: 1000;
+    z-index: 100000000 !important;
     width: 250px;
 }
 
@@ -271,4 +271,8 @@ html, body, #content {
     pointer-events: none;
     cursor: default;
     border-color: #a7adb1;
+}
+
+.introjs-prevbutton, .introjs-disabled {
+    display: none !important;
 }
