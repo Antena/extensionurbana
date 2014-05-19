@@ -12,15 +12,19 @@ import sys
 
 
 exec_do_tiff = False
-exec_do_tiles = False
+exec_do_tiles = False 
 exec_get_corners = True
 exec_do_zoning = False
+exec_do_index = True
 exec_restrict_files= True
 
 locations={}
 
 foundFiles = {}
 corners = {}
+indexes = {}
+
+citiesWithIndex=0
 
 special_characters={
     u"á":u"a", u"é":u"e", u"í":u"i", u"ó":u"o", u"ú":u"u",
@@ -141,7 +145,11 @@ def getPeriodAndType(file,dir):
 def listCities(dir):
 
 	
-	acceptedCitiesWithTiles=["cordoba/rio_ceballos","mendoza/godoycruz","salta/lacie","chubut_-_rawson/rawson_rawson","rio_negro_-_viedma/carmendepat","stgo_del_estero/santiago","cordoba/salsipuedes","buenos_aires/avellaneda","corrientes/corrientes_capital","jujuy/capital","chubut_-_rawson/accnorte","cordoba/mendiolaza","tucuman/bsjose","rio_negro_-_viedma/viedma","santa_fe/rosario/soldini","cordoba/rio_cuarto/riocuarto","santa_fe/rosario/granbaigorria","buenos_aires/ensenada","buenos_aires/bahia_blanca/bahia","santa_fe/santafe","tucuman/tafi_viejo","chaco_-_resistencia/fontana","entre_rios_-_parana/oro_verde","buenos_aires/la_matanza","santa_fe/rosario/rosario","santa_fe/rosario/fraybeltran","santa_fe/sjoserincon","buenos_aires/almirante_brown","buenos_aires/escobar","santa_fe/recreo","san_juan/rawson","san_juan/san_juan","chubut_-_rawson/rada_tilly","buenos_aires/merlo","santa_fe/rosario/alvear","buenos_aires/bahia_blanca/inge","misiones_-_posadas/nemes","buenos_aires/san_vicente","catamarca/sumalao","buenos_aires/moreno","tucuman/banda_del_rio_sali","la_rioja/capital","chubut_-_rawson/comodoro_rivadavia","buenos_aires/florencio_varela","neuquen/cent","san_juan/pocito","catamarca/san_fernando_del_valle_de_catamarca","misiones_-_posadas/garupa","salta/all","santa_fe/gdor_galves","buenos_aires/bahia_blanca/grun","chubut_-_rawson/rawsontrelew","buenos_aires/marcos_paz","buenos_aires/hurlingham","salta/lasc","stgo_del_estero/la_banda","cordoba/malvinas_arg","santa_fe/villaadelina","entre_rios_-_parana/parana_a","santa_fe/rosario/capbermudez","buenos_aires/pilar","tucuman/barrio_san_felipe","santa_fe/rosario/funes","cordoba/cordoba","mendoza/maipu","santa_fe/rosario/sanlorenzo","formosa/capital","buenos_aires/lomas_de_zamora","la_pampa_-_santa_rosa/toay","buenos_aires/malvinas_argentinas","buenos_aires/berazategui","buenos_aires/tigre","buenos_aires/bahia_blanca/bahia_all","santa_fe/santotome","buenos_aires/moron","neuquen/plot","chubut_-_rawson/gral_mosconi","buenos_aires/mar_del_plata","catamarca/santa_maria","buenos_aires/general_rodriguez","buenos_aires/san_fernando","santa_fe/rosario/aldao","buenos_aires/tres_de_febrero","la_pampa_-_santa_rosa/santarosa","san_juan/rivadavia","catamarca/el_bannado","stgo_del_estero/maco","cordoba/colonia_caroya","catamarca/san_isidro","buenos_aires/presidente_peron","tucuman/yerba","corrientes/laguna_brava","cordoba/unquillo","buenos_aires/san_isidro","tucuman/villalf","buenos_aires/bahia_blanca/villab","san_juan/chimbas","buenos_aires/bahia_blanca/vspor","tucuman/va_m_moreno_colmenar","chaco_-_resistencia/resistencia","salta/vaq","buenos_aires/bahia_blanca/gr","cordoba/juarezcelman","buenos_aires/ituzaingo","buenos_aires/campana","cordoba/lacalera","buenos_aires/quilmes","jujuy/palpala","cordoba/villa_allende","tucuman/san_miguel_de_tucuman","buenos_aires/ezeiza","cordoba/dumesnil","misiones_-_posadas/posad","buenos_aires/la_plata","salta/saltac","neuquen/neucapi","buenos_aires/beriso","san_juan/santa_lucia","buenos_aires/lanus","salta/vlos","santa_fe/sauceviejo","salta/atoc","santa_fe/rosario/perez","santa_fe/rosario/ptosanmartin","buenos_aires/general_san_martin","mendoza/mendoza_capital","buenos_aires/jose_c_paz","cordoba/jesus_maria","santa_fe/rosario/galvez","salta/cerr","buenos_aires/san_miguel","buenos_aires/vicente_lopez","buenos_aires/canuelas","chaco_-_resistencia/puerto_vilelas","chaco_-_resistencia/barranqueras","mendoza/guaymallen","stgo_del_estero/el_zanjon","formosa/villa_del_carmen","buenos_aires/esteban_echeverria","misiones_-_posadas/pgarupa","santa_fe/rosario/roldan"]
+	#acceptedCitiesWithTiles=["buenos_aires/lomas_de_zamora","buenos_aires/san_fernando","buenos_aires/ezeiza"];
+	acceptedCitiesWithTiles=["buenos_aires/avellaneda","buenos_aires/ensenada","buenos_aires/bahia_blanca/bahia","buenos_aires/la_matanza","buenos_aires/almirante_brown","buenos_aires/escobar","buenos_aires/merlo","buenos_aires/bahia_blanca/inge","buenos_aires/san_vicente","buenos_aires/moreno","buenos_aires/florencio_varela","catamarca/el_bannado","catamarca/san_fernando_del_valle_de_catamarca","catamarca/san_isidro","catamarca/santa_maria","catamarca/sumalao","cordoba/colonia_caroya","cordoba/cordoba","cordoba/dumesnil","cordoba/jesus_maria","cordoba/juarezcelman","cordoba/lacalera","cordoba/malvinas_arg","cordoba/mendiolaza","cordoba/rio_ceballos","cordoba/rio_cuarto/riocuarto","cordoba/salsipuedes","cordoba/unquillo","cordoba/villa_allende","chaco_-_resistencia/barranqueras","chaco_-_resistencia/fontana","chaco_-_resistencia/puerto_vilelas","chaco_-_resistencia/resistencia","chubut_-_rawson/accnorte","chubut_-_rawson/comodoro_rivadavia","chubut_-_rawson/gral_mosconi","chubut_-_rawson/rada_tilly","chubut_-_rawson/rawson_rawson","chubut_-_rawson/rawsontrelew","santa_fe/rosario/soldini","santa_fe/rosario/granbaigorria","santa_fe/santafe","santa_fe/rosario/rosario","santa_fe/rosario/fraybeltran","santa_fe/sjoserincon","santa_fe/recreo","santa_fe/rosario/alvear","santa_fe/villaadelina","santa_fe/rosario/capbermudez","santa_fe/rosario/funes","santa_fe/rosario/sanlorenzo","santa_fe/rosario/aldao","santa_fe/santotome","santa_fe/sauceviejo","santa_fe/rosario/perez","santa_fe/rosario/ptosanmartin","santa_fe/rosario/galvez","santa_fe/rosario/roldan","entre_rios_-_parana/parana_a","formosa/capital","jujuy/capital","la_pampa_-_santa_rosa/santarosa","la_rioja/capital","mendoza/mendoza_capital","misiones_-_posadas/posad","san_luis/san_luis","neuquen/cent","neuquen/neucapi","neuquen/plot","rio_negro_-_viedma/carmendepat","rio_negro_-_viedma/viedma","salta/all","salta/atoc","salta/cerr","salta/lacie","salta/lasc","salta/saltac","salta/vaq","salta/vlos","san_juan/chimbas","san_juan/pocito","san_juan/rawson","san_juan/rivadavia","san_juan/san_juan","san_juan/santa_lucia","stgo_del_estero/el_zanjon","stgo_del_estero/la_banda","stgo_del_estero/maco","stgo_del_estero/santiago","tucuman/banda_del_rio_sali","tucuman/barrio_san_felipe","tucuman/bsjose","tucuman/san_miguel_de_tucuman","tucuman/tafi_viejo","tucuman/va_m_moreno_colmenar","tucuman/villalf","tucuman/yerba","buenos_aires/bahia_blanca/grun","buenos_aires/marcos_paz","buenos_aires/hurlingham","buenos_aires/pilar","buenos_aires/lomas_de_zamora","buenos_aires/malvinas_argentinas","buenos_aires/berazategui","buenos_aires/tigre","buenos_aires/bahia_blanca/bahia_all","buenos_aires/moron","buenos_aires/mar_del_plata","buenos_aires/general_rodriguez","buenos_aires/san_fernando","buenos_aires/tres_de_febrero","buenos_aires/quilmes","buenos_aires/presidente_peron","buenos_aires/san_isidro","buenos_aires/bahia_blanca/villab","buenos_aires/bahia_blanca/vspor","buenos_aires/bahia_blanca/gr","buenos_aires/ituzaingo","buenos_aires/ezeiza","buenos_aires/la_plata","buenos_aires/beriso","buenos_aires/lanus","buenos_aires/general_san_martin","buenos_aires/jose_c_paz","buenos_aires/san_miguel","buenos_aires/vicente_lopez","buenos_aires/canuelas","buenos_aires/esteban_echeverria"]
+    
+
+	#acceptedCitiesWithTiles=["buenos_aires/berazategui","buenos_aires/general_rodriguez","buenos_aires/ezeiza","buenos_aires/la_plata","buenos_aires/beriso","buenos_aires/esteban_echeverria","buenos_aires/vicente_lopez"];
 
 	#acceptedCitiesWithZoning = ["mendoza/godoycruz","buenos_aires/avellaneda","corrientes/corrientes_capital","jujuy/capital","buenos_aires/ensenada","santa_fe/santafe","chaco_-_resistencia/fontana","entre_rios_-_parana/oro_verde","buenos_aires/la_matanza","santa_fe/rosario/rosario","santa_fe/rosario/fraybeltran","buenos_aires/almirante_brown","buenos_aires/escobar","santa_fe/recreo","san_juan/rawson","chubut_-_rawson/rada_tilly","buenos_aires/merlo","buenos_aires/moreno","la_rioja/capital","chubut_-_rawson/comodoro_rivadavia","buenos_aires/florencio_varela","catamarca/san_fernando_del_valle_de_catamarca","chubut_-_rawson/rawsontrelew","buenos_aires/marcos_paz","buenos_aires/hurlingham","entre_rios_-_parana/parana_a","buenos_aires/pilar","mendoza/maipu","buenos_aires/lomas_de_zamora","la_pampa_-_santa_rosa/toay","buenos_aires/malvinas_argentinas","buenos_aires/berazategui","santa_fe/santotome","buenos_aires/moron","neuquen/plot","buenos_aires/general_rodriguez","buenos_aires/san_fernando","buenos_aires/tres_de_febrero","la_pampa_-_santa_rosa/santarosa","tucuman/yerba","cordoba/unquillo","buenos_aires/san_isidro","santa_fe/rosario/granbaigorria","chaco_-_resistencia/resistencia","santa_fe/sjoserincon","buenos_aires/ituzaingo","buenos_aires/quilmes","tucuman/san_miguel_de_tucuman","buenos_aires/ezeiza","buenos_aires/la_plata","salta/saltac","neuquen/neucapi","buenos_aires/beriso","buenos_aires/lanus","santa_fe/rosario/perez","santa_fe/rosario/ptosanmartin","buenos_aires/general_san_martin","mendoza/mendoza_capital","buenos_aires/jose_c_paz","santa_fe/rosario/galvez","buenos_aires/san_miguel","buenos_aires/vicente_lopez","buenos_aires/canuelas","chaco_-_resistencia/barranqueras","mendoza/guaymallen","buenos_aires/esteban_echeverria"]
 	#acceptedCitiesWithZoning=["buenos_aires/moron","cordoba/unquillo","mendoza/guaymallen","buenos_aires/esteban_echeverria"]
@@ -286,6 +294,37 @@ def listCities(dir):
 						if exec_do_zoning:
 							output=call(zoning_cmd)
 							print output
+
+				elif file=="resultados.txt":
+					print 'resultados---'
+					fullPath=root+"/"+file;
+					relativePath=normalizeFileName(root[len(dir):])
+					resultados=io.open(fullPath)
+					print 'resultados---'
+					print 'opened file'
+					t0_edge=''
+					t1_edge=''
+					t0_open=''
+					t1_open=''
+					for line in resultados.readlines():
+						if line.find('t0 EDGE INDEX is ')>=0:
+							t0_edge=line[line.find('0.'):].replace('\n','')
+						elif line.find('t1 EDGE INDEX is')>=0:
+							t1_edge=line[line.find('0.'):].replace('\n','')
+						elif line.find('t1 OPENNESS INDEX is')>=0:
+							t1_open=line[line.find('0.'):].replace('\n','')
+						elif line.find('t0 OPENNESS INDEX is')>=0:
+							t0_open=line[line.find('0.'):].replace('\n','')
+
+					if relativePath not in indexes:
+						indexes[relativePath]={}
+
+					print relativePath
+					indexes[relativePath]['t0_edge']=t0_edge
+					indexes[relativePath]['t1_edge']=t1_edge
+					indexes[relativePath]['t0_open']=t0_open
+					indexes[relativePath]['t1_open']=t1_open
+
 			except:
 				print "Unexpected error:", sys.exc_info()[0]
 				print 'error processing file ' + str(file)
@@ -298,6 +337,17 @@ def listCities(dir):
 
 #Obj: run script on .img files and leave them somewhere useful
 def main():
+	displayName_dict=dict()
+	city_names= io.open('city_names.csv')
+	for line in city_names.readlines():
+		displayName_dict[line.split(',')[0]]=line.split(',')[1].replace('"','').encode('utf-8')
+
+	print displayName_dict;
+
+
+
+	citiesWithIndex=0
+	citiesWithoutIndex=[]
 
 	for dir in ['atlas/T0T1/', 'atlas/T1T2/','atlas/Zonificacion/']:
 		listCities(dir)
@@ -331,11 +381,28 @@ def main():
 			
 			try:
 				displayName=",".join(city.split('/')[::-1])
+				displayName=displayName_dict[city];
 				if exec_get_corners:
 					boundNE=str(corners[city][0][0][:-1][::-1]).replace('(','').replace(')','')
 					boundSW=str(corners[city][0][1][:-1][::-1]).replace('(','').replace(')','')
+					hasIndex=False;
+					t0_edge=''
+					t1_edge=''
+					t0_open=''
+					t1_open=''
+					if city in indexes:
+						hasIndex=True
+						citiesWithIndex+=1
+						t0_edge=indexes[city]['t0_edge']
+						t1_edge=indexes[city]['t1_edge']
+						t0_open=indexes[city]['t0_open']
+						t1_open=indexes[city]['t1_open']
+					else:
+						citiesWithoutIndex+=[city]
+
+
 					print 'city ' + str(city) + ' : ' + str(len(city.split('/')))
-					completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'boundSW':boundSW,'boundNE':boundNE,'displayName':displayName,'zoning':hasZoning}]
+					completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'boundSW':boundSW,'boundNE':boundNE,'displayName':displayName,'zoning':hasZoning,'t0_open':t0_open,'t1_open':t1_open,'t1_edge':t1_edge,'t0_edge':t0_edge,'hasIndex':hasIndex}]
 				else:
 					completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'displayName':displayName,'zoning':hasZoning}]
 			except:
@@ -344,6 +411,12 @@ def main():
 
 	
 	
+	print ' cities with no index'
+	
+	for cit in citiesWithoutIndex:
+		print cit
+
+	print ' end of  no index'
 
 	print "complete cities " + str(len(completeCities))
 	
@@ -354,13 +427,14 @@ def main():
 	for city in missingCities:
 		print city + " " + str(missingCities[city])
 	
+
 	outputcsv = io.open('cities.csv','wb')
 	writer = csv.writer(outputcsv, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-	writer.writerow(['id','name','province','dirname','boundsSW','boundsNE','displayName','zoning'])
+	writer.writerow(['id','name','province','dirname','boundsSW','boundsNE','displayName','zoning','t0_open','t1_open','t0_edge','t1_edge','hasIndex'])
 	newId=1
 	for city in completeCities:
 		if exec_get_corners:
-			cityRow = [ newId,city['name'],city['province'],city['dirname'],city['boundNE'],city['boundSW'],city['displayName'],city['zoning']]
+			cityRow = [ newId,city['name'],city['province'],city['dirname'],city['boundNE'],city['boundSW'],city['displayName'],city['zoning'],city['t0_open'],city['t1_open'],city['t0_edge'],city['t1_edge'],city['hasIndex']]
 		else:
 			cityRow = [ newId,city['name'],city['province'],city['dirname'],city['displayName'],city['zoning']]
 		writer.writerow(cityRow)
