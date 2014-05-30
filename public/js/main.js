@@ -3,30 +3,30 @@ var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives',
 
 atlasApp.config(['$httpProvider', '$routeProvider', '$locationProvider', function($httpProvider, $routeProvider, $locationProvider) {
     //stuff to allow s3 json loading (CORS)
-//    $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.useXDomain = true;
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
-//    $routeProvider
-//        .when('/', {
-//            templateUrl: '/views/home.html'
-//        })
-//        .when('/atributos', {
-//            templateUrl: '/views/atributos.html'
-//        })
-//        .when('/metricas1', {
-//            templateUrl: '/views/metricas1.html'
-//        })
-//        .when('/metricas2', {
-//            templateUrl: '/views/metricas2.html'
-//        })
-//        .when('/bibliografia', {
-//            templateUrl: '/views/bibliografia.html'
-//        })
-//        .when('/contacto', {
-//            templateUrl: '/views/contacto.html'
-//        })
-//        .otherwise({
-//            redirectTo: '/'
-//        });
+    $routeProvider
+        .when('/', {
+            templateUrl: '/views/home.html'
+        })
+        .when('/atributos', {
+            templateUrl: '/views/atributos.html'
+        })
+        .when('/metricas1', {
+            templateUrl: '/views/metricas1.html'
+        })
+        .when('/metricas2', {
+            templateUrl: '/views/metricas2.html'
+        })
+        .when('/bibliografia', {
+            templateUrl: '/views/bibliografia.html'
+        })
+        .when('/contacto', {
+            templateUrl: '/views/contacto.html'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
 }
 ]);
 
