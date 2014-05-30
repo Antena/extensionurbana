@@ -1,1 +1,1 @@
-web: pushd /public; python -m SimpleHTTPServer $PORT; popd
+web: cd public; python -m SimpleHTTPServer $PORT;
