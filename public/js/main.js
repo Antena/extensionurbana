@@ -425,6 +425,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', '$loca
         $scope.currentBound = tileBounds;
 
         $scope.panTo(parseFloat(sw[0]),parseFloat(sw[1]),parseFloat(ne[0]),parseFloat(ne[1]));
+        $scope.slideHide();
         $scope.$apply();
     }
 

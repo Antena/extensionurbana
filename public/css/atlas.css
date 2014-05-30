@@ -18,38 +18,7 @@ html, body, #content {
  * HEADER
  * ********************************************************************************************************************/
 #header {
-    /*height: 50px;*/
     margin-bottom: 0px;
-}
-
-#header h5, #header h6 {
-    /*margin-top: 0px;*/
-    /*margin-bottom: 0px;*/
-    /*line-height: 50px;*/
-    /*margin-left: 20px;*/
-    /*margin-right: 20px;*/
-}
-
-#header h5 {
-    /*margin-right: 40px;*/
-}
-
-#header .logos {
-    /*margin-top: 5px;*/
-}
-
-#header ul {
-    /*margin-bottom: 0px;*/
-}
-
-#header input {
-    /*width: 200px;*/
-    /*margin-top: 5px;*/
-    /*display: inline-block;*/
-}
-
-.logos ul li {
-    /*margin-left: 25px;*/
 }
 
 /* *********************************************************************************************************************
@@ -70,7 +39,7 @@ html, body, #content {
     position: absolute;
     top: 95px;
     right: 330px;
-    z-index: 1000;
+    z-index: 2;
     width: 20px;
     font-size: 20px;
     color: #1abc9c;
@@ -80,7 +49,7 @@ html, body, #content {
     position: absolute;
     top: 95px;
     right: 5px;
-    z-index: 1000;
+    z-index: 2;
     width: 110px;
 }
 
@@ -88,7 +57,7 @@ html, body, #content {
     position: absolute;
     top: 95px;
     right: 115px;
-    z-index: 1000;
+    z-index: 2;
     width: 210px;
 }
 
@@ -116,7 +85,7 @@ html, body, #content {
     position: absolute;
     top: 140px;
     right: 15px;
-    z-index: 100000000 !important;
+    z-index: 2;
     width: 250px;
 }
 
@@ -203,10 +172,8 @@ html, body, #content {
     font-size: 10px;
     font-family: Arial, sans-serif;
 }
-
-
-
 #data text.label{ font-family: Arial, sans-serif; font-size:12px; font-weight:bold; }
+
 #data text.value{ font-family: Arial, sans-serif; font-size:12px;font-weight:bold; }
 
 .data .tooltip-inner {
@@ -216,7 +183,9 @@ html, body, #content {
 }
 
 .index.edge { fill: #1f77b4; }
+
 .index.openness { fill: #ff7f0e; }
+
 /* *********************************************************************************************************************
  * LEGENDS
  * ********************************************************************************************************************/
@@ -319,4 +288,5 @@ html, body, #content {
 #sidebar .pagination {
     position: absolute;
     bottom: 0px;
+    margin-left: 25px;
 }

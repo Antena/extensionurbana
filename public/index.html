@@ -45,25 +45,25 @@
 
     <div class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">
-            <li ng-class="{ active: location.path() == '/' }">
+            <li ng-class="{ active: location.path() == '/' && slideVisible }">
                 <a href="#" ng-click="openSlide('/')" prevent-click>Inicio</a>
             </li>
 
-            <li ng-class="{ active: location.path() == '/atributos' }">
+            <li ng-class="{ active: location.path() == '/atributos' && slideVisible }">
                 <a href="#" ng-click="openSlide('/atributos')" prevent-click>Atributos de expansión</a>
             </li>
 
-            <li class="dropdown" ng-class="{ active: location.path().indexOf('/metricas') > 0 }">
+            <li class="dropdown" ng-class="{ active: location.path().indexOf('/metricas') > 0 && slideVisible }">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Métricas <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="#" ng-click="openSlide('/metricas1')" prevent-click>Métricas de área</a></li>
                     <li><a href="#" ng-click="openSlide('/metricas2')" prevent-click>Densidad, fragmentación y compacidad</a></li>
                 </ul>
             </li>
-            <li ng-class="{ active: location.path() == '/bibliografia' }">
+            <li ng-class="{ active: location.path() == '/bibliografia' && slideVisible }">
                 <a href="#" ng-click="openSlide('/bibliografia')" prevent-click>Bibliografía</a>
             </li>
-            <li ng-class="{ active: location.path() == '/contacto' }">
+            <li ng-class="{ active: location.path() == '/contacto' && slideVisible }">
                 <a href="#" ng-click="openSlide('/contacto')" prevent-click>Descargas y contacto</a>
             </li>
         </ul>
@@ -71,7 +71,7 @@
         <form class="navbar-form navbar-right" action="#" role="search">
             <div class="form-group">
                 <div class="input-group">
-                    <input type="search" class="form-control input-lg" data-provide="typeahead" placeholder="Buscar municipio" id="step1" typeahead/>
+                    <input type="search" class="form-control" data-provide="typeahead" placeholder="Buscar municipio" id="step1" typeahead/>
                     <span class="input-group-btn">
                     <button type="submit" class="btn">
                         <span class="fui-search"></span>
