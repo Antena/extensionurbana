@@ -27,7 +27,7 @@ atlasApp.config(['$httpProvider', '$routeProvider', '$locationProvider', functio
         .otherwise({
             redirectTo: '/'
         });
-}
+    }
 ]);
 
 // Directives
