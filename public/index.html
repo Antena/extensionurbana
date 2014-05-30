@@ -40,31 +40,31 @@
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
             <span class="sr-only">Toggle navigation</span>
         </button>
-        <a class="navbar-brand" href="/">AtlasCIPUV</a>
+        <a class="navbar-brand" href="#" ng-click="openSlide('/#/')">AtlasCIPUV</a>
     </div>
 
     <div class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">
             <li ng-class="{ active: location.path() == '/' }">
-                <a href="/#/">Inicio</a>
+                <a href="#" ng-click="openSlide('/')" prevent-click>Inicio</a>
             </li>
 
             <li ng-class="{ active: location.path() == '/atributos' }">
-                <a href="/#/atributos">Atributos de expansión</a>
+                <a href="#" ng-click="openSlide('/atributos')" prevent-click>Atributos de expansión</a>
             </li>
 
             <li class="dropdown" ng-class="{ active: location.path().indexOf('/metricas') > 0 }">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Métricas <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="/#/metricas1">Métricas de área</a></li>
-                    <li><a href="/#/metricas2">Densidad, fragmentación y compacidad</a></li>
+                    <li><a href="#" ng-click="openSlide('/metricas1')" prevent-click>Métricas de área</a></li>
+                    <li><a href="#" ng-click="openSlide('/metricas2')" prevent-click>Densidad, fragmentación y compacidad</a></li>
                 </ul>
             </li>
             <li ng-class="{ active: location.path() == '/bibliografia' }">
-                <a href="/#/bibliografia">Bibliografía</a>
+                <a href="#" ng-click="openSlide('/bibliografia')" prevent-click>Bibliografía</a>
             </li>
             <li ng-class="{ active: location.path() == '/contacto' }">
-                <a href="/#/contacto">Descargas y contacto</a>
+                <a href="#" ng-click="openSlide('/contacto')" prevent-click>Descargas y contacto</a>
             </li>
         </ul>
 

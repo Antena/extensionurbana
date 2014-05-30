@@ -27,11 +27,10 @@ atlasApp.config(['$httpProvider', '$routeProvider', '$locationProvider', functio
         .otherwise({
             redirectTo: '/'
         });
-
-    // configure html5 to get links working on jsfiddle
-//    $locationProvider.html5Mode(true);
 }
-]);// Directives
+]);
+
+// Directives
 var directives = angular.module('atlas.directives', []);
 directives.directive('flatuiCheckbox', function($timeout) {
     return {

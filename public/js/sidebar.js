@@ -1,5 +1,5 @@
 angular.module('atlas.sidebar', [])
-    .directive('sidebar', [function() {
+    .directive('sidebar', ['$location', function($location) {
         return function(scope, element, attrs) {
             var sidebarHeight = $(window).height() - $("#header").height();
             $(element)
@@ -37,6 +37,11 @@ angular.module('atlas.sidebar', [])
                 } else {
                     scope.slideShow();
                 }
+            }
+
+            scope.openSlide = function(path) {
+                $location.path(path);
+                scope.slideShow();
             }
         }
     }])
