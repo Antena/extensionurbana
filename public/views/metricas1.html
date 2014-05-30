@@ -1,0 +1,70 @@
+<h5>Métricas de área</h5>
+
+<div class="page" ng-show="page == 1">
+    <p><strong>ÁREA URBANA:</strong> área ocupada principalmente por pixeles construidos, por proximidad de pixeles en base a un circulo con un área de 1 km2 alrededor de cada pixel (distancia caminable).</p>
+    <ul class="list-unstyled">
+        <li><strong>Área Urbana Construida:</strong> área ocupada que contiene más de un 50 por ciento de pixeles construidos.</li>
+        <li><strong>Área Sub-Urbana Construida:</strong> área ocupada por pixeles que contienen 10 a 50 porciento de pixeles construidos dentro de un círculo con radio de 586 m (1 km2 ).</li>
+        <li><strong>Área Rural Construida:</strong> área ocupada por pixeles que tienen menos de un 10 por ciento de pixeles construidos dentro de un círculo de 586 m de radio (1 km 2 )</li>
+    </ul>
+</div>
+
+<div class="page" ng-show="page == 2">
+    <p>A modo de ejemplo en el siguiente mapa se muestra el Área Urbana para:</p>
+    <img src="/images/texts/metricas-page2.png"/>
+</div>
+
+<div class="page" ng-show="page == 3">
+    <ul class="list-unstyled">
+        <li><strong>Espacios abiertos en entornos urbanizados:</strong> Son los espacios abiertos captados por la urbanización y en sus bordes.</li>
+        <li><strong>Espacios abiertos captados:</strong> clusters de espacios abiertos que están completamente rodeados  por pixeles de áreas construidas y por el borde urbano y cuya área es menor a 200 hectáreas.</li>
+        <li><strong>Espacio rural abierto:</strong> espacios abiertos que no son espacios abiertos  urbanizados.</li>
+    </ul>
+    <img src="/images/texts/metricas-page3.png"/>
+</div>
+
+<div class="page" ng-show="page == 4">
+    <p><strong>HUELLA URBANA:</strong> Espacios que están siendo/o serán  potencialmente transformados por los usos urbanos.</p>
+    <ul class="list-unstyled">
+        <li><strong>Espacios abiertos del borde urbano:</strong> pixeles con tierra vacante que están localizados a una distancia de 100 metros de pixeles urbanos o sub-urbanos.</li>
+    </ul>
+    <table>
+        <tr>
+            <td><img src="/images/texts/metricas-page4a.png" style="width: 170px"/></td>
+            <td><img src="/images/texts/metricas-page4b.png" style="width: 170px"/></td>
+        </tr>
+    </table>
+</div>
+
+<div class="page" ng-show="page == 5">
+    <p><strong>NUEVOS DESARROLLOS:</strong> Crecimiento urbano ocurrido  entre dos periodos de tiempo 1990-2000 y 2000-2010</p>
+    <ul class="list-unstyled">
+        <li><strong>Completamiento y Densificación:</strong> Todo  nuevo desarrollo en espacios abiertos y vacantes dentro del área urbana.</li>
+        <li><strong>Extensión Urbana:</strong> Todo nuevo desarrollo hacia el espacio no urbanizado que es continuo a la urbanización existente</li>
+        <li><strong>Crecimiento discontinuo:</strong> Áreas de desarrollo espacialmente independientes y discontinuas de la urbanización existente y no coincidentes con la huella urbana de referencia ( T1). Estos 	crecimientos tienen un mayor impacto en el crecimiento de la huella  urbana y en la fragmentación de los espacios abiertos (Parent et al.)</li>
+    </ul>
+    <img src="/images/texts/metricas-page5.png" style="height: 300px"/>
+</div>
+
+<div class="page" ng-show="page == 6">
+    <p><strong>NUEVO CRECIMIENTO:</strong>Crecimiento urbano ocurrido  entre dos periodos de tiempo (T1 y T2). 1990-2000 y 2000-2010</p>
+    <ul class="list-unstyled">
+        <li><strong>Completamiento y Densificación:</strong> Todo  nuevo desarrollo en espacios abiertos y vacantes dentro del área urbana.</li>
+        <li><strong>Extensión Urbana:</strong> Todo nuevo desarrollo hacia el espacio no urbanizado que es continuo a la urbanización existente</li>
+        <li><strong>Crecimiento discontinuo:</strong> Áreas de desarrollo espacialmente independientes y discontinuas de la urbanización existente y no coincidentes con la huella urbana de referencia ( T1). Estos 	crecimientos tienen un mayor impacto en el crecimiento de la huella  urbana y en la fragmentación de los espacios abiertos (Parent et al.)</li>
+    </ul>
+    <img src="/images/texts/metricas-page6.png" style="height: 300px"/>
+</div>
+
+<div class="pagination pagination-minimal">
+    <ul>
+        <li class="previous"><a href="#" ng-click="setPage(page-1)" class="fui-arrow-left" prevent-click></a></li>
+        <li ng-class="{ active: page == 1 }"><a href="#" ng-click="setPage(1)" prevent-click>1</a></li>
+        <li ng-class="{ active: page == 2 }"><a href="#" ng-click="setPage(2)" prevent-click>2</a></li>
+        <li ng-class="{ active: page == 3 }"><a href="#" ng-click="setPage(3)" prevent-click>3</a></li>
+        <li ng-class="{ active: page == 4 }"><a href="#" ng-click="setPage(4)" prevent-click>4</a></li>
+        <li ng-class="{ active: page == 5 }"><a href="#" ng-click="setPage(5)" prevent-click>5</a></li>
+        <li ng-class="{ active: page == 6 }"><a href="#" ng-click="setPage(6)" prevent-click>6</a></li>
+        <li class="next"><a href="#" ng-click="setPage(page+1)" class="fui-arrow-right" prevent-click></a></li>
+    </ul>
+</div>

@@ -1,10 +1,35 @@
 // Atlas app
-var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives', 'atlas.factories', 'ui.slider', 'google.map', 'angular-intro']);
+var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives', 'atlas.factories', 'ui.slider', 'google.map', 'angular-intro', 'atlas.sidebar']);
 
-atlasApp.config(['$httpProvider', function($httpProvider) {
+atlasApp.config(['$httpProvider', '$routeProvider', '$locationProvider', function($httpProvider, $routeProvider, $locationProvider) {
     //stuff to allow s3 json loading (CORS)
     $httpProvider.defaults.useXDomain = true;
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    $routeProvider
+        .when('/', {
+            templateUrl: '/views/home.html'
+        })
+        .when('/atributos', {
+            templateUrl: '/views/atributos.html'
+        })
+        .when('/metricas1', {
+            templateUrl: '/views/metricas1.html'
+        })
+        .when('/metricas2', {
+            templateUrl: '/views/metricas2.html'
+        })
+        .when('/bibliografia', {
+            templateUrl: '/views/bibliografia.html'
+        })
+        .when('/contacto', {
+            templateUrl: '/views/contacto.html'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
+
+    // configure html5 to get links working on jsfiddle
+//    $locationProvider.html5Mode(true);
 }
 ]);// Directives
 var directives = angular.module('atlas.directives', []);
@@ -286,7 +311,8 @@ factories.factory('TileLayer', [function() {
 
 // Controllers
 var controllers = angular.module('atlas.controllers', []);
-controllers.controller('AppController', ['$scope',  'TileLayer', '$http', function($scope,  TileLayer, $http) {
+controllers.controller('AppController', ['$scope',  'TileLayer', '$http', '$location', function($scope,  TileLayer, $http, $location) {
+    $scope.location = $location;
     $scope.selection = {
         urbanArea: {
             visible: true,
@@ -576,6 +602,13 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', functi
     $scope.resetMap = function() {
         $scope.map.setZoom(5);
         $scope.map.setCenter(new google.maps.LatLng(-36.7427549,-62.4812459));
+    }
+
+    $scope.page = 1;
+    $scope.setPage = function(page) {
+        if (page < 1) page = 1;
+        if (page > 6) page = 6;
+        $scope.page = page;
     }
 
     // Intro.js

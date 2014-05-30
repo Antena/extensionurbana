@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/atlas.css">
     <link rel="stylesheet" href="css/introjs.css">
 
-    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    <!--<script src="js/vendor/modernizr-2.6.2.min.js"></script>-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3swa2pSSQ9WNV5M6bRHzss6IW9E-bOUQ&sensor=false"></script>
     <script src="js/vendor/markerclusterer.js"></script>
     <script src="js/vendor/markerwithlabel.js"></script>
@@ -32,6 +32,57 @@
 <![endif]-->
 
 <div id="content">
+
+<!-- Navbar -->
+<nav class="navbar navbar-default" role="navigation" id="header">
+
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+            <span class="sr-only">Toggle navigation</span>
+        </button>
+        <a class="navbar-brand" href="/">AtlasCIPUV</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+        <ul class="nav navbar-nav">
+            <li ng-class="{ active: location.path() == '/' }">
+                <a href="/#/">Inicio</a>
+            </li>
+
+            <li ng-class="{ active: location.path() == '/atributos' }">
+                <a href="/#/atributos">Atributos de expansión</a>
+            </li>
+
+            <li class="dropdown" ng-class="{ active: location.path().indexOf('/metricas') > 0 }">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Métricas <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/#/metricas1">Métricas de área</a></li>
+                    <li><a href="/#/metricas2">Densidad, fragmentación y compacidad</a></li>
+                </ul>
+            </li>
+            <li ng-class="{ active: location.path() == '/bibliografia' }">
+                <a href="/#/bibliografia">Bibliografía</a>
+            </li>
+            <li ng-class="{ active: location.path() == '/contacto' }">
+                <a href="/#/contacto">Descargas y contacto</a>
+            </li>
+        </ul>
+
+        <form class="navbar-form navbar-right" action="#" role="search">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="search" class="form-control input-lg" data-provide="typeahead" placeholder="Buscar municipio" id="step1" typeahead/>
+                    <span class="input-group-btn">
+                    <button type="submit" class="btn">
+                        <span class="fui-search"></span>
+                    </button>
+                    </span>
+                </div>
+            </div>
+        </form>
+
+    </div><!-- /.navbar-collapse -->
+</nav><!-- /navbar -->
 
 <div id="chartIcon" ng-show="!chartWindowVisible">
         <span class="glyphicon glyphicon-signal" ng-click="toggleChartVisibility()"
@@ -272,25 +323,15 @@
     </ul>
 </div>
 
-<div id="header">
-    <h5 class="pull-left">Atlas de Crecimiento Urbano</h5>
-    <input type="text" data-provide="typeahead" placeholder="Buscar municipio" class="form-control pull-left" id="step1" typeahead>
-    <p class="pull-left" style="margin-bottom: 0px; margin-left:5px; line-height: 50px">
-        <a href="#" ng-click="resetAll()" prevent-click>Reset</a>
-    </p>
-    <div class="logos pull-right">
-        <ul class="list-inline">
-            <li>
-                <img src="images/logo-cipuv.png">
-            </li>
-            <li>
-                <img src="images/logo-utdt.png">
-            </li>
-        </ul>
-    </div>
-</div>
-
 <div google-map zoom="5" min-zoom="5" max-zoom="15" class="map-canvas"></div>
+
+<div id="sidebar" sidebar>
+    <div class="tab-slip" ng-click="slideToggle()" ng-cloak>
+        <span class="glyphicon glyphicon-chevron-left" ng-show="slideVisible"></span>
+        <span class="glyphicon glyphicon-chevron-right" ng-show="!slideVisible"></span>
+    </div>
+    <div class="sidebar-content" ng-view=""></div>
+</div>
 
 </div>
 
@@ -320,6 +361,7 @@
 <script src="js/ui-slider.js"></script>
 <script src="js/bootstrap-typeahead.js"></script>
 <script src="js/google-map.js"></script>
+<script src="js/sidebar.js"></script>
 <script src="js/main.js"></script>
 
 <!-- Intro.js -->
