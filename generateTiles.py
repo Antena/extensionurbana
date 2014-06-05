@@ -14,7 +14,7 @@ import sys
 exec_do_tiff = False
 exec_do_tiles = False 
 exec_get_corners = True
-exec_do_zoning = False
+exec_do_zoning = False 
 exec_do_index = True
 exec_restrict_files= True
 
@@ -306,6 +306,8 @@ def listCities(dir):
 					t1_edge=''
 					t0_open=''
 					t1_open=''
+					t2_edge=''
+					t2_open=''
 					for line in resultados.readlines():
 						if line.find('t0 EDGE INDEX is ')>=0:
 							t0_edge=line[line.find('0.'):].replace('\n','')
@@ -320,11 +322,26 @@ def listCities(dir):
 						indexes[relativePath]={}
 
 					print relativePath
-					indexes[relativePath]['t0_edge']=t0_edge
-					indexes[relativePath]['t1_edge']=t1_edge
-					indexes[relativePath]['t0_open']=t0_open
-					indexes[relativePath]['t1_open']=t1_open
+					try:
+						if "T1T2" in dir:
+							indexes[relativePath]['t2_open']=t1_open
+							indexes[relativePath]['t2_edge']=t1_edge
 
+							if 't1_edge' not in indexes[relativePath]:
+								indexes[relativePath]['t1_edge']=t0_edge
+							if 't1_open' not in indexes[relativePath]:
+								indexes[relativePath]['t1_open']=t0_open
+						else:
+							if 't1_edge' not in indexes[relativePath]:
+								indexes[relativePath]['t1_edge']=t1_edge
+							if 't1_open' not in indexes[relativePath]:
+								indexes[relativePath]['t1_open']=t1_open
+
+							indexes[relativePath]['t0_edge']=t0_edge
+							indexes[relativePath]['t0_open']=t0_open
+							
+					except:
+						print "error getting indexes"
 			except:
 				print "Unexpected error:", sys.exc_info()[0]
 				print 'error processing file ' + str(file)
@@ -338,11 +355,19 @@ def listCities(dir):
 #Obj: run script on .img files and leave them somewhere useful
 def main():
 	displayName_dict=dict()
+	new_indices_t0_t1_dict=dict()
+	new_indices_t1_t2_dict=dict()
 	city_names= io.open('city_names.csv')
+	new_indices_t0_t1=io.open('new_indices_t0_t1.csv')
+	new_indices_t1_t2=io.open('new_indices_t1_t2.csv')
 	for line in city_names.readlines():
-		displayName_dict[line.split(',')[0]]=line.split(',')[1].replace('"','').encode('utf-8')
+		displayName_dict[line.split(',')[0]]=line[line.find(',')+1:].replace('"',"").encode('UTF-8')
 
-	print displayName_dict;
+	for line in new_indices_t0_t1.readlines():
+		new_indices_t0_t1_dict[line.split(',')[0]]=line.split(',')[1:]
+
+	for line in new_indices_t1_t2.readlines():
+		new_indices_t1_t2_dict[line.split(',')[0]]=line.split(',')[1:]
 
 
 
@@ -355,6 +380,8 @@ def main():
 		missingCities={}
 		completeCities = []
 		compulsoryFiles=[("urban_area","t0"),("urban_area","t1"),("urban_area","t2"),("urban_footprint","t0"),("urban_footprint","t1"),("urban_footprint","t2"),("new_development","t0_t1"),("new_development","t1_t2")]
+		compulsoryIndexes=["t0_edge","t1_edge","t2_edge","t0_open","t1_open","t2_open"]
+		missingIndexes = {}
 	for city in foundFiles:
 		hasZoning=True
 		complete=True
@@ -377,32 +404,121 @@ def main():
 			hasZoning=False
 
 		if complete:
-			
-			
+						
 			try:
 				displayName=",".join(city.split('/')[::-1])
-				displayName=displayName_dict[city];
+				if city in displayName_dict:
+					displayName=displayName_dict[city];
+			
+
 				if exec_get_corners:
+					print ' getting corners'
 					boundNE=str(corners[city][0][0][:-1][::-1]).replace('(','').replace(')','')
 					boundSW=str(corners[city][0][1][:-1][::-1]).replace('(','').replace(')','')
+					print '  getting indexes'
 					hasIndex=False;
 					t0_edge=''
 					t1_edge=''
 					t0_open=''
 					t1_open=''
-					if city in indexes:
-						hasIndex=True
-						citiesWithIndex+=1
-						t0_edge=indexes[city]['t0_edge']
-						t1_edge=indexes[city]['t1_edge']
-						t0_open=indexes[city]['t0_open']
-						t1_open=indexes[city]['t1_open']
+					t2_edge=''
+					t2_open=''
+
+					t0_urban_urban=''
+					t0_suburban_urban=''
+					t0_rural_urban=''
+					t0_urban_footprint=''
+					t0_suburban_footprint=''
+					t0_rural_footprint=''
+					t1_urban_urban=''
+					t1_suburban_urban=''
+					t1_rural_urban=''
+					t1_urban_footprint=''
+					t1_suburban_footprint=''
+					t1_rural_footprint=''
+
+					t0_t1_infill=''
+					t0_t1_extension=''
+					t0_t1_leapfrog=''
+
+					t2_urban_urban=''
+					t2_suburban_urban=''
+					t2_rural_urban=''
+					t2_urban_footprint=''
+					t2_suburban_footprint=''
+					t2_rural_footprint=''
+
+					t1_t2_infill=''
+					t1_t2_extension=''
+					t1_t2_leapfrog=''
+						
+
+					if city in new_indices_t0_t1_dict:
+						#new indices
+						t0_urban_urban=new_indices_t0_t1_dict[city][0].strip()
+						t0_suburban_urban=new_indices_t0_t1_dict[city][1].strip()
+						t0_rural_urban=new_indices_t0_t1_dict[city][2].strip()
+						t0_urban_footprint=new_indices_t0_t1_dict[city][3].strip()
+						t0_suburban_footprint=new_indices_t0_t1_dict[city][4].strip()
+						t0_rural_footprint=new_indices_t0_t1_dict[city][5].strip()
+						t1_urban_urban=new_indices_t0_t1_dict[city][6].strip()
+						t1_suburban_urban=new_indices_t0_t1_dict[city][7].strip()
+						t1_rural_urban=new_indices_t0_t1_dict[city][8].strip()
+						t1_urban_footprint=new_indices_t0_t1_dict[city][9].strip()
+						t1_suburban_footprint=new_indices_t0_t1_dict[city][10].strip()
+						t1_rural_footprint=new_indices_t0_t1_dict[city][11].strip()
+
+						t0_t1_infill=new_indices_t0_t1_dict[city][12].strip()
+						t0_t1_extension=new_indices_t0_t1_dict[city][13].strip()
+						t0_t1_leapfrog=new_indices_t0_t1_dict[city][14].strip()
 					else:
+						print 'not found new indices for ' + str(city)
+					
+					if city in new_indices_t1_t2_dict:
+						t2_urban_urban=new_indices_t1_t2_dict[city][6].strip()
+						t2_suburban_urban=new_indices_t1_t2_dict[city][7].strip()
+						t2_rural_urban=new_indices_t1_t2_dict[city][8].strip()
+						t2_urban_footprint=new_indices_t1_t2_dict[city][9].strip()
+						t2_suburban_footprint=new_indices_t1_t2_dict[city][10].strip()
+						t2_rural_footprint=new_indices_t1_t2_dict[city][11].strip()
+
+						t1_t2_infill=new_indices_t1_t2_dict[city][12].strip()
+						t1_t2_extension=new_indices_t1_t2_dict[city][13].strip()
+						t1_t2_leapfrog=new_indices_t1_t2_dict[city][14].strip()
+
+
+
+					if city in indexes: 
+						if len(indexes[city])==6:
+							hasIndex=True
+							citiesWithIndex+=1
+							try:
+								t0_edge=indexes[city]['t0_edge']
+								t0_open=indexes[city]['t0_open']
+								t1_edge=indexes[city]['t1_edge']
+								t1_open=indexes[city]['t1_open']
+								t2_edge=indexes[city]['t2_edge']
+								t2_open=indexes[city]['t2_open']
+							except:
+								print "error getting indexes complete cities"
+						else:
+							for index in compulsoryIndexes:
+								if index not in indexes[city]:
+									if city not in missingIndexes:
+										missingIndexes[city]=[]
+									missingIndexes[city]+=[index]
+									citiesWithoutIndex+=[city]
+					else:
+						missingIndexes[city]=["t0_edge","t1_edge","t2_edge","t0_open","t1_open","t2_open"]
 						citiesWithoutIndex+=[city]
 
-
+					print '    building row'
 					print 'city ' + str(city) + ' : ' + str(len(city.split('/')))
-					completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'boundSW':boundSW,'boundNE':boundNE,'displayName':displayName,'zoning':hasZoning,'t0_open':t0_open,'t1_open':t1_open,'t1_edge':t1_edge,'t0_edge':t0_edge,'hasIndex':hasIndex}]
+					completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'boundSW':boundSW,'boundNE':boundNE,'displayName':displayName,'zoning':hasZoning,'t0_open':t0_open,'t1_open':t1_open,'t1_edge':t1_edge,'t0_edge':t0_edge,'t2_edge':t2_edge,'t2_open':t2_open,'hasIndex':hasIndex,
+					't0_urban_urban':t0_urban_urban,'t0_suburban_urban':t0_suburban_urban,'t0_rural_urban':t0_rural_urban,'t0_urban_footprint':t0_urban_footprint,'t0_suburban_footprint':t0_suburban_footprint,'t0_rural_footprint':t0_rural_footprint,
+					't1_urban_urban':t1_urban_urban,'t1_suburban_urban':t1_suburban_urban,'t1_rural_urban':t1_rural_urban,'t1_urban_footprint':t1_urban_footprint,'t1_suburban_footprint':t1_suburban_footprint,'t1_rural_footprint':t1_rural_footprint,
+					't2_urban_urban':t2_urban_urban,'t2_suburban_urban':t2_suburban_urban,'t2_rural_urban':t2_rural_urban,'t2_urban_footprint':t2_urban_footprint,'t2_suburban_footprint':t2_suburban_footprint,'t2_rural_footprint':t2_rural_footprint,
+					't0_t1_leapfrog':t0_t1_leapfrog,'t0_t1_extension':t0_t1_extension,'t0_t1_infill':t0_t1_infill,'t1_t2_leapfrog':t1_t2_leapfrog,'t1_t2_extension':t1_t2_extension,'t1_t2_infill':t1_t2_infill}]
 				else:
 					completeCities+=[{'name':city.split('/')[1],'province':city.split('/')[0],'dirname':city,'displayName':displayName,'zoning':hasZoning}]
 			except:
@@ -413,28 +529,36 @@ def main():
 	
 	print ' cities with no index'
 	
-	for cit in citiesWithoutIndex:
-		print cit
+	for cit in set(citiesWithoutIndex):
+		print cit + " "  + str(missingIndexes[cit])
 
 	print ' end of  no index'
 
 	print "complete cities " + str(len(completeCities))
 	
-	for city in completeCities:
-		print city['dirname']	
+#	for city in completeCities:
+#		print city['dirname']	
 
 	print "missing cities " + str(len(missingCities))
-	for city in missingCities:
+	for city in set(missingCities):
 		print city + " " + str(missingCities[city])
 	
 
 	outputcsv = io.open('cities.csv','wb')
 	writer = csv.writer(outputcsv, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-	writer.writerow(['id','name','province','dirname','boundsSW','boundsNE','displayName','zoning','t0_open','t1_open','t0_edge','t1_edge','hasIndex'])
+	writer.writerow(['id','name','province','dirname','boundsSW','boundsNE','displayName','zoning','t0_open','t1_open','t2_open','t0_edge','t1_edge','t2_edge','hasIndex',
+		't0_urban_urban','t0_suburban_urban','t0_rural_urban','t0_urban_footprint','t0_suburban_footprint','t0_rural_footprint',
+		't1_urban_urban','t1_suburban_urban','t1_rural_urban','t1_urban_footprint','t1_suburban_footprint','t1_rural_footprint',
+		't2_urban_urban','t2_suburban_urban','t2_rural_urban','t2_urban_footprint','t2_suburban_footprint','t2_rural_footprint',
+		't0_t1_leapfrog','t0_t1_extension','t0_t1_infill','t1_t2_leapfrog','t1_t2_extension','t1_t2_infill'])
 	newId=1
 	for city in completeCities:
 		if exec_get_corners:
-			cityRow = [ newId,city['name'],city['province'],city['dirname'],city['boundNE'],city['boundSW'],city['displayName'],city['zoning'],city['t0_open'],city['t1_open'],city['t0_edge'],city['t1_edge'],city['hasIndex']]
+			cityRow = [ newId,city['name'],city['province'],city['dirname'],city['boundNE'],city['boundSW'],city['displayName'],city['zoning'],city['t0_open'],city['t1_open'],city['t2_open'],city['t0_edge'],city['t1_edge'],city['t2_edge'],city['hasIndex'],
+			city['t0_urban_urban'],city['t0_suburban_urban'],city['t0_rural_urban'],city['t0_urban_footprint'],city['t0_suburban_footprint'],city['t0_rural_footprint'],
+			city['t1_urban_urban'],city['t1_suburban_urban'],city['t1_rural_urban'],city['t1_urban_footprint'],city['t1_suburban_footprint'],city['t1_rural_footprint'],
+			city['t2_urban_urban'],city['t2_suburban_urban'],city['t2_rural_urban'],city['t2_urban_footprint'],city['t2_suburban_footprint'],city['t2_rural_footprint'],
+			city['t0_t1_leapfrog'],city['t0_t1_extension'],city['t0_t1_infill'],city['t1_t2_leapfrog'],city['t1_t2_extension'],city['t1_t2_infill']]
 		else:
 			cityRow = [ newId,city['name'],city['province'],city['dirname'],city['displayName'],city['zoning']]
 		writer.writerow(cityRow)
