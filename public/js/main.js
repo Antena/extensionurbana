@@ -1,5 +1,14 @@
 // Atlas app
-var atlasApp = angular.module('atlas', ['atlas.controllers', 'atlas.directives', 'atlas.factories', 'ui.slider', 'google.map', 'angular-intro', 'atlas.sidebar']);
+var atlasApp = angular.module('atlas', [
+    'atlas.controllers',
+    'atlas.directives',
+    'atlas.factories',
+    'atlas.vis',
+    'ui.slider',
+    'google.map',
+    'angular-intro',
+    'atlas.sidebar'
+]);
 
 atlasApp.config(['$httpProvider', '$routeProvider', '$locationProvider', function($httpProvider, $routeProvider, $locationProvider) {
     //stuff to allow s3 json loading (CORS)
@@ -143,126 +152,6 @@ directives.directive('typeahead', ['$http', function($http) {
 
     }
 }])
-directives.directive('axis', function() {
-    return function(scope, element, attrs) {
-        var margin = {top: 20, right: 40, bottom: 0, left: 20},
-            width = 200,
-            height = 10;
-
-        var start_year = 1990, end_year = 2010;
-
-        var x = d3.scale.linear()
-            .range([0, width]);
-
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .tickValues([1990,2000,2010])
-            .orient("top");
-
-        var formatYears = d3.format("0000");
-        xAxis.tickFormat(formatYears);
-
-        var svg = d3.select($(element)[0]).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        x.domain([start_year, end_year]);
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + 0 + ")")
-            .call(xAxis);
-    }
-})
-directives.directive('chart', function() {
-    return function(scope, element, attrs) {
-
-        var margin = {top: 0, right: 40, bottom: 0, left: 20},
-            width = 200,
-            height = 45;
-
-        var start_year = 1990, end_year = 2010;
-
-        var c = d3.scale.category10();
-
-        var x = d3.scale.linear()
-            .range([0, width]);
-
-        var svg = d3.select($(element)[0]).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        x.domain([start_year, end_year]);
-        var xScale = d3.scale.linear()
-            .domain([start_year, end_year])
-            .range([0, width]);
-
-        var data = [
-            {
-                values: [[1990,0.633046073853], [2000,0.429026387625], [2010,0.27738795614]],
-                name: "Fragmentación de Adjacencia",
-                id: "edge",
-                desc: 'El <strong>Indicador de Fragmentación de Adyacencia</strong> mide la frecuencia en qué áreas construidas están rodeadas por espacios verdes o fuentes de agua. Es decir, este indicador mide la frecuencia en que los pixeles construidos son adyacentes a pixeles no construidos. Los valores de este índice varían entre 0 y 1, representando los valores más altos la mayor frecuencia de pixeles construidos adyacentes a espacios abiertos. Los pixeles empleados en estas imágenes satelitales tienen una resolución de 30 por 30 metros, esta resolución permite una buena medición de la fragmentación de las áreas construidas a escala individual de los edificios, es decir permite medir la fragmentación a nivel micro de los espacios abiertos dentro y alrededor de la ciudad.'
-            },
-            {
-                values: [[1990,0.501846628495], [2000,0.407905606772], [2010,0.314881183383]],
-                name: "Fragmentación de Apertura",
-                id: "openness",
-                desc: 'El <strong>Indicador de Fragmentación de Apertura</strong> mide la proporción de espacio abierto en un círculo de 1km2 medido alrededor de cada pixel construido. El radio de este círculo (586 metros) corresponde con la distancia a cubrir en una caminata recreativa de 10 minutos. El Índice de Fragmentación de Apertura es un indicador de la cantidad de espacio abierto a una distancia caminable para las distintas partes de la ciudad, es decir mide la cantidad de espacio abierto en cada barrio. En síntesis, este indicador mide el promedio de los espacios abiertos (no construidos) en un área de 1 km2.'
-            }
-        ]
-
-        var rScale = d3.scale.linear()
-            .domain([0, 1])
-            .range([0, 15]);
-
-        var index = data.filter(function(d) { return d.id == attrs.chart })[0];
-
-        var g = svg.append("g")
-            .attr("class","index " + index['id']);
-
-        var circles = g.selectAll("circle")
-            .data(index.values)
-            .enter()
-            .append("circle")
-            .attr("class", attrs.chart)
-
-        var text = g.selectAll("text")
-            .data(index['values'])
-            .enter()
-            .append("text")
-
-        circles
-            .attr("cx", function(d, i) { return xScale(d[0]); })
-            .attr("cy", 20)
-            .attr("r", function(d) { return rScale(d[1]); });
-
-        text
-            .attr("y", 45)
-            .attr("x",function(d, i) { return xScale(d[0]); })
-            .attr("class","value " + attrs.chart)
-            .attr("text-anchor", "middle")
-            .text(function(d){ return d[1].toFixed(2); });
-
-        scope.updateChartInfo = function(chart, t0, t1, t2) {
-            d3.selectAll("circle." + chart)
-                .data([t0,t1,t2])
-                .attr("r", function(d) {
-                    return rScale(d || 0);
-                });
-
-            d3.selectAll("text." + chart)
-                .data([t0,t1,t2])
-                .text(function(d){
-                    return parseFloat(d) ? parseFloat(d).toFixed(2) : "-";
-                });
-        }
-    }
-})
 
 // Factories
 var factories = angular.module('atlas.factories', []);
@@ -408,8 +297,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', '$loca
         if ($scope.newDevelopment.layer) removeLayer($scope.newDevelopment)
         addLayer($scope.newDevelopment);
         addGeoJsonLayer($scope.zoning);
-        $scope.updateChartInfo("edge", city.t0_edge, city.t1_edge, city.t2_edge);
-        $scope.updateChartInfo("openness", city.t0_open, city.t1_open, city.t2_open);
+        $scope.updateVis(city);
 
         var sw = city.boundsSW.split(","),
             ne = city.boundsNE.split(",");
