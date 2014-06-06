@@ -160,6 +160,14 @@ html, body, #content {
     font-size:10px;
 }
 
+#data h6 {
+    color: #000;
+    font: 700 22px/22px nyt-franklin, arial, sans-serif;
+    border-bottom: 1px solid #ddd;
+    margin: 0 0 15px;
+    padding: 0 0 3px;
+}
+
 #data .axis path, #data .axis line {
     fill: none;
     stroke:#b6b6b6;
@@ -167,16 +175,24 @@ html, body, #content {
     font-family: Arial, sans-serif;
 }
 
-#data .axis text, #data text.index-value {
+#data .axis text, #data text.index-name {
     fill:#999;
     font-size: 10px;
     font-family: Arial, sans-serif;
 }
 
-.edge-index { fill: #1f77b4; }
+#data text.index-value {
+    font-size: 10px;
+    font-family: Arial, sans-serif;
+}
 
-.openness-index { fill: #ff7f0e; }
+#data .edge-index { fill: #1f77b4; }
 
+#data .openness-index { fill: #ff7f0e; }
+
+#data .chart-header {
+    margin-bottom: 5px;
+}
 #data .chart-title {
     font: 700 16px/15px nyt-franklin, arial, sans-serif;
     color: #000;

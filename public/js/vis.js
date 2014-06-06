@@ -50,9 +50,19 @@ vis.directive('fragmentationChart', function() {
                 .attr("class", "edge-index")
                 .attr("transform", "translate(0,0)")
 
+            svg.append("text")
+                .attr("class", "index-name")
+                .attr("transform", "translate(-" + margin.left + ",30)")
+                .text("Continuidad")
+
             var openness = svg.append("g")
                 .attr("class", "openness-index")
                 .attr("transform", "translate(0,60)")
+
+            svg.append("text")
+                .attr("class", "index-name")
+                .attr("transform", "translate(-" + margin.left + ",90)")
+                .text("Apertura")
 
             scope.$watch('data', function(city) {
                 if (!city) return;
@@ -74,7 +84,7 @@ vis.directive('fragmentationChart', function() {
                     .delay(500)
                     .attr("r", rScale)
 
-                var edgeText = edge.selectAll("text")
+                var edgeText = edge.selectAll(".index-value")
                     .data(edgeData)
 
                 edgeText.enter().append("text")
@@ -86,7 +96,7 @@ vis.directive('fragmentationChart', function() {
                 edgeText
                     .transition()
                     .delay(500)
-                    .text(function(d) { return parseFloat(d).toFixed(2); });
+                    .text(function(d) { return !d ? "-" : parseFloat(d).toFixed(2); });
 
                 // Openness Index
                 var opennessCircles = openness.selectAll("circle")
@@ -102,7 +112,7 @@ vis.directive('fragmentationChart', function() {
                     .delay(500)
                     .attr("r", rScale)
 
-                var opennessText = openness.selectAll("text")
+                var opennessText = openness.selectAll(".index-value")
                     .data(opennessData)
 
                 opennessText.enter().append("text")
@@ -114,7 +124,7 @@ vis.directive('fragmentationChart', function() {
                 opennessText
                     .transition()
                     .delay(500)
-                    .text(function(d) { return parseFloat(d).toFixed(2); });
+                    .text(function(d) { return !d ? "-" : parseFloat(d).toFixed(2); });
             })
         }
     }
@@ -122,7 +132,7 @@ vis.directive('fragmentationChart', function() {
 
 vis.directive('builtupChart', function() {
 
-    var margin = {top: 20, right: 0, bottom: 20, left: 35},
+    var margin = {top: 5, right: 0, bottom: 20, left: 35},
         width = 250 - margin.left - margin.right,
         height = 140 - margin.top - margin.bottom;
 
@@ -133,7 +143,7 @@ vis.directive('builtupChart', function() {
         .rangeRound([height, 0]);
 
     var color = d3.scale.ordinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        .range(["#54278f", "#756bb1", "#9e9ac8"]);
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -244,7 +254,7 @@ vis.directive('builtupChart', function() {
 
 vis.directive('newdevelopmentChart', function() {
 
-    var margin = {top: 20, right: 0, bottom: 20, left: 35},
+    var margin = {top: 5, right: 0, bottom: 20, left: 35},
         width = 250 - margin.left - margin.right,
         height = 140 - margin.top - margin.bottom;
 
@@ -255,7 +265,7 @@ vis.directive('newdevelopmentChart', function() {
         .rangeRound([height, 0]);
 
     var color = d3.scale.ordinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        .range(["#006837", "#31a354", "#78c679"]);
 
     var xAxis = d3.svg.axis()
         .scale(x)
