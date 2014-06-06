@@ -297,7 +297,7 @@ controllers.controller('AppController', ['$scope',  'TileLayer', '$http', '$loca
         if ($scope.newDevelopment.layer) removeLayer($scope.newDevelopment)
         addLayer($scope.newDevelopment);
         addGeoJsonLayer($scope.zoning);
-        $scope.updateVis(city);
+//        $scope.updateVis(city);
 
         var sw = city.boundsSW.split(","),
             ne = city.boundsNE.split(",");
