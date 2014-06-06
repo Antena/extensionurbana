@@ -93,8 +93,18 @@
     <div class="alert alert-info" style="width: 300px" ng-show="chartWindowVisible">
         <button type="button" class="close fui-cross" ng-click="toggleChartVisibility()"></button>
         <h6>{{ selection.city.displayName }}</h6>
+        <div class="chart-header">
+            <span class="chart-title">Fragmentación</span>
+        </div>
         <fragmentation-chart data="selection.city"></fragmentation-chart>
+        <div class="chart-header">
+            <span class="chart-title">Built-up</span>
+        </div>
         <builtup-chart data="selection.city"></builtup-chart>
+        <div class="chart-header">
+            <span class="chart-title">Nuevo crecimiento</span>
+        </div>
+        <newdevelopment-chart data="selection.city"></newdevelopment-chart>
     </div>
 </div>
 
