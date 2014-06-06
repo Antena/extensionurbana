@@ -1,5 +1,9 @@
 var vis = angular.module('atlas.vis', []);
 
+function capitaliseFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 vis.directive('fragmentationChart', function() {
 
     var margin = {top: 20, right: 42, bottom: 20, left: 78},
@@ -154,6 +158,13 @@ vis.directive('builtupChart', function() {
         .orient("left")
         .tickFormat(d3.format(".2s"));
 
+    var tip = d3.tip()
+        .attr('class', 'd3-tip').html(function(d) {
+            return capitaliseFirstLetter(d.type) + ": " + d.value.toFixed(1) + " Has";
+        })
+        .direction('e')
+        .offset([0, 6])
+
     return {
         restrict: 'E',
         scope: {
@@ -183,6 +194,8 @@ vis.directive('builtupChart', function() {
                 .style("text-anchor", "end")
                 .text("Has");
 
+            svg.call(tip);
+
             scope.$watch('data', function(city) {
                 if (!city) return;
 
@@ -190,27 +203,27 @@ vis.directive('builtupChart', function() {
                     {
                         year: 1990,
                         rural: parseFloat(city.t0_rural_urban),
-                        suburban: parseFloat(city.t0_suburban_urban),
-                        urban: parseFloat(city.t0_urban_urban)
+                        suburbano: parseFloat(city.t0_suburban_urban),
+                        urbano: parseFloat(city.t0_urban_urban)
                     },
                     {
                         year: 2000,
                         rural: parseFloat(city.t1_rural_urban),
-                        suburban: parseFloat(city.t1_suburban_urban),
-                        urban: parseFloat(city.t1_urban_urban)
+                        suburbano: parseFloat(city.t1_suburban_urban),
+                        urbano: parseFloat(city.t1_urban_urban)
                     },
                     {
                         year: 2010,
                         rural: parseFloat(city.t2_rural_urban),
-                        suburban: parseFloat(city.t2_suburban_urban),
-                        urban: parseFloat(city.t2_urban_urban)
+                        suburbano: parseFloat(city.t2_suburban_urban),
+                        urbano: parseFloat(city.t2_urban_urban)
                     }
                 ];
 
                 color.domain(d3.keys(data[0]).filter(function(key) { return key !== "year"; }));
                 data.forEach(function(d) {
                     var y0 = 0;
-                    d.values = color.domain().map(function(type) { return { type: type, y0: y0, y1: y0 += +d[type] }});
+                    d.values = color.domain().map(function(type) { return { type: type, y0: y0, y1: y0 += +d[type], value: d[type] }});
                     d.total = d.values[d.values.length - 1].y1;
                 })
 
@@ -231,7 +244,7 @@ vis.directive('builtupChart', function() {
                     .attr("class", "year-bargroup")
                     .attr("transform", function(d, i) {
                         return "translate(" + x(d.year) + ",0)";
-                    })
+                    });
 
                 var builtUpRects = builtUpGroups.selectAll("rect")
                     .data(function(d) { return d.values; })
@@ -241,6 +254,8 @@ vis.directive('builtupChart', function() {
                     .attr("y", height)
                     .attr("height", 0)
                     .style("fill", function(d) { return color(d.type); })
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide)
 
                 builtUpRects
                     .transition()
@@ -276,6 +291,13 @@ vis.directive('newdevelopmentChart', function() {
         .orient("left")
         .tickFormat(d3.format(".2s"));
 
+    var tip = d3.tip()
+        .attr('class', 'd3-tip').html(function(d) {
+            return capitaliseFirstLetter(d.type) + ": " + d.value.toFixed(1) + " Has";
+        })
+        .direction('e')
+        .offset([0, 6])
+
     return {
         restrict: 'E',
         scope: {
@@ -305,6 +327,8 @@ vis.directive('newdevelopmentChart', function() {
                 .style("text-anchor", "end")
                 .text("Has");
 
+            svg.call(tip);
+
             scope.$watch('data', function(city) {
                 if (!city) return;
 
@@ -326,7 +350,7 @@ vis.directive('newdevelopmentChart', function() {
                 color.domain(d3.keys(data[0]).filter(function(key) { return key !== "year"; }));
                 data.forEach(function(d) {
                     var y0 = 0;
-                    d.values = color.domain().map(function(type) { return { type: type, y0: y0, y1: y0 += +d[type] }});
+                    d.values = color.domain().map(function(type) { return { type: type, y0: y0, y1: y0 += +d[type], value: d[type] }});
                     d.total = d.values[d.values.length - 1].y1;
                 })
 
@@ -357,6 +381,8 @@ vis.directive('newdevelopmentChart', function() {
                     .attr("y", height)
                     .attr("height", 0)
                     .style("fill", function(d) { return color(d.type); })
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide)
 
                 builtUpRects
                     .transition()
