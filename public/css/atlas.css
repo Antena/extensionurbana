@@ -2,6 +2,7 @@ html, body, #content {
     height: 100%;
     margin: 0px;
     padding: 0px;
+    font: 22px/22px nyt-franklin, arial, sans-serif;
 }
 
 .map-canvas {
@@ -12,6 +13,14 @@ html, body, #content {
 .collapse-toggle {
     font-size: 14px;
     margin-top: 10px;
+}
+
+#data h6, #data .chart-title {
+    font: 700 22px/22px nyt-franklin, arial, sans-serif;
+}
+
+h5 {
+    font: 700 22px/22px nyt-franklin, arial, sans-serif;
 }
 
 /* *********************************************************************************************************************
@@ -37,8 +46,8 @@ html, body, #content {
  * ********************************************************************************************************************/
 #introControl {
     position: absolute;
-    top: 95px;
-    right: 330px;
+    top: 93px;
+    right: 335px;
     z-index: 2;
     width: 20px;
     font-size: 20px;
@@ -47,7 +56,7 @@ html, body, #content {
 
 #zoomControls {
     position: absolute;
-    top: 95px;
+    top: 90px;
     right: 5px;
     z-index: 2;
     width: 110px;
@@ -55,8 +64,8 @@ html, body, #content {
 
 #mapTypeControls {
     position: absolute;
-    top: 95px;
-    right: 115px;
+    top: 90px;
+    right: 120px;
     z-index: 2;
     width: 210px;
 }
@@ -162,7 +171,6 @@ html, body, #content {
 
 #data h6 {
     color: #000;
-    font: 700 22px/22px nyt-franklin, arial, sans-serif;
     border-bottom: 1px solid #ddd;
     margin: 0 0 15px;
     padding: 0 0 3px;
@@ -194,7 +202,6 @@ html, body, #content {
     margin-bottom: 5px;
 }
 #data .chart-title {
-    font: 700 16px/15px nyt-franklin, arial, sans-serif;
     color: #000;
     display: block;
     font-size: 13px;
